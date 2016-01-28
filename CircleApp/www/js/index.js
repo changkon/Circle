@@ -17,97 +17,110 @@
 * under the License.
 */
 var app = {
-// Application Constructor
-initialize: function() {
-    this.bindEvents();
-},
-// Bind Event Listeners
-//
-// Bind any events that are required on startup. Common events are:
-// 'load', 'deviceready', 'offline', and 'online'.
-bindEvents: function() {
-    document.addEventListener('deviceready', this.onDeviceReady, false);
-},
-// deviceready Event Handler
-//
-// The scope of 'this' is the event. In order to call the 'receivedEvent'
-// function, we must explicity call 'app.receivedEvent(...);'
-onDeviceReady: function() {
+    // Application Constructor
+    initialize: function() {
+        this.bindEvents();
+    },
+    // Bind Event Listeners
+    //
+    // Bind any events that are required on startup. Common events are:
+    // 'load', 'deviceready', 'offline', and 'online'.
+    bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady, false);
+    },
+    // deviceready Event Handler
+    //
+    // The scope of 'this' is the event. In order to call the 'receivedEvent'
+    // function, we must explicity call 'app.receivedEvent(...);'
+    onDeviceReady: function() {
+        token = 0;
 
-    var client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net');
-    $.ajax({ type: "POST", dataType: "json", url:"https://circleapp.azurewebsites.net/api/auth",
-        data:{username: "Bob", password: "test"},
-        success: function(data) {
-            $('#errorlog').append("success! "+ data.token);
-        },
-        error: function(msg) {
-            $('#errorlog').append(msg.statusText);
+        // Read current data and rebuild UI.
+        // If you plan to generate complex UIs like this, consider using a JavaScript templating library.
+        function refreshTodoItems() {
+            $('#summary').html("Loading...");
+            $('#errorlog').append($('<li>').text("waiting..."));
+            var client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+               request.headers['x-zumo-auth'] = token;
+               next(request, callback);
+            });
+            todoItemTable = client.getTable('todoitem');
+
+            var query = todoItemTable.where({ complete: false });
+
+            query.read().then(function(todoItems) {
+                var listItems = $.map(todoItems, function(item) {
+                    return $('<li>')
+                    .attr('data-todoitem-id', item.id)
+                    .append($('<button class="item-delete">Delete</button>'))
+                    .append($('<input type="checkbox" class="item-complete">').prop('checked', item.complete))
+                    .append($('<div>').append($('<input class="item-text">').val(item.text)));
+                });
+
+                $('#todo-items').empty().append(listItems).toggle(listItems.length > 0);
+                $('#summary').html('<strong>' + todoItems.length + '</strong> item(s)');
+            }, handleError);
         }
-    });
-    todoItemTable = client.getTable('todoitem');
 
-// Read current data and rebuild UI.
-// If you plan to generate complex UIs like this, consider using a JavaScript templating library.
-function refreshTodoItems() {
-    $('#summary').html("Loading...");
-    var query = todoItemTable.where({ complete: false });
+        function handleError(error) {
+            var text = error + (error.request ? ' - ' + error.request.status : '');
+            $('#errorlog').append($('<li>').text(text));
+        }
 
-    query.read().then(function(todoItems) {
-        var listItems = $.map(todoItems, function(item) {
-            return $('<li>')
-            .attr('data-todoitem-id', item.id)
-            .append($('<button class="item-delete">Delete</button>'))
-            .append($('<input type="checkbox" class="item-complete">').prop('checked', item.complete))
-            .append($('<div>').append($('<input class="item-text">').val(item.text)));
+        function getTodoItemId(formElement) {
+            return $(formElement).closest('li').attr('data-todoitem-id');
+        }
+
+        // Handle insert
+        $('#add-item').submit(function(evt) {
+            var textbox = $('#new-item-text'),
+            itemText = textbox.val();
+            if (itemText !== '') {
+                todoItemTable.insert({ text: itemText, complete: false }).then(refreshTodoItems, handleError);
+            }
+            textbox.val('').focus();
+            evt.preventDefault();
         });
 
-        $('#todo-items').empty().append(listItems).toggle(listItems.length > 0);
-        $('#summary').html('<strong>' + todoItems.length + '</strong> item(s)');
-    }, handleError);
-}
+        // Handle sign in
+        $('#demo-sign-in').submit(function(evt) {
+            var usernameTextBox = $('#username-text'),
+            usernameToSend = usernameTextBox.val();
+            var passwordTextBox = $('#password-text'),
+            passwordToSend = passwordTextBox.val();
+            $.ajax({ type: "POST", dataType: "json", url:"https://circleapp.azurewebsites.net/api/auth",
+                data:{username: usernameToSend, password: passwordToSend},
+                success: function(data) {
+                    token = data.token;
+                    $('#errorlog').append("success!@@@@"+ token);
+                    refreshTodoItems();
+                },
+                error: function(msg) {
+                    $('#errorlog').append(msg.statusText + "@@@");
+                }
+            });
+            evt.preventDefault();
+        });
 
-function handleError(error) {
-    var text = error + (error.request ? ' - ' + error.request.status : '');
-    $('#errorlog').append($('<li>').text(text));
-}
+        $('#refresh').click(function(evt) {
+            refreshTodoItems();
+            evt.preventDefault();
+        });
 
-function getTodoItemId(formElement) {
-    return $(formElement).closest('li').attr('data-todoitem-id');
-}
+        // Handle update
+        $(document.body).on('change', '.item-text', function() {
+            var newText = $(this).val();
+            todoItemTable.update({ id: getTodoItemId(this), text: newText }).then(null, handleError);
+        });
 
-// Handle insert
-$('#add-item').submit(function(evt) {
-    var textbox = $('#new-item-text'),
-    itemText = textbox.val();
-    if (itemText !== '') {
-        todoItemTable.insert({ text: itemText, complete: false }).then(refreshTodoItems, handleError);
-    }
-    textbox.val('').focus();
-    evt.preventDefault();
-});
+        $(document.body).on('change', '.item-complete', function() {
+            var isComplete = $(this).prop('checked');
+            todoItemTable.update({ id: getTodoItemId(this), complete: isComplete }).then(refreshTodoItems, handleError);
+        });
 
-$('#refresh').click(function(evt) {
-    refreshTodoItems();
-    evt.preventDefault();
-});
-
-// Handle update
-$(document.body).on('change', '.item-text', function() {
-    var newText = $(this).val();
-    todoItemTable.update({ id: getTodoItemId(this), text: newText }).then(null, handleError);
-});
-
-$(document.body).on('change', '.item-complete', function() {
-    var isComplete = $(this).prop('checked');
-    todoItemTable.update({ id: getTodoItemId(this), complete: isComplete }).then(refreshTodoItems, handleError);
-});
-
-// Handle delete
-$(document.body).on('click', '.item-delete', function () {
-    todoItemTable.del({ id: getTodoItemId(this) }).then(refreshTodoItems, handleError);
-});
-
-// On initial load, start by fetching the current data
-refreshTodoItems();
-},
+        // Handle delete
+        $(document.body).on('click', '.item-delete', function () {
+            todoItemTable.del({ id: getTodoItemId(this) }).then(refreshTodoItems, handleError);
+        });
+    },
 };
