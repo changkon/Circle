@@ -7,9 +7,11 @@ using System.Web.Http;
 using circleappService.DataObjects;
 using Microsoft.Azure.Mobile.Server.Config;
 using Microsoft.Azure.Mobile.Server.Login;
+using System.Web.Http.Cors;
 
 namespace circleappService.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [MobileAppController]
     public class AuthController : ApiController
     {

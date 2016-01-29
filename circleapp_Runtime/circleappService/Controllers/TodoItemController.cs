@@ -6,9 +6,11 @@ using System.Web.Http.OData;
 using Microsoft.Azure.Mobile.Server;
 using circleappService.DataObjects;
 using circleappService.Models;
+using System.Web.Http.Cors;
 
 namespace circleappService.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [Authorize]
     public class TodoItemController : TableController<TodoItem>
     {
