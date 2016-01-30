@@ -68,4 +68,8 @@ angular.module('starter.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
+})
+
+.controller('EventCtrl', function($scope){
+	console.log('event controller here');
 });
