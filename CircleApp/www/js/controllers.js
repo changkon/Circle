@@ -3,6 +3,7 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope, $http, $rootScope) {
    $scope.data = {};
+   $scope.user = {};
    $scope.showRegister = false;
    $scope.showLogin = true;
  
@@ -28,6 +29,29 @@ angular.module('starter.controllers', [])
     $scope.toggleRegister = function() {
         $scope.showRegister = !$scope.showRegister;
         $scope.showLogin = !$scope.showLogin;
+    }
+    
+    
+    $scope.register = function() {
+        console.log("REGSITER user: " + $scope.user.email + " - PW: " + $scope.user.password + 
+        " PHONE NUMBER " + $scope.user.phoneNumber);
+        $http({
+            method: 'POST',
+            url: "https://circleapp.azurewebsites.net/tables/User",
+            data: {email: $scope.user.email, phoneNumber: $scope.user.phoneNumber, 
+            password: $scope.user.password, gender: $scope.user.gender,
+            name: $scope.user.name, age: $scope.user.age},
+            headers: {'Content-Type': 'application/json'}
+        })
+        .success(function(response) {
+            // handle success things
+            console.log(response);
+        })
+        .error(function(data, status, headers, config) {
+            // handle error things
+            console.log("Error occurred - " + status);
+        })
+        
     }
     
     
