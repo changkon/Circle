@@ -45,7 +45,7 @@ angular.module('starter.controllers', [])
         })
         .success(function(response) {
             // handle success things
-            console.log(response);
+            console.log(response.token);
         })
         .error(function(data, status, headers, config) {
             // handle error things

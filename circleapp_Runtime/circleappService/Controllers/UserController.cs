@@ -8,6 +8,8 @@ using circleappService.DataObjects;
 using circleappService.Models;
 using System.Web.Http.Cors;
 using Microsoft.Azure.Mobile.Server.Config;
+using circleappService.Utility;
+using System.IdentityModel.Tokens;
 
 namespace circleappService.Controllers
 {
@@ -26,8 +28,15 @@ namespace circleappService.Controllers
         // POST tables/User
         public async Task<IHttpActionResult> PostUser(User item)
         {
+            item.Password = Hashing.HashPassword(item.Password);
+            JwtSecurityToken token = JWTGenerator.GetAuthenticationTokenForUser(item.Email,this);
+
             User current = await InsertAsync(item);
-            return Ok();
+            return Content(System.Net.HttpStatusCode.Accepted, new
+            {
+                Token = token.RawData,
+                Username = current.Email
+            });
         }
 
     }
