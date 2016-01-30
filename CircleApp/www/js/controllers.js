@@ -3,6 +3,8 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope, $http, $rootScope) {
    $scope.data = {};
+   $scope.showRegister = false;
+   $scope.showLogin = true;
  
     $scope.login = function() {
         console.log("LOGIN user: " + $scope.data.username + " - PW: " + $scope.data.password);
@@ -22,6 +24,13 @@ angular.module('starter.controllers', [])
             console.log("Error occurred - " + status);
         })
     }
+    
+    $scope.toggleRegister = function() {
+        $scope.showRegister = !$scope.showRegister;
+        $scope.showLogin = !$scope.showLogin;
+    }
+    
+    
 })
 
 .controller('ChatsCtrl', function($scope, Chats, $rootScope) {
