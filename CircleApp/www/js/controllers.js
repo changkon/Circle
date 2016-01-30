@@ -71,6 +71,8 @@ angular.module('starter.controllers', [])
                next(request, callback);
             });
         todoItemTable = client.getTable('todoitem');
+        todoItemTable.insert({ text: "first to do thing", complete: false });
+        /*
         var query = todoItemTable.where({ complete: false });
         query.read().then(function(todoItems) {
           //console.log(todoItems.length + " - " + Chats.all().length)
@@ -80,7 +82,7 @@ angular.module('starter.controllers', [])
           }
         }, function (error) {
             Chats.get(0).lastText = "fail-" + error
-        });
+        }); */
      } catch (err) {
         Chats.get(0).lastText = "fail"
      }
