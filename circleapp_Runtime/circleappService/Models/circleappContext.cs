@@ -30,6 +30,8 @@ namespace circleappService.Models
                 new AttributeToColumnAnnotationConvention<TableColumnAttribute, string>(
                     "ServiceTableColumn", (property, attributes) => attributes.Single().ColumnType.ToString()));
         }
+
+        public System.Data.Entity.DbSet<circleappService.DataObjects.Event> Events { get; set; }
     }
 
 }
