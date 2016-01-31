@@ -1,8 +1,5 @@
 ﻿using Microsoft.Azure.Mobile.Server;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace circleappService.DataObjects
 {
@@ -14,8 +11,8 @@ namespace circleappService.DataObjects
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public DateTime date { get; set; }
-        public string location { get; set; }
-        public List<string> tags { get; set; }
+        public DateTime Date { get; set; }
+        public string Location { get; set; }
+        //public List<string> Tags { get; set; }
     }
 }

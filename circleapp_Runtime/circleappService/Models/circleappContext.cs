@@ -31,7 +31,7 @@ namespace circleappService.Models
                     "ServiceTableColumn", (property, attributes) => attributes.Single().ColumnType.ToString()));
         }
 
-        public System.Data.Entity.DbSet<circleappService.DataObjects.Event> Events { get; set; }
+        public DbSet<Event> Events { get; set; }
     }
 
 }

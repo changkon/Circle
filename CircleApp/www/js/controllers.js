@@ -8,7 +8,7 @@ angular.module('starter.controllers', [])
         console.log("LOGIN user: " + $scope.data.username + " - PW: " + $scope.data.password);
         $http({
             method: 'POST',
-            url: "https://circleapp.azurewebsites.net/api/auth",
+            url: "http://192.168.1.69:50770/api/auth",
             data: {username: $scope.data.username, password: $scope.data.password},
             headers: {'Content-Type': 'application/json'}
         })
@@ -33,7 +33,7 @@ angular.module('starter.controllers', [])
   $scope.$on('$ionicView.enter', function(e) {
      //Chats.get(0).name = $rootScope.token + " - token"
      try {
-       var client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+       var client = new WindowsAzure.MobileServiceClient('http://192.168.1.69:50770').withFilter(function (request, next, callback) {
                request.headers['x-zumo-auth'] = $rootScope.token;
                next(request, callback);
             });
@@ -70,6 +70,36 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('EventCtrl', function($scope){
-	console.log('event controller here');
+.controller('EventCtrl', function($scope, $http) {
+	$scope.event = {
+		title: null,
+		description: null,
+		date: null,
+		location: null
+	};
+	
+	$scope.create = function() {
+		console.log("Creating event with details:");
+		console.log("Title - " + $scope.event.title);
+		console.log("Description - " + $scope.event.description);
+		console.log("Date - " + $scope.event.date);
+		console.log("Location - " + $scope.event.location);
+		
+		// retrieve the mobile service instance
+		var mobileService = new WindowsAzure.MobileServiceClient("http://192.168.1.69:50770");
+		var eventsTable = mobileService.getTable('event');
+		
+		eventsTable.insert({
+			title: $scope.event.title,
+			description: $scope.event.description,
+			date: $scope.event.date,
+			location: $scope.event.location
+		}).done(function(result) {
+			console.log("success");
+		}, function (err) {
+			console.log("error");
+			console.log(err);
+		});
+		
+	};
 });

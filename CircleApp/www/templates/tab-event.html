@@ -5,23 +5,24 @@
 		<div class="item item-divider">Event Details</div>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Event Title</span>
-			<input type="text" placeholder="placeholder">
+			<input type="text" placeholder="placeholder" ng-model="event.title">
 		</label>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Event Description</span>
-			<input type="text" placeholder="lorem ipsum">
+			<input type="text" placeholder="lorem ipsum" ng-model="event.description">
 		</label>
 		
 		<!-- Additional information -->
 		<div class="item item-divider">Additional Information</div>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Date</span>
-			<input type="datetime-local" name="event-time">
+			<input type="datetime-local" name="event-time" ng-model="event.date">
 		</label>
 		<label class="item item-input item-stacked-label">
 			<span class="input-label">Location</span>
-			<input type="text" placeholder="Auckland">
+			<input type="text" placeholder="Auckland" ng-model="event.location">
 		</label>
 	</div>
+	<button class="button button-block button-positive" ng-click="create()">Create</button>
   </ion-content>
 </ion-view>
