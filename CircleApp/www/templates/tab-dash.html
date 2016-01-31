@@ -1,15 +1,46 @@
 <ion-view view-title="Dashboard">
   <ion-content class="padding">
-    <h2>Welcome to Ionic</h2>
-    <div class="list list-inset">
-        <label class="item item-input">
-            <input type="text" placeholder="Username" ng-model="data.username">
-        </label>
-        <label class="item item-input">
-            <input type="password" placeholder="Password" ng-model="data.password">
-        </label>
+    <div class="login-screen" ng-show="showLogin">
+        <h2>Welcome to Ionic</h2>
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="text" placeholder="Username" ng-model="data.username">
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="Password" ng-model="data.password">
+            </label>
+        </div>
+        <button class="button button-block button-calm" ng-click="login()">Login</button>
+        <button class="button button-block button-calm" ng-click="toggleRegister()">Register</button>
     </div>
-    <button class="button button-block button-calm" ng-click="login()">Login</button>
+    <div class="register-screen" ng-show="showRegister">
+        <h2>Registering</h2>
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="text" placeholder="Email" ng-model="user.email">
+            </label>
+            <label class="item item-input">
+                <input type="text" placeholder="Phone number" ng-model="user.phoneNumber">
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="Password" ng-model="user.password">
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="Enter Password Again" ng-model="user.confirmPassword">
+            </label>
+            <label class="item item-input">
+                <input type="text" placeholder="Gender" ng-model="user.gender">
+            </label>
+            <label class="item item-input">
+                <input type="text" placeholder="Name" ng-model="user.name">
+            </label>
+            <label class="item item-input">
+                <input type="number" placeholder="Age" ng-model="user.age">
+            </label>
+        </div>
+        <button class="button button-block button-calm" ng-click="register()">Submit</button>
+        <button class="button button-block button-calm" ng-click="toggleRegister()">Back</button>
+    </div>
     <p>
     This is the Ionic starter for tabs-based apps. For other starters and ready-made templates, check out the <a href="http://market.ionic.io/starters" target="_blank">Ionic Market</a>.
     </p>

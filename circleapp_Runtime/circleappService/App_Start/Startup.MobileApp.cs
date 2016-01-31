@@ -10,6 +10,7 @@ using circleappService.DataObjects;
 using circleappService.Models;
 using Owin;
 using System.Data.Entity.Migrations;
+using circleappService.Migrations;
 
 namespace circleappService
 {
@@ -36,10 +37,9 @@ namespace circleappService
                 .ApplyTo(config);
 
             // Use Entity Framework Code First to create database tables based on your DbContext
-            Database.SetInitializer(new circleappInitializer());
-            //var migrator = new DbMigrator(new Migrations.Configuration());
-            //migrator.Update();
-
+            //Database.SetInitializer(new circleappInitializer());
+            DbMigrator migrator = new DbMigrator(new Migrations.Configuration());
+            migrator.Update();
             // To prevent Entity Framework from modifying your database schema, use a null database initializer
             // Database.SetInitializer<circleappContext>(null);
 

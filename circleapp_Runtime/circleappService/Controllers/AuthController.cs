@@ -8,6 +8,9 @@ using circleappService.DataObjects;
 using Microsoft.Azure.Mobile.Server.Config;
 using Microsoft.Azure.Mobile.Server.Login;
 using System.Web.Http.Cors;
+using circleappService.Utility;
+using circleappService.Models;
+using System.Linq;
 
 namespace circleappService.Controllers
 {
@@ -23,7 +26,7 @@ namespace circleappService.Controllers
                 return this.Request.CreateUnauthorizedResponse();
             }
 
-            JwtSecurityToken token = this.GetAuthenticationTokenForUser(challenge.Username);
+            JwtSecurityToken token = JWTGenerator.GetAuthenticationTokenForUser(challenge.Username, this);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, new
             {
@@ -32,63 +35,23 @@ namespace circleappService.Controllers
             });
         }
 
-        private JwtSecurityToken GetAuthenticationTokenForUser(string username)
-        {
-            var claims = new Claim[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, username)
-            };
-
-            var signingKey = this.GetSigningKey();
-            var audience = this.GetSiteUrl(); // audience must match the url of the site
-            var issuer = this.GetSiteUrl(); // audience must match the url of the site 
-
-            JwtSecurityToken token = AppServiceLoginHandler.CreateToken(
-                claims,
-                signingKey,
-                audience,
-                issuer,
-                TimeSpan.FromHours(24)
-                );
-
-            return token;
-        }
-
         private bool IsPasswordValid(string username, string password)
         {
             // this is where we would do checks agains a database
-            return (username.Equals("Bob"));
-//            return true;
+            circleappContext context = new circleappContext();
+
+            var users = context.Users.Where(x => x.Email == username);
+
+            foreach (User userAccount in users)
+            {
+                if (Hashing.ValidatePassword(password, userAccount.Password))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-        private string GetSiteUrl()
-        {
-            var settings = this.Configuration.GetMobileAppSettingsProvider().GetMobileAppSettings();
-
-            if (string.IsNullOrEmpty(settings.HostName))
-            {
-                return "http://localhost";
-            }
-            else
-            { 
-                return "https://" + settings.HostName + "/";
-            }
-        }
-
-        private string GetSigningKey()
-        {
-            var settings = this.Configuration.GetMobileAppSettingsProvider().GetMobileAppSettings();
-
-            if (string.IsNullOrEmpty(settings.HostName))
-            {
-                // this key is for debuggint and testing purposes only
-                // this key should match the one supplied in Startup.MobileApp.cs
-                return "GfYVqdtZUJQfghRiaonAeRQRDjytRi47";
-            }
-            else
-            {
-                return Environment.GetEnvironmentVariable("WEBSITE_AUTH_SIGNING_KEY");
-            }
-        }
     }
 }

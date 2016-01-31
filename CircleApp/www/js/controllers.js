@@ -3,6 +3,9 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope, $http, $rootScope) {
    $scope.data = {};
+   $scope.user = {};
+   $scope.showRegister = false;
+   $scope.showLogin = true;
  
     $scope.login = function() {
         console.log("LOGIN user: " + $scope.data.username + " - PW: " + $scope.data.password);
@@ -22,6 +25,36 @@ angular.module('starter.controllers', [])
             console.log("Error occurred - " + status);
         })
     }
+    
+    $scope.toggleRegister = function() {
+        $scope.showRegister = !$scope.showRegister;
+        $scope.showLogin = !$scope.showLogin;
+    }
+    
+    
+    $scope.register = function() {
+        console.log("REGSITER user: " + $scope.user.email + " - PW: " + $scope.user.password + 
+        " PHONE NUMBER " + $scope.user.phoneNumber);
+        $http({
+            method: 'POST',
+            url: "https://circleapp.azurewebsites.net/tables/User",
+            data: {email: $scope.user.email, phoneNumber: $scope.user.phoneNumber, 
+            password: $scope.user.password, gender: $scope.user.gender,
+            name: $scope.user.name, age: $scope.user.age},
+            headers: {'Content-Type': 'application/json'}
+        })
+        .success(function(response) {
+            // handle success things
+            console.log(response.token);
+        })
+        .error(function(data, status, headers, config) {
+            // handle error things
+            console.log("Error occurred - " + status);
+        })
+        
+    }
+    
+    
 })
 
 .controller('ChatsCtrl', function($scope, Chats, $rootScope) {
@@ -38,6 +71,8 @@ angular.module('starter.controllers', [])
                next(request, callback);
             });
         todoItemTable = client.getTable('todoitem');
+        todoItemTable.insert({ text: "first to do thing", complete: false });
+        /*
         var query = todoItemTable.where({ complete: false });
         query.read().then(function(todoItems) {
           //console.log(todoItems.length + " - " + Chats.all().length)
@@ -47,7 +82,7 @@ angular.module('starter.controllers', [])
           }
         }, function (error) {
             Chats.get(0).lastText = "fail-" + error
-        });
+        }); */
      } catch (err) {
         Chats.get(0).lastText = "fail"
      }
