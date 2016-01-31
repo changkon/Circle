@@ -11,7 +11,7 @@ using System.Web.Http.Cors;
 namespace circleappService.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    //[Authorize]
+    [Authorize]
     public class TodoItemController : TableController<TodoItem>
     {
         protected override void Initialize(HttpControllerContext controllerContext)

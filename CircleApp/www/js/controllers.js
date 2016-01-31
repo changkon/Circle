@@ -11,7 +11,7 @@ angular.module('starter.controllers', [])
         console.log("LOGIN user: " + $scope.data.username + " - PW: " + $scope.data.password);
         $http({
             method: 'POST',
-            url: "http://192.168.1.69:50770/api/auth",
+            url: "https://circleapp.azurewebsites.net/api/auth",
             data: {username: $scope.data.username, password: $scope.data.password},
             headers: {'Content-Type': 'application/json'}
         })
@@ -66,7 +66,7 @@ angular.module('starter.controllers', [])
   $scope.$on('$ionicView.enter', function(e) {
      //Chats.get(0).name = $rootScope.token + " - token"
      try {
-       var client = new WindowsAzure.MobileServiceClient('http://192.168.1.69:50770').withFilter(function (request, next, callback) {
+       var client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
                request.headers['x-zumo-auth'] = $rootScope.token;
                next(request, callback);
             });
@@ -121,7 +121,7 @@ angular.module('starter.controllers', [])
 		console.log("Location - " + $scope.event.location);
 		
 		// retrieve the mobile service instance
-		var mobileService = new WindowsAzure.MobileServiceClient("http://192.168.1.69:50770");
+		var mobileService = new WindowsAzure.MobileServiceClient("https://circleapp.azurewebsites.net");
 		var eventsTable = mobileService.getTable('event');
 		
 		eventsTable.insert({
