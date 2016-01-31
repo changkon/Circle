@@ -201,6 +201,18 @@
     <Compile Include="Migrations\201601300820037_AddUser.Designer.cs">
       <DependentUpon>201601300820037_AddUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201601310858384_changeUser.cs" />
+    <Compile Include="Migrations\201601310858384_changeUser.Designer.cs">
+      <DependentUpon>201601310858384_changeUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601311018026_setUniqueProperties.cs" />
+    <Compile Include="Migrations\201601311018026_setUniqueProperties.Designer.cs">
+      <DependentUpon>201601311018026_setUniqueProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601311021505_setUniqueProperties2.cs" />
+    <Compile Include="Migrations\201601311021505_setUniqueProperties2.Designer.cs">
+      <DependentUpon>201601311021505_setUniqueProperties2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\circleappContext.cs" />
     <Compile Include="Startup.cs" />
@@ -231,6 +243,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201601300820037_AddUser.resx">
       <DependentUpon>201601300820037_AddUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601310858384_changeUser.resx">
+      <DependentUpon>201601310858384_changeUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601311018026_setUniqueProperties.resx">
+      <DependentUpon>201601311018026_setUniqueProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601311021505_setUniqueProperties2.resx">
+      <DependentUpon>201601311021505_setUniqueProperties2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

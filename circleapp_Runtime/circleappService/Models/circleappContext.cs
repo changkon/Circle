@@ -4,6 +4,8 @@ using System.Linq;
 using Microsoft.Azure.Mobile.Server;
 using Microsoft.Azure.Mobile.Server.Tables;
 using circleappService.DataObjects;
+using System.Data.Entity.Infrastructure.Annotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace circleappService.Models
 {
@@ -29,6 +31,31 @@ namespace circleappService.Models
             modelBuilder.Conventions.Add(
                 new AttributeToColumnAnnotationConvention<TableColumnAttribute, string>(
                     "ServiceTableColumn", (property, attributes) => attributes.Single().ColumnType.ToString()));
+            modelBuilder
+                .Entity<User>()
+                .Property(t => t.Email)
+                .IsRequired()
+                .HasMaxLength(100)
+                .HasColumnAnnotation(
+                    IndexAnnotation.AnnotationName,
+                    new IndexAnnotation(
+                        new IndexAttribute("IX_Email", 1) { IsUnique = true }));
+
+
+            modelBuilder
+                .Entity<User>()
+                .Property(t => t.PhoneNumber)
+                .IsRequired()
+                .HasMaxLength(100)
+                .HasColumnAnnotation(
+                    IndexAnnotation.AnnotationName,
+                    new IndexAnnotation(
+                        new IndexAttribute("IX_PhoneNumber", 1) { IsUnique = true }));
+
+            modelBuilder
+                .Entity<User>()
+                .Property(t => t.Password)
+                .IsRequired();
         }
 
         public System.Data.Entity.DbSet<circleappService.DataObjects.User> Users { get; set; }
