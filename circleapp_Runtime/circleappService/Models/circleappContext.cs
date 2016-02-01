@@ -29,6 +29,15 @@ namespace circleappService.Models
             modelBuilder.Conventions.Add(
                 new AttributeToColumnAnnotationConvention<TableColumnAttribute, string>(
                     "ServiceTableColumn", (property, attributes) => attributes.Single().ColumnType.ToString()));
+
+            // configure Event object properties
+            modelBuilder.Entity<Event>()
+                .Property(e => e.Title)
+                .IsRequired();
+
+            modelBuilder.Entity<Event>()
+                .Property(e => e.Description)
+                .IsRequired();
         }
 
         public DbSet<Event> Events { get; set; }
