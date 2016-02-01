@@ -43,5 +43,12 @@ namespace circleappService.Controllers
             });
         }
 
+        // GET tables/User
+        //[Authorize]
+        public IQueryable<User> GetAllUsers()
+        {
+            return Query();
+        }
+
     }
 }
