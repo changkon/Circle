@@ -41,6 +41,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Test</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
@@ -110,6 +119,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Cors">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
@@ -191,15 +201,29 @@
     <Compile Include="App_Start\Startup.MobileApp.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\TodoItemController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="DataObjects\Event.cs" />
     <Compile Include="DataObjects\LoginChallenge.cs" />
     <Compile Include="DataObjects\TodoItem.cs" />
     <Compile Include="DataObjects\User.cs" />
     <Compile Include="Migrations\201601300820037_AddUser.cs" />
     <Compile Include="Migrations\201601300820037_AddUser.Designer.cs">
       <DependentUpon>201601300820037_AddUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601311038500_EventTable.cs" />
+    <Compile Include="Migrations\201601311038500_EventTable.Designer.cs">
+      <DependentUpon>201601311038500_EventTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602010636382_DateAllowNullableEvent.cs" />
+    <Compile Include="Migrations\201602010636382_DateAllowNullableEvent.Designer.cs">
+      <DependentUpon>201602010636382_DateAllowNullableEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602010716525_RequiredValueEvent.cs" />
+    <Compile Include="Migrations\201602010716525_RequiredValueEvent.Designer.cs">
+      <DependentUpon>201602010716525_RequiredValueEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\circleappContext.cs" />
@@ -231,6 +255,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201601300820037_AddUser.resx">
       <DependentUpon>201601300820037_AddUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601311038500_EventTable.resx">
+      <DependentUpon>201601311038500_EventTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602010636382_DateAllowNullableEvent.resx">
+      <DependentUpon>201602010636382_DateAllowNullableEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602010716525_RequiredValueEvent.resx">
+      <DependentUpon>201602010716525_RequiredValueEvent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

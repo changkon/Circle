@@ -41,7 +41,6 @@ namespace circleappService
             DbMigrator migrator = new DbMigrator(new Migrations.Configuration());
             migrator.Update();
 
-
             // To prevent Entity Framework from modifying your database schema, use a null database initializer
             // Database.SetInitializer<circleappContext>(null);
 
