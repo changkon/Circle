@@ -18,7 +18,10 @@ angular.module('starter.controllers', [])
         .success(function(response) {
             // handle success things
             console.log(response.token);
-            $rootScope.token = response.token;
+			$rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+               request.headers['x-zumo-auth'] = response.token;
+               next(request, callback);
+            });
         })
         .error(function(data, status, headers, config) {
             // handle error things
@@ -66,10 +69,7 @@ angular.module('starter.controllers', [])
   $scope.$on('$ionicView.enter', function(e) {
      //Chats.get(0).name = $rootScope.token + " - token"
      try {
-       var client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
-               request.headers['x-zumo-auth'] = $rootScope.token;
-               next(request, callback);
-            });
+       var client = $rootScope.client;
         todoItemTable = client.getTable('todoitem');
         todoItemTable.insert({ text: "first to do thing", complete: false });
         /*
@@ -105,7 +105,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('EventCtrl', function($scope, $http) {
+.controller('EventCtrl', function($scope, $http, $rootScope) {
 	$scope.event = {};
 	
 	$scope.create = function() {
@@ -116,7 +116,7 @@ angular.module('starter.controllers', [])
 		console.log("Location - " + $scope.event.location);
 		
 		// retrieve the mobile service instance
-		var mobileService = new WindowsAzure.MobileServiceClient("https://circleapp.azurewebsites.net");
+		var mobileService = $rootScope.client;
 		var eventsTable = mobileService.getTable('event');
 		
 		eventsTable.insert({
