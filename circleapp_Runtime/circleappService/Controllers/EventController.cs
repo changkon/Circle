@@ -14,7 +14,10 @@ namespace circleappService.Controllers
     /// Routing /tables/Event/{id}
     /// </summary>
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+#if Test
+#else
     [Authorize]
+#endif
     public class EventController : TableController<Event>
     {
         protected override void Initialize(HttpControllerContext controllerContext)
