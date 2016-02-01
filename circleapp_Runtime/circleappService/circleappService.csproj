@@ -217,6 +217,10 @@
     <Compile Include="Migrations\201601311038500_EventTable.Designer.cs">
       <DependentUpon>201601311038500_EventTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602010636382_DateAllowNullableEvent.cs" />
+    <Compile Include="Migrations\201602010636382_DateAllowNullableEvent.Designer.cs">
+      <DependentUpon>201602010636382_DateAllowNullableEvent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\circleappContext.cs" />
     <Compile Include="Startup.cs" />
@@ -250,6 +254,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201601311038500_EventTable.resx">
       <DependentUpon>201601311038500_EventTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602010636382_DateAllowNullableEvent.resx">
+      <DependentUpon>201602010636382_DateAllowNullableEvent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

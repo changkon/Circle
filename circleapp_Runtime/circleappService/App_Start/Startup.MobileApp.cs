@@ -37,12 +37,10 @@ namespace circleappService
                 .ApplyTo(config);
 
             // Use Entity Framework Code First to create database tables based on your DbContext
-#if Test
-            Database.SetInitializer(new circleappInitializer());
-#else
+            //Database.SetInitializer(new circleappInitializer());
             DbMigrator migrator = new DbMigrator(new Migrations.Configuration());
             migrator.Update();
-#endif
+
             // To prevent Entity Framework from modifying your database schema, use a null database initializer
             // Database.SetInitializer<circleappContext>(null);
 

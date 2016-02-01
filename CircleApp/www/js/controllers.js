@@ -106,12 +106,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('EventCtrl', function($scope, $http) {
-	$scope.event = {
-		title: null,
-		description: null,
-		date: null,
-		location: null
-	};
+	$scope.event = {};
 	
 	$scope.create = function() {
 		console.log("Creating event with details:");
