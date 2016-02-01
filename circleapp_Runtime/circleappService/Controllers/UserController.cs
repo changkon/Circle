@@ -44,7 +44,10 @@ namespace circleappService.Controllers
         }
 
         // GET tables/User
-        //[Authorize]
+        #if Test
+        #else
+            [Authorize]
+        #endif
         public IQueryable<User> GetAllUsers()
         {
             return Query();
