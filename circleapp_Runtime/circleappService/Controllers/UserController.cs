@@ -15,10 +15,6 @@ namespace circleappService.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [MobileAppController]
-#if Test
-#else
-    [Authorize]
-#endif
     public class UserController : TableController<User>
     {
         protected override void Initialize(HttpControllerContext controllerContext)

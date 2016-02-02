@@ -1,0 +1,20 @@
+<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+<ion-view view-title="Import" cache-view="false" >
+  <ion-content class="padding">
+     <ion-list>
+      <ion-checkbox ng-repeat="contact in contacts" ng-click="toggle(contact)" >
+        <h2>{{contact.name}}</h2>
+        <p>{{contact.phoneNumber}}</p>
+      </ion-checkbox >
+    </ion-list>
+  </ion-content>
+  <!-- align to the bottom of the page -->
+    <div class="padding" style="position: absolute; bottom: 20px; width: 100%">
+      <button class="button button-block button-calm" ng-click="addFriends()">Add Friends</button>
+    </div>
+</ion-view>
