@@ -47,4 +47,8 @@ angular.module('starter.services', [])
       return null;
     }
   };
+})
+.service('circle', function() {
+	// sharable settings object
+	this.title = "Circle";
 });

@@ -1,5 +1,10 @@
 angular.module('starter.controllers', [])
 
+.controller('NavCtrl', ['$scope', 'circle', function($scope, circle) {
+	$scope.circle = {
+		title: circle.title
+	};
+}])
 
 .controller('DashCtrl', function($scope, $http, $rootScope) {
    $scope.data = {};
