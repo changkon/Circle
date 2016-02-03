@@ -42,6 +42,7 @@ namespace circleappService.Models
 
         public DbSet<Event> Events { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<BlacklistToken> BlackLists { get; set; }
     }
 
 }
