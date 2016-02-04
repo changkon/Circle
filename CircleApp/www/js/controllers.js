@@ -112,7 +112,7 @@ angular.module('starter.controllers', [])
     //we want to load up all contacts when view is loaded
     $scope.$on('$ionicView.loaded', function(e) {
         $cordovaContacts.find({filter: ''}).then(function(contacts) {
-            console.log(contacts)
+            //console.log(contacts)
             var phoneNumbers = [];
             for (var i = 0; contacts != null && i < contacts.length; i++) {
                 var contactNumbers = contacts[i].phoneNumbers; //deal with people that have multiple phonenumbers
@@ -122,20 +122,25 @@ angular.module('starter.controllers', [])
                 }
             }
             uniqueNumbers = phoneNumbers.filter(function(item, pos) { return phoneNumbers.indexOf(item) == pos; })
-            //console.log(uniqueNumbers);
-            userTable = $rootScope.client.getTable('user');
-            for (var i = 0; i < uniqueNumbers.length; i+=20) {
-                var query = userTable.where(function (arr) { return this.phoneNumber in arr }, uniqueNumbers.slice(i,i+20));
-                query.read().then(function(validOnes) {
+            //console.log(uniqueNumbers.length);
+            for (var i = 0; i < uniqueNumbers.length; i+=100) {
+                var uniqueNumbersSection = uniqueNumbers.splice(i, i+100);
+                var phoneNumbersString = "";
+                for (var i = 0; i < uniqueNumbersSection.length; i++) {
+                    phoneNumbersString += uniqueNumbersSection[i] + ",";
+                }
+                $rootScope.client.invokeApi("importfriends/GetValidUsersByPhoneNumber?phonenumbers="
+                     + phoneNumbersString, { method: "GET" }).done(function(response) {
+                    validOnes = response.result.friends;
                     for (var i = 0; i < validOnes.length; i++) {
                         console.log(validOnes[i].phoneNumber + " number was found! " + validOnes[i].name);
                         var contact = validOnes[i];
                         contact.checked = false;
                         $scope.contacts.push(contact);
                     }
-                    $scope.$apply(); //this is needed to make the list refresh
+                     $scope.$apply();
                 }, function (error) {
-                    console.log("fail querying user db: " + error)
+                    console.log("fail querying user db: " + error);
                 });
             }
         }, function (error) {
@@ -183,6 +188,28 @@ angular.module('starter.controllers', [])
         }
     }
 })
+
+.controller('SearchCtrl', function($scope, $rootScope, $ionicPopup) {
+    $scope.friend = {};
+    $scope.friends = [];
+    $scope.search = function() {
+        console.log("search");
+        $rootScope.client.invokeApi("importfriends/GetFriendsByName?name=" + $scope.friend.name, { method: "GET" }).done(function(response) {
+            validOnes = response.result.users;
+            for (var i = 0; i < validOnes.length; i++) {
+                console.log(validOnes[i].phoneNumber + " number was found! " + validOnes[i].name);
+                var friend = validOnes[i];
+                friend.checked = false;
+                $scope.friends.push(friend);
+            }
+             $scope.$apply();
+        }, function (error) {
+            console.log("fail querying user db: " + error);
+        });
+    }
+})
+
+
 
 .controller('ChatsCtrl', function($scope, Chats, $rootScope) {
   $scope.$on('$ionicView.enter', function(e) {

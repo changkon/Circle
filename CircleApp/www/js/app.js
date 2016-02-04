@@ -58,6 +58,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
+  .state('tab.search', {
+      url: '/dash/search',
+      views: {
+        'tab-dash': {
+          templateUrl: 'templates/search.html',
+          controller: 'SearchCtrl'
+        }
+      }
+    })
 
   .state('tab.chats', {
       url: '/chats',
