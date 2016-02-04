@@ -16,14 +16,14 @@ angular.module('starter.controllers', [])
         console.log("LOGIN user: " + $scope.data.username + " - PW: " + $scope.data.password);
         $http({
             method: 'POST',
-            url: "https://circleapp.azurewebsites.net/api/auth",
+            url: "http://192.168.1.69:50770/api/auth",
             data: {username: $scope.data.username, password: $scope.data.password},
             headers: {'Content-Type': 'application/json'}
         })
         .success(function(response) {
             // handle success things
             console.log(response.token);
-			$rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+			$rootScope.client = new WindowsAzure.MobileServiceClient('http://192.168.1.69:50770').withFilter(function (request, next, callback) {
                request.headers['x-zumo-auth'] = response.token;
                next(request, callback);
             });
@@ -45,7 +45,7 @@ angular.module('starter.controllers', [])
         " PHONE NUMBER " + $scope.user.phoneNumber);
         $http({
             method: 'POST',
-            url: "https://circleapp.azurewebsites.net/tables/User",
+            url: "http://192.168.1.69:50770/tables/User",
             data: {email: $scope.user.email, phoneNumber: $scope.user.phoneNumber, 
             password: $scope.user.password, gender: $scope.user.gender,
             name: $scope.user.name, age: $scope.user.age},
@@ -112,6 +112,23 @@ angular.module('starter.controllers', [])
 
 .controller('EventCtrl', function($scope, $http, $rootScope) {
 	$scope.event = {};
+	$scope.events = [];
+	
+	$scope.query = function() {
+		var mobileService = $rootScope.client;
+		var eventsTable = mobileService.getTable('event');
+		eventsTable.read().done(function(results) {
+			$scope.$apply(function() {
+				$scope.events = results;
+			});
+		}, function(err) {
+			console.log("Error: " + err);
+		});
+	};
+	
+	$scope.$on('$ionicView.enter', function(e) {
+		$scope.query();
+	});
 	
 	$scope.create = function() {
 		console.log("Creating event with details:");

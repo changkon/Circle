@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "AAEC,kBACA;EACC,UAAU,EAAE,IAAI",
-"sources": ["../sass/components/_nav.scss"],
+"mappings": "AAEC,kBACA;EACC,UAAU,EAAE,IAAI;;ACJlB,WACA;EACC,OAAO,EAAE,EAAE",
+"sources": ["../sass/components/_nav.scss","../sass/pages/_event-home.scss"],
 "names": [],
 "file": "style.css"
 }
