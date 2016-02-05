@@ -3,7 +3,7 @@
 		<ion-refresher pulling-text="Pull to refresh..." on-refresh="query()"></ion-refresher>
 		<div class="item item-divider">Hosting</div>
 		<ion-list>
-			<ion-item class="event-item" ng-repeat="event in events | orderBy:'event.date'">
+			<ion-item class="event-item" ng-repeat="event in events | orderBy:'date'">
 				<div class="row">
 					<div class="col col-75">
 						<h3>{{event.title}}</h3>
