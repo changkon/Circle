@@ -1,5 +1,7 @@
-#circle-nav .title {
-  text-align: left; }
+#circle-nav {
+  position: fixed; }
+  #circle-nav .title {
+    text-align: left; }
 
 .circle-plus-button {
   position: absolute;
