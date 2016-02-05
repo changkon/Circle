@@ -1,5 +1,9 @@
+// Load variables
+@import 'partials/variables';
+
 // Load components
 @import 'components/nav';
+@import 'components/plus-button';
 
 // Load pages
 @import 'pages/event-home';

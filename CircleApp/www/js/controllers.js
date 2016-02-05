@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ionic'])
 
 .controller('NavCtrl', ['$scope', 'circle', function($scope, circle) {
 	$scope.circle = {
@@ -110,9 +110,26 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('EventCtrl', function($scope, $http, $rootScope) {
+.controller('EventCtrl', function($scope, $http, $rootScope, $ionicPopover) {
 	$scope.event = {};
 	$scope.events = [];
+
+	$ionicPopover.fromTemplateUrl('templates/plus-button-event-popover.html', {
+		scope: $scope
+	}).then(function(popover) {
+		$scope.popover = popover;
+		console.log(popover);
+	});
+	
+	// plus button click
+	$scope.plusActivate = function($event) {
+		$scope.popover.show($event);
+	};
+	
+	//Cleanup the popover when we're done with it!
+	$scope.$on('$destroy', function() {
+		$scope.popover.remove();
+	});
 	
 	$scope.query = function() {
 		var mobileService = $rootScope.client;
@@ -121,6 +138,7 @@ angular.module('starter.controllers', [])
 			$scope.$apply(function() {
 				$scope.events = results;
 			});
+			$scope.$broadcast('scroll.refreshComplete');
 		}, function(err) {
 			console.log("Error: " + err);
 		});
@@ -154,4 +172,8 @@ angular.module('starter.controllers', [])
 		});
 		
 	};
-});
+})
+
+.controller('PlusButtonCtrl', ['$scope', function($scope) {
+	console.log('hello');
+}]);

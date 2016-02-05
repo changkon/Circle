@@ -10,4 +10,11 @@
 			controller: 'NavCtrl'
 		};
 	});
+	
+	app.directive('circlePlusButton', function() {
+		return {
+			restrict: 'C',
+			templateUrl: '../templates/plus-button.html'
+		}
+	});
 })();
