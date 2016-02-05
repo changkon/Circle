@@ -16,6 +16,7 @@ using Microsoft.Azure.Mobile.Server.Config;
 using System.Security.Claims;
 using System.Data.Entity.Validation;
 using System.Text;
+using circleappService.Filter;
 
 namespace circleappService.Controllers
 {
@@ -23,7 +24,7 @@ namespace circleappService.Controllers
 #if Test
     
 #else
-    [Authorize]
+    [CustomAuthorizeAttribute]
 #endif
     [MobileAppController]
     public class LogoutController : ApiController
@@ -92,7 +93,7 @@ namespace circleappService.Controllers
         {
             // Unix timestamp is seconds past epoch
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp);
             return dtDateTime;
         }
 
