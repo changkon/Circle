@@ -67,6 +67,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
+  .state('tab.invite', {
+      url: '/dash/invite',
+      views: {
+        'tab-dash': {
+          templateUrl: 'templates/invite.html',
+          controller: 'InviteCtrl'
+        }
+      }
+    })
 
   .state('tab.chats', {
       url: '/chats',
