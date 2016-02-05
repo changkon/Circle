@@ -20,59 +20,72 @@ using System.Text;
 namespace circleappService.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+#if Test
+    
+#else
+    [Authorize]
+#endif
     [MobileAppController]
     public class LogoutController : ApiController
     {
         private circleappContext db = new circleappContext();
 
-        public string Get()
-        {
-            return DateTime.Now.ToString(); ;
-        }
+        //testing compare token code
 
         // POST: api/Logout
-        public IHttpActionResult PostBlacklistToken(BlacklistToken token)
+        public IHttpActionResult PostBlacklistToken(HttpRequestMessage request)
         {
-            if (!ModelState.IsValid)
+            
+            if (!request.Headers.Contains("x-zumo-auth"))
             {
-                return BadRequest(ModelState);
+                return Content(System.Net.HttpStatusCode.BadRequest, "cant find header");
             }
-
-            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-            JwtSecurityToken newToken = new JwtSecurityToken(token.token);
-            foreach (Claim claim in newToken.Claims)
+            else
             {
-                if (claim.Type == "exp") {
-                    
-                    token.expireTime = UnixTimeStampToDateTime(Convert.ToDouble(claim.Value));
-                    token.Id = Guid.NewGuid().ToString();
-                    db.BlackLists.Add(token);
-                }
-            }
-            JwtPayload result = newToken.Payload;
-
-
-            StringBuilder builder = new StringBuilder();
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-            }
-            catch (DbEntityValidationException e)
-            {
-                foreach (var eve in e.EntityValidationErrors)
+                BlacklistToken token = new BlacklistToken();
+                token.token = request.Headers.GetValues("x-zumo-auth").FirstOrDefault();
+                if (!ModelState.IsValid)
                 {
-                    foreach (var ve in eve.ValidationErrors)
+                    return BadRequest(ModelState);
+                }
+
+                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+                JwtSecurityToken newToken = new JwtSecurityToken(token.token);
+                foreach (Claim claim in newToken.Claims)
+                {
+                    if (claim.Type == "exp")
                     {
-                        builder.AppendLine("Property: " + ve.PropertyName + " Error: " + ve.ErrorMessage);
+
+                        token.expireTime = UnixTimeStampToDateTime(Convert.ToDouble(claim.Value));
+                        token.Id = Guid.NewGuid().ToString();
+                        db.BlackLists.Add(token);
                     }
                 }
-                return Content(System.Net.HttpStatusCode.Accepted, builder.ToString());
-            }
+                JwtPayload result = newToken.Payload;
 
-            return Content(System.Net.HttpStatusCode.Accepted, token.expireTime);
+
+                StringBuilder builder = new StringBuilder();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateException)
+                {
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            builder.AppendLine("Property: " + ve.PropertyName + " Error: " + ve.ErrorMessage);
+                        }
+                    }
+                    return Content(System.Net.HttpStatusCode.Accepted, builder.ToString());
+                }
+
+                return Content(System.Net.HttpStatusCode.Accepted, token.expireTime);
+            }
         }
 
         public  DateTime UnixTimeStampToDateTime(double unixTimeStamp)
@@ -82,6 +95,8 @@ namespace circleappService.Controllers
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
         }
+
+        
 
     }
 }

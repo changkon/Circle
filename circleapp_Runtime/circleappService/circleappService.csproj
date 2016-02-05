@@ -212,6 +212,7 @@
     <Compile Include="DataObjects\LoginChallenge.cs" />
     <Compile Include="DataObjects\TodoItem.cs" />
     <Compile Include="DataObjects\User.cs" />
+    <Compile Include="Filter\CustomAuthorizeAttribute.cs" />
     <Compile Include="Migrations\201601300820037_AddUser.cs" />
     <Compile Include="Migrations\201601300820037_AddUser.Designer.cs">
       <DependentUpon>201601300820037_AddUser.cs</DependentUpon>
