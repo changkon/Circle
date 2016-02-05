@@ -87,6 +87,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 		  }
 	  }
 	  
+  })
+  .state('event', {
+      url: '/event/create',
+      templateUrl: 'templates/event-create.html',
+      controller: 'EventCreateCtrl'
   });
 
   // if none of the above states are matched, use this as the fallback

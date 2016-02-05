@@ -110,8 +110,7 @@ angular.module('starter.controllers', ['ionic'])
   };
 })
 
-.controller('EventCtrl', function($scope, $http, $rootScope, $ionicPopover) {
-	$scope.event = {};
+.controller('EventCtrl', function($scope, $rootScope, $ionicPopover) {
 	$scope.events = [];
 
 	$ionicPopover.fromTemplateUrl('templates/plus-button-event-popover.html', {
@@ -147,8 +146,12 @@ angular.module('starter.controllers', ['ionic'])
 	$scope.$on('$ionicView.enter', function(e) {
 		$scope.query();
 	});
+})
+
+.controller('EventCreateCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+    $scope.event = {};
 	
-	$scope.create = function() {
+    $scope.create = function() {
 		console.log("Creating event with details:");
 		console.log("Title - " + $scope.event.title);
 		console.log("Description - " + $scope.event.description);
@@ -172,8 +175,4 @@ angular.module('starter.controllers', ['ionic'])
 		});
 		
 	};
-})
-
-.controller('PlusButtonCtrl', ['$scope', function($scope) {
-	console.log('hello');
 }]);
