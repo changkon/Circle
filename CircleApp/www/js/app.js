@@ -49,33 +49,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
-  .state('tab.import', {
-      url: '/dash/import',
-      views: {
-        'tab-dash': {
-          templateUrl: 'templates/import.html',
-          controller: 'ImportCtrl'
-        }
-      }
-    })
-  .state('tab.search', {
-      url: '/dash/search',
-      views: {
-        'tab-dash': {
-          templateUrl: 'templates/search.html',
-          controller: 'SearchCtrl'
-        }
-      }
-    })
-  .state('tab.invite', {
-      url: '/dash/invite',
-      views: {
-        'tab-dash': {
-          templateUrl: 'templates/invite.html',
-          controller: 'InviteCtrl'
-        }
-      }
-    })
 
   .state('tab.chats', {
       url: '/chats',
@@ -109,12 +82,42 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 	  url: '/event',
 	  views: {
 		  'tab-event': {
-			  templateUrl: 'templates/tab-event.html',
+			  templateUrl: 'templates/event-home.html',
 			  controller: 'EventCtrl'
 		  }
 	  }
-	  
-  });
+
+  })
+  .state('event', {
+      url: '/event/create',
+      templateUrl: 'templates/event-create.html',
+      controller: 'EventCreateCtrl'
+  })
+
+  .state('tab.friends', {
+    url: '/friends',
+    views: {
+      'tab-friends': {
+        templateUrl: 'templates/friends-home.html',
+        controller: 'FriendsCtrl'
+      }
+    }
+  })
+  .state('importfriends', {
+      url: '/friends/importfriends',
+      templateUrl: 'templates/import.html',
+      controller: 'ImportCtrl'
+  })
+  .state('searchfriends', {
+      url: '/friends/searchfriends',
+      templateUrl: 'templates/search.html',
+      controller: 'SearchCtrl'
+  })
+  .state('invitefriends', {
+      url: '/friends/invitefriends',
+      templateUrl: 'templates/invite.html',
+      controller: 'InviteCtrl'
+  })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/dash');

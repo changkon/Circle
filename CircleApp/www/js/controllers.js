@@ -1,6 +1,12 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ionic'])
 
-.controller('DashCtrl', function($scope, $http, $rootScope, $ionicPopup) {
+.controller('NavCtrl', ['$scope', 'circle', function($scope, circle) {
+	$scope.circle = {
+		title: circle.title
+	};
+}])
+
+.controller('DashCtrl', function($scope, $http, $rootScope) {
    $scope.data = {};
    $scope.user = {};
    $scope.showRegister = false;
@@ -19,7 +25,7 @@ angular.module('starter.controllers', [])
             console.log(response.token);
             $rootScope.userId = response.id;
             $rootScope.userName= $scope.data.username;
-			$rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+						$rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
                request.headers['x-zumo-auth'] = response.token;
                next(request, callback);
             });
@@ -38,8 +44,8 @@ angular.module('starter.controllers', [])
     Eventually it should be changed to use push notifications rather than client request
 */
     function findFriendRequests(userId) {
-        friendsTable = $rootScope.client.getTable('friend');        
-        var query = friendsTable.where(function(userId) { 
+        friendsTable = $rootScope.client.getTable('friend');
+        var query = friendsTable.where(function(userId) {
             return (this.userId == userId || this.friendUserId == userId) && this.status == 0 && this.actionUserId != userId;
         }, userId);
         query.read().then(function(friendRequests) {
@@ -53,7 +59,7 @@ angular.module('starter.controllers', [])
             }
         }, function (error) {
             console.log("failed to find friend requests" + error)
-        }); 
+        });
     }
 
 /*
@@ -62,7 +68,7 @@ angular.module('starter.controllers', [])
     After confirming the friendship, this method updates the status of the friend relationship to 1 (accepted)
 */
     function alertFriendRequestById(id, friendsTable, friendRequest) {
-        userTable = $rootScope.client.getTable('user');        
+        userTable = $rootScope.client.getTable('user');
         var query = userTable.where(function(id) { return this.id == id}, id);
         query.read().then(function(users) {
             console.log("alerting: " + id + " - " + users[0].name)
@@ -77,21 +83,21 @@ angular.module('starter.controllers', [])
             });
         }, function (error) {
             console.log("couldn't find friends name for that id: " + error)
-        }); 
+        });
     }
-    
+
     $scope.toggleRegister = function() {
         $scope.showRegister = !$scope.showRegister;
         $scope.showLogin = !$scope.showLogin;
     }
-    
+
     $scope.register = function() {
-        console.log("REGSITER user: " + $scope.user.email + " - PW: " + $scope.user.password + 
+        console.log("REGSITER user: " + $scope.user.email + " - PW: " + $scope.user.password +
         " PHONE NUMBER " + $scope.user.phoneNumber);
         $http({
             method: 'POST',
             url: "https://circleapp.azurewebsites.net/tables/User",
-            data: {email: $scope.user.email, phoneNumber: $scope.user.phoneNumber.replace("+",""), 
+            data: {email: $scope.user.email, phoneNumber: $scope.user.phoneNumber.replace("+",""),
             password: $scope.user.password, gender: $scope.user.gender,
             name: $scope.user.name, age: $scope.user.age},
             headers: {'Content-Type': 'application/json'}
@@ -224,7 +230,7 @@ angular.module('starter.controllers', [])
                     var missingNumbers = response.result.missingNumbers;
                     var missingContacts = contacts.filter(function(contact) {
                         if (contact.phoneNumbers == null) { return false; }
-                        var num = contact.phoneNumbers[0].value.replace("+","") 
+                        var num = contact.phoneNumbers[0].value.replace("+","")
                         return missingNumbers.indexOf(num) >= 0;
                     });
                     $scope.contacts = missingContacts;
@@ -263,7 +269,7 @@ angular.module('starter.controllers', [])
 })
 
 /*
-    This controller is used for searching for friends and adding them
+    This controller is used for Searching for friends and adding them
 */
 .controller('SearchCtrl', function($scope, $rootScope, $ionicPopup) {
     $scope.friend = {};
@@ -341,7 +347,7 @@ angular.module('starter.controllers', [])
           }
         }, function (error) {
             Chats.get(0).lastText = "fail-" + error
-        }); 
+        });
      } catch (err) {
         Chats.get(0).lastText = "fail"
      }
@@ -363,20 +369,104 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('EventCtrl', function($scope, $http, $rootScope) {
-	$scope.event = {};
-	
-	$scope.create = function() {
+.controller('FriendsCtrl', function($scope, $rootScope, $ionicPopover) {
+	$scope.friends = [];
+
+	$ionicPopover.fromTemplateUrl('templates/plus-button-friends-popover.html', {
+		scope: $scope
+	}).then(function(popover) {
+		$scope.popover = popover;
+		console.log(popover);
+	});
+
+	// plus button click
+	$scope.plusActivate = function($event) {
+		$scope.popover.show($event);
+	};
+
+    $scope.closePopover = function() {
+        $scope.popover.hide();
+    };
+
+	//Cleanup the popover when we're done with it!
+	$scope.$on('$destroy', function() {
+		$scope.popover.remove();
+	});
+
+	$scope.query = function() {
+		var mobileService = $rootScope.client;
+		var eventsTable = mobileService.getTable('friends');
+		eventsTable.read().done(function(results) {
+			$scope.$apply(function() {
+				$scope.friends = results;
+			});
+			$scope.$broadcast('scroll.refreshComplete');
+		}, function(err) {
+			console.log("Error: " + err);
+		});
+	};
+
+	$scope.$on('$ionicView.enter', function(e) {
+		$scope.query();
+	});
+})
+
+.controller('EventCtrl', function($scope, $rootScope, $ionicPopover) {
+	$scope.events = [];
+
+	$ionicPopover.fromTemplateUrl('templates/plus-button-event-popover.html', {
+		scope: $scope
+	}).then(function(popover) {
+		$scope.popover = popover;
+		console.log(popover);
+	});
+
+	// plus button click
+	$scope.plusActivate = function($event) {
+		$scope.popover.show($event);
+	};
+
+    $scope.closePopover = function() {
+        $scope.popover.hide();
+    };
+
+	//Cleanup the popover when we're done with it!
+	$scope.$on('$destroy', function() {
+		$scope.popover.remove();
+	});
+
+	$scope.query = function() {
+		var mobileService = $rootScope.client;
+		var eventsTable = mobileService.getTable('event');
+		eventsTable.read().done(function(results) {
+			$scope.$apply(function() {
+				$scope.events = results;
+			});
+			$scope.$broadcast('scroll.refreshComplete');
+		}, function(err) {
+			console.log("Error: " + err);
+		});
+	};
+
+	$scope.$on('$ionicView.enter', function(e) {
+		$scope.query();
+	});
+})
+
+.controller('EventCreateCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+    $scope.event = {};
+
+    $scope.create = function() {
 		console.log("Creating event with details:");
 		console.log("Title - " + $scope.event.title);
 		console.log("Description - " + $scope.event.description);
 		console.log("Date - " + $scope.event.date);
 		console.log("Location - " + $scope.event.location);
-		
+
 		// retrieve the mobile service instance
 		var mobileService = $rootScope.client;
 		var eventsTable = mobileService.getTable('event');
-		
+
 		eventsTable.insert({
 			title: $scope.event.title,
 			description: $scope.event.description,
@@ -388,6 +478,6 @@ angular.module('starter.controllers', [])
 			console.log("error");
 			console.log(err);
 		});
-		
+
 	};
-});
+}]);

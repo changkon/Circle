@@ -1,0 +1,42 @@
+.circle-plus-button
+{
+	position: fixed;
+	right: 7%;
+	top: 82%;
+	z-index: 100 !important;
+	
+	button
+	{
+		height: 55px;
+		width: 55px;
+		border-radius: 100%;
+		color: white !important;
+		background-color: $primary-color;
+	}
+	
+	button:active
+	{
+		background-color: $secondary-color;
+	}
+}
+
+.plus-popover
+{
+	height: auto !important;
+	margin-top: 0% !important;
+	
+	ion-header-bar
+	{
+		position: relative;
+	}
+	
+	ion-content
+	{
+		position: relative;
+		top: 0;
+	}
+	ion-item
+	{
+		margin: 0;
+	}
+}
