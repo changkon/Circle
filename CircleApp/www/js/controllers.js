@@ -1,5 +1,10 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ionic'])
 
+.controller('NavCtrl', ['$scope', 'circle', function($scope, circle) {
+	$scope.circle = {
+		title: circle.title
+	};
+}])
 
 .controller('DashCtrl', function($scope, $http, $rootScope) {
    $scope.data = {};
@@ -11,14 +16,14 @@ angular.module('starter.controllers', [])
         console.log("LOGIN user: " + $scope.data.username + " - PW: " + $scope.data.password);
         $http({
             method: 'POST',
-            url: "https://circleapp.azurewebsites.net/api/auth",
+            url: "http://192.168.1.69:50770/api/auth",
             data: {username: $scope.data.username, password: $scope.data.password},
             headers: {'Content-Type': 'application/json'}
         })
         .success(function(response) {
             // handle success things
             console.log(response.token);
-			$rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+			$rootScope.client = new WindowsAzure.MobileServiceClient('http://192.168.1.69:50770').withFilter(function (request, next, callback) {
                request.headers['x-zumo-auth'] = response.token;
                next(request, callback);
             });
@@ -40,7 +45,7 @@ angular.module('starter.controllers', [])
         " PHONE NUMBER " + $scope.user.phoneNumber);
         $http({
             method: 'POST',
-            url: "https://circleapp.azurewebsites.net/tables/User",
+            url: "http://192.168.1.69:50770/tables/User",
             data: {email: $scope.user.email, phoneNumber: $scope.user.phoneNumber, 
             password: $scope.user.password, gender: $scope.user.gender,
             name: $scope.user.name, age: $scope.user.age},
@@ -105,10 +110,52 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('EventCtrl', function($scope, $http, $rootScope) {
-	$scope.event = {};
+.controller('EventCtrl', function($scope, $rootScope, $ionicPopover) {
+	$scope.events = [];
+
+	$ionicPopover.fromTemplateUrl('templates/plus-button-event-popover.html', {
+		scope: $scope
+	}).then(function(popover) {
+		$scope.popover = popover;
+		console.log(popover);
+	});
 	
-	$scope.create = function() {
+	// plus button click
+	$scope.plusActivate = function($event) {
+		$scope.popover.show($event);
+	};
+	
+    $scope.closePopover = function() {
+        $scope.popover.hide();
+    };
+    
+	//Cleanup the popover when we're done with it!
+	$scope.$on('$destroy', function() {
+		$scope.popover.remove();
+	});
+	
+	$scope.query = function() {
+		var mobileService = $rootScope.client;
+		var eventsTable = mobileService.getTable('event');
+		eventsTable.read().done(function(results) {
+			$scope.$apply(function() {
+				$scope.events = results;
+			});
+			$scope.$broadcast('scroll.refreshComplete');
+		}, function(err) {
+			console.log("Error: " + err);
+		});
+	};
+	
+	$scope.$on('$ionicView.enter', function(e) {
+		$scope.query();
+	});
+})
+
+.controller('EventCreateCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
+    $scope.event = {};
+	
+    $scope.create = function() {
 		console.log("Creating event with details:");
 		console.log("Title - " + $scope.event.title);
 		console.log("Description - " + $scope.event.description);
@@ -132,4 +179,4 @@ angular.module('starter.controllers', [])
 		});
 		
 	};
-});
+}]);

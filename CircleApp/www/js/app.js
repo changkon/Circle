@@ -82,11 +82,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 	  url: '/event',
 	  views: {
 		  'tab-event': {
-			  templateUrl: 'templates/tab-event.html',
+			  templateUrl: 'templates/event-home.html',
 			  controller: 'EventCtrl'
 		  }
 	  }
 	  
+  })
+  .state('event', {
+      url: '/event/create',
+      templateUrl: 'templates/event-create.html',
+      controller: 'EventCreateCtrl'
   });
 
   // if none of the above states are matched, use this as the fallback

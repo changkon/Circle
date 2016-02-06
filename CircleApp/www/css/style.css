@@ -1,1 +1,34 @@
-/* Empty. Add your own CSS if you like */
+#circle-nav {
+  position: fixed; }
+  #circle-nav .title {
+    text-align: left; }
+
+.circle-plus-button {
+  position: fixed;
+  right: 7%;
+  top: 82%;
+  z-index: 100 !important; }
+  .circle-plus-button button {
+    height: 55px;
+    width: 55px;
+    border-radius: 100%;
+    color: white !important;
+    background-color: #886aea; }
+  .circle-plus-button button:active {
+    background-color: #7a5fd2; }
+
+.plus-popover {
+  height: auto !important;
+  margin-top: 0% !important; }
+  .plus-popover ion-header-bar {
+    position: relative; }
+  .plus-popover ion-content {
+    position: relative;
+    top: 0; }
+  .plus-popover ion-item {
+    margin: 0; }
+
+.event-item {
+  padding: 2%; }
+
+/*# sourceMappingURL=style.css.map */
