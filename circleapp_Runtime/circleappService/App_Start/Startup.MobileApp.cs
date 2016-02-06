@@ -11,6 +11,7 @@ using circleappService.Models;
 using Owin;
 using System.Data.Entity.Migrations;
 using circleappService.Migrations;
+using circleappService.Filter;
 
 namespace circleappService
 {

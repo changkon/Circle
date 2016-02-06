@@ -118,6 +118,7 @@
       <HintPath>..\packages\Swashbuckle.Core.5.0.0\lib\net40\Swashbuckle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.Cors">
@@ -201,16 +202,19 @@
     <Compile Include="App_Start\Startup.MobileApp.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\EventController.cs" />
+    <Compile Include="Controllers\LogoutController.cs" />
     <Compile Include="Controllers\FriendController.cs" />
     <Compile Include="Controllers\ImportFriendsController.cs" />
     <Compile Include="Controllers\TodoItemController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="DataObjects\BlacklistToken.cs" />
     <Compile Include="DataObjects\Event.cs" />
     <Compile Include="DataObjects\LoginChallenge.cs" />
     <Compile Include="DataObjects\Friend.cs" />
     <Compile Include="DataObjects\TodoItem.cs" />
     <Compile Include="DataObjects\User.cs" />
+    <Compile Include="Filter\CustomAuthorizeAttribute.cs" />
     <Compile Include="Migrations\201601300820037_AddUser.cs" />
     <Compile Include="Migrations\201601300820037_AddUser.Designer.cs">
       <DependentUpon>201601300820037_AddUser.cs</DependentUpon>
@@ -227,6 +231,14 @@
     <Compile Include="Migrations\201602010716525_RequiredValueEvent.Designer.cs">
       <DependentUpon>201602010716525_RequiredValueEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602020812191_AddBlackListToken.cs" />
+    <Compile Include="Migrations\201602020812191_AddBlackListToken.Designer.cs">
+      <DependentUpon>201602020812191_AddBlackListToken.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602020950155_changeBListToken.cs" />
+    <Compile Include="Migrations\201602020950155_changeBListToken.Designer.cs">
+      <DependentUpon>201602020950155_changeBListToken.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201602010947061_Friend.cs" />
     <Compile Include="Migrations\201602010947061_Friend.Designer.cs">
       <DependentUpon>201602010947061_Friend.cs</DependentUpon>
@@ -242,6 +254,10 @@
     <Compile Include="Migrations\201602011043178_Friend3.cs" />
     <Compile Include="Migrations\201602011043178_Friend3.Designer.cs">
       <DependentUpon>201602011043178_Friend3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602060348195_ignoreChange.cs" />
+    <Compile Include="Migrations\201602060348195_ignoreChange.Designer.cs">
+      <DependentUpon>201602060348195_ignoreChange.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\circleappContext.cs" />
@@ -283,6 +299,12 @@
     <EmbeddedResource Include="Migrations\201602010716525_RequiredValueEvent.resx">
       <DependentUpon>201602010716525_RequiredValueEvent.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602020812191_AddBlackListToken.resx">
+      <DependentUpon>201602020812191_AddBlackListToken.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602020950155_changeBListToken.resx">
+      <DependentUpon>201602020950155_changeBListToken.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602010947061_Friend.resx">
       <DependentUpon>201602010947061_Friend.cs</DependentUpon>
     </EmbeddedResource>
@@ -294,6 +316,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602011043178_Friend3.resx">
       <DependentUpon>201602011043178_Friend3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602060348195_ignoreChange.resx">
+      <DependentUpon>201602060348195_ignoreChange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
