@@ -264,6 +264,12 @@ angular.module('starter.controllers', ['ionic'])
             //         console.log('Error');
             //     });
         }
+				if (selected.length > 0) {
+					$ionicPopup.alert({
+						 title: 'Invitation Sent',
+						 content: "To " + selected.length + " friends"
+				 })
+				}
     }
 
 })
@@ -394,16 +400,19 @@ angular.module('starter.controllers', ['ionic'])
 	});
 
 	$scope.query = function() {
+		$scope.friends = [];
 		var mobileService = $rootScope.client;
-		var eventsTable = mobileService.getTable('friends');
-		eventsTable.read().done(function(results) {
-			$scope.$apply(function() {
-				$scope.friends = results;
-			});
-			$scope.$broadcast('scroll.refreshComplete');
-		}, function(err) {
-			console.log("Error: " + err);
-		});
+		$rootScope.client.invokeApi("importfriends/GetAllFriends?userId=" + $rootScope.userId, { method: "GET" }).done(function(response) {
+				validOnes = response.result.users;
+				for (var i = 0; i < validOnes.length; i++) {
+						var friend = validOnes[i];
+						$scope.friends.push(friend);
+				}
+				 $scope.$apply();
+				 $scope.$broadcast('scroll.refreshComplete');
+		}, function (error) {
+				console.log("fail querying importfriends/getallfriends: " + error);
+		})
 	};
 
 	$scope.$on('$ionicView.enter', function(e) {
