@@ -39,6 +39,23 @@ namespace circleappService.Models
                 .Property(e => e.Description)
                 .IsRequired();
 
+            // Configure Invitation object properties
+            modelBuilder.Entity<Invitation>()
+                .Property(i => i.Status)
+                .IsRequired();
+
+            modelBuilder.Entity<Invitation>()
+                .Property(i => i.UserId)
+                .HasColumnType("NVARCHAR")
+                .HasMaxLength(128)
+                .IsRequired();
+
+            modelBuilder.Entity<Invitation>()
+                .Property(i => i.EventId)
+                .HasColumnType("NVARCHAR")
+                .HasMaxLength(128)
+                .IsRequired();
+
             modelBuilder.Entity<Friend>().Property(e => e.UserId).HasColumnType("NVARCHAR").HasMaxLength(128).IsRequired();
             modelBuilder.Entity<Friend>().Property(e => e.FriendUserId).HasColumnType("NVARCHAR").HasMaxLength(128).IsRequired();
             modelBuilder.Entity<Friend>().Property(e => e.ActionUserId).HasColumnType("NVARCHAR").HasMaxLength(128).IsRequired();
@@ -49,6 +66,7 @@ namespace circleappService.Models
         public DbSet<User> Users { get; set; }
         public DbSet<BlacklistToken> BlackLists { get; set; }
         public DbSet<Friend> Friends { get; set; }
+        public DbSet<Invitation> Invitations { get; set; }
     }
 
 }
