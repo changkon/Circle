@@ -15,9 +15,9 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <RestorePackages>true</RestorePackages>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -200,16 +200,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\Startup.MobileApp.cs" />
-    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\LogoutController.cs" />
+    <Compile Include="Controllers\FriendController.cs" />
+    <Compile Include="Controllers\ImportFriendsController.cs" />
     <Compile Include="Controllers\TodoItemController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataObjects\BlacklistToken.cs" />
     <Compile Include="DataObjects\Event.cs" />
     <Compile Include="DataObjects\LoginChallenge.cs" />
+    <Compile Include="DataObjects\Friend.cs" />
     <Compile Include="DataObjects\TodoItem.cs" />
     <Compile Include="DataObjects\User.cs" />
     <Compile Include="Filter\CustomAuthorizeAttribute.cs" />
@@ -236,6 +238,26 @@
     <Compile Include="Migrations\201602020950155_changeBListToken.cs" />
     <Compile Include="Migrations\201602020950155_changeBListToken.Designer.cs">
       <DependentUpon>201602020950155_changeBListToken.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602010947061_Friend.cs" />
+    <Compile Include="Migrations\201602010947061_Friend.Designer.cs">
+      <DependentUpon>201602010947061_Friend.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602011011346_Friend1.cs" />
+    <Compile Include="Migrations\201602011011346_Friend1.Designer.cs">
+      <DependentUpon>201602011011346_Friend1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602011039163_Friend2.cs" />
+    <Compile Include="Migrations\201602011039163_Friend2.Designer.cs">
+      <DependentUpon>201602011039163_Friend2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602011043178_Friend3.cs" />
+    <Compile Include="Migrations\201602011043178_Friend3.Designer.cs">
+      <DependentUpon>201602011043178_Friend3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602060348195_ignoreChange.cs" />
+    <Compile Include="Migrations\201602060348195_ignoreChange.Designer.cs">
+      <DependentUpon>201602060348195_ignoreChange.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\circleappContext.cs" />
@@ -282,6 +304,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602020950155_changeBListToken.resx">
       <DependentUpon>201602020950155_changeBListToken.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602010947061_Friend.resx">
+      <DependentUpon>201602010947061_Friend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602011011346_Friend1.resx">
+      <DependentUpon>201602011011346_Friend1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602011039163_Friend2.resx">
+      <DependentUpon>201602011039163_Friend2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602011043178_Friend3.resx">
+      <DependentUpon>201602011043178_Friend3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602060348195_ignoreChange.resx">
+      <DependentUpon>201602060348195_ignoreChange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

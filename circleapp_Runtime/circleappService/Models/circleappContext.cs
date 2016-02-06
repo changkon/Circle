@@ -38,11 +38,17 @@ namespace circleappService.Models
             modelBuilder.Entity<Event>()
                 .Property(e => e.Description)
                 .IsRequired();
+
+            modelBuilder.Entity<Friend>().Property(e => e.UserId).HasColumnType("NVARCHAR").HasMaxLength(128).IsRequired();
+            modelBuilder.Entity<Friend>().Property(e => e.FriendUserId).HasColumnType("NVARCHAR").HasMaxLength(128).IsRequired();
+            modelBuilder.Entity<Friend>().Property(e => e.ActionUserId).HasColumnType("NVARCHAR").HasMaxLength(128).IsRequired();
+            modelBuilder.Entity<Friend>().Property(e => e.Status).IsRequired();
         }
 
         public DbSet<Event> Events { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<BlacklistToken> BlackLists { get; set; }
+        public DbSet<Friend> Friends { get; set; }
     }
 
 }
