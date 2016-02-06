@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -62,7 +62,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .state('tab.chat-detail', {
       url: '/chats/:chatId',
       views: {
-        'tab-items': {
+        'tab-chats': {
           templateUrl: 'templates/chat-detail.html',
           controller: 'ChatDetailCtrl'
         }
@@ -86,13 +86,38 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 			  controller: 'EventCtrl'
 		  }
 	  }
-	  
+
   })
   .state('event', {
       url: '/event/create',
       templateUrl: 'templates/event-create.html',
       controller: 'EventCreateCtrl'
-  });
+  })
+
+  .state('tab.friends', {
+    url: '/friends',
+    views: {
+      'tab-friends': {
+        templateUrl: 'templates/friends-home.html',
+        controller: 'FriendsCtrl'
+      }
+    }
+  })
+  .state('importfriends', {
+      url: '/friends/importfriends',
+      templateUrl: 'templates/import.html',
+      controller: 'ImportCtrl'
+  })
+  .state('searchfriends', {
+      url: '/friends/searchfriends',
+      templateUrl: 'templates/search.html',
+      controller: 'SearchCtrl'
+  })
+  .state('invitefriends', {
+      url: '/friends/invitefriends',
+      templateUrl: 'templates/invite.html',
+      controller: 'InviteCtrl'
+  })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/dash');
