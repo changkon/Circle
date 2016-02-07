@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
    $scope.user = {};
    $scope.showRegister = false;
    $scope.showLogin = true;
- 
+
     $scope.login = function() {
         console.log("LOGIN user: " + $scope.data.username + " - PW: " + $scope.data.password);
         $http({
@@ -18,7 +18,7 @@ angular.module('starter.controllers', [])
         .success(function(response) {
             // handle success things
             console.log(response.token);
-			$rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+			         $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
                request.headers['x-zumo-auth'] = response.token;
                next(request, callback);
             });
@@ -28,20 +28,20 @@ angular.module('starter.controllers', [])
             console.log("Error occurred - " + status);
         })
     }
-    
+
     $scope.toggleRegister = function() {
         $scope.showRegister = !$scope.showRegister;
         $scope.showLogin = !$scope.showLogin;
     }
-    
-    
+
+
     $scope.register = function() {
-        console.log("REGSITER user: " + $scope.user.email + " - PW: " + $scope.user.password + 
+        console.log("REGSITER user: " + $scope.user.email + " - PW: " + $scope.user.password +
         " PHONE NUMBER " + $scope.user.phoneNumber);
         $http({
             method: 'POST',
             url: "https://circleapp.azurewebsites.net/tables/User",
-            data: {email: $scope.user.email, phoneNumber: $scope.user.phoneNumber, 
+            data: {email: $scope.user.email, phoneNumber: $scope.user.phoneNumber,
             password: $scope.user.password, gender: $scope.user.gender,
             name: $scope.user.name, age: $scope.user.age},
             headers: {'Content-Type': 'application/json'}
@@ -54,10 +54,10 @@ angular.module('starter.controllers', [])
             // handle error things
             console.log("Error occurred - " + status);
         })
-        
+
     }
-    
-    
+
+
 })
 
 .controller('ChatsCtrl', function($scope, Chats, $rootScope) {
@@ -107,18 +107,18 @@ angular.module('starter.controllers', [])
 
 .controller('EventCtrl', function($scope, $http, $rootScope) {
 	$scope.event = {};
-	
+
 	$scope.create = function() {
 		console.log("Creating event with details:");
 		console.log("Title - " + $scope.event.title);
 		console.log("Description - " + $scope.event.description);
 		console.log("Date - " + $scope.event.date);
 		console.log("Location - " + $scope.event.location);
-		
+
 		// retrieve the mobile service instance
 		var mobileService = $rootScope.client;
 		var eventsTable = mobileService.getTable('event');
-		
+
 		eventsTable.insert({
 			title: $scope.event.title,
 			description: $scope.event.description,
@@ -130,6 +130,6 @@ angular.module('starter.controllers', [])
 			console.log("error");
 			console.log(err);
 		});
-		
+
 	};
 });

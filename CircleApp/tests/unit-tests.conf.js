@@ -1,5 +1,5 @@
 // Karma configuration
-// Generated on Sat Feb 06 2016 09:48:12 GMT+1300 (New Zealand Daylight Time)
+// Generated on Sun Feb 07 2016 20:02:55 GMT+1300 (New Zealand Daylight Time)
 
 module.exports = function(config) {
   config.set({
@@ -15,7 +15,13 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      '../www/js/*.js'
+      '../www/lib/ionic/js/angular/angular.js',
+      '../bower_components/angular-mocks/angular-mocks.js',
+      '../www/js/*.js',
+      '../www/lib/ionic/js/ionic.js',
+      '../www/lib/ionic/js/ionic.bundle.js',
+      'unit-tests/**/*.js',
+      'http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.2.7.min.js'
     ],
 
 
