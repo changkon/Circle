@@ -412,13 +412,13 @@ angular.module('starter.controllers', ['ionic'])
 })
 
 .controller('EventCtrl', function($scope, $rootScope, $ionicPopover) {
-	$scope.events = [];
+	$scope.hosting = [];
+    $scope.attending = [];
 
 	$ionicPopover.fromTemplateUrl('templates/plus-button-event-popover.html', {
 		scope: $scope
 	}).then(function(popover) {
 		$scope.popover = popover;
-		console.log(popover);
 	});
 
 	// plus button click
@@ -435,43 +435,57 @@ angular.module('starter.controllers', ['ionic'])
 		$scope.popover.remove();
 	});
 
-	$scope.query = function() {
-		var mobileService = $rootScope.client;
-		var invitationsTable = mobileService.getTable('invitation');
+    var getEvents = function(status) {
+        var mobileService = $rootScope.client;
+        var invitationsTable = mobileService.getTable('invitation');
+        var eventsTable = mobileService.getTable('event');
         
-        // find all events participating from user id
-        invitationsTable.where({
-            UserId: $rootScope.userId
-        })
-        .select('EventId')
-        .read()
-        .done(function(results) {
+        var invitationPromise = invitationsTable.where({
+            UserId: $rootScope.userId,
+            Status: status
+        }).
+        select('EventId')
+        .read();
+        
+        var eventPromise = eventsTable.read(); 
+        
+        return Promise.all([invitationPromise, eventPromise]).then(function(values) {
+            var invitationResults = values[0];
+            var eventResults = values[1];
             
-            // find all events
-            var eventsTable = mobileService.getTable('event');
-            eventsTable.read().done(function (events) {
-                
-                // filter all events by events matching the participating
-                var matches = function(value) {
-                    for (var i = 0; i < results.length; i++) {
-                        if (results[i].eventId == value.id) {
-                            return true;
-                        }
+            var matchesCriteria = function(value) {
+                for (var i = 0; i < invitationResults.length; i++) {
+                    if (invitationResults[i].eventId == value.id) {
+                        return true;
                     }
-                    return false;
-                };
-                
-                var userEvents = events.filter(matches);
-                
-                $scope.$apply(function() {
-                    $scope.events = userEvents;
-                });
-                $scope.$broadcast('scroll.refreshComplete');
-            }, function(err) {
-                console.log("Error: " + err); 
+                }
+                return false;
+            };
+            
+            return eventResults.filter(matchesCriteria);
+        });
+    };
+
+	$scope.query = function() {
+		var hostedEvents = getEvents(0);
+        var attendingEvents = getEvents(1);
+        
+        hostedEvents.then(function(results) {
+            $scope.$apply(function() {
+                $scope.hosting = results;
             });
+            $scope.$broadcast('scroll.refreshComplete');
         }, function(err) {
-           console.log("Error: " + err); 
+            console.log("error occurred: " + err);
+        });
+        
+        attendingEvents.then(function(results) {
+            $scope.$apply(function() {
+                $scope.attending = results;
+            });
+            $scope.$broadcast('scroll.refreshComplete');
+        }, function(err) {
+            console.log("error occurred: " + err);
         });
 	};
 
