@@ -3,9 +3,12 @@
       <div class="optional">
           <h3 class="registration-text">Please Enter your detail (Optional)</h3>
           <label class="item item-input">
-            <input type="text" placeholder="Name">
+            <input type="text" placeholder="Name" ng-model="newUser.name">
           </label>
-          <label class="item item-input item-select">
+          <label class="item item-input">
+            <input type="number" placeholder="Age" ng-model="newUser.age">
+          </label>
+          <label class="item item-input item-select" ng-model="newUser.gender">
             <div class="input-label">Gender</div>
             <select>
               <option>Male</option>

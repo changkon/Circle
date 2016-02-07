@@ -5,12 +5,12 @@
 
     <div class="start-screen-login">
         <label class="item item-input">
-            <input type="text" placeholder="Email">
+            <input type="text" placeholder="Email" ng-model="user.email">
         </label>
         <label class="item item-input">
-             <input type="password" placeholder="Password">
+             <input type="password" placeholder="Password" ng-model="user.password">
         </label>
-        <button class="button button-block login-button">LOG IN</button>
+        <button class="button button-block login-button" ng-click="login()">LOG IN</button>
     </div>
 
     <div class="start-screen-text">
