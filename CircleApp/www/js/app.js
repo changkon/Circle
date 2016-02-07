@@ -118,8 +118,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       templateUrl: 'templates/invite.html',
       controller: 'InviteCtrl'
   })
-
+  .state('startscreen', {
+      url : '/start',
+      templateUrl: 'templates/start-screen.html',
+      controller: 'StartScreenCtrl'
+  })
+  .state('registration-require', {
+      url: '/registration_require',
+      templateUrl: 'templates/registration/add-require.html',
+      controller: 'RequireCtrl'
+  })
+  .state('registration-password', {
+      url: '/registration_password',
+      templateUrl: 'templates/registration/add-password.html',
+      controller: 'PasswordCtrl'
+  })
+  .state('registration-optional', {
+      url: '/registration_optional',
+      templateUrl: 'templates/registration/add-optional.html',
+      controller: 'OptionalCtrl'
+  })
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/start');
 
 });
