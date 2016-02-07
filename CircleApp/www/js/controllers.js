@@ -267,7 +267,7 @@ angular.module('starter.controllers', ['ionic'])
 				if (selected.length > 0) {
 					$ionicPopup.alert({
 						 title: 'Invitation Sent',
-						 content: "To " + selected.length + " friends"
+						 content: "Send to " + selected.length + " friends"
 				 })
 				}
     }
@@ -283,7 +283,8 @@ angular.module('starter.controllers', ['ionic'])
     $scope.search = function() {
         console.log("search");
         $rootScope.client.invokeApi("importfriends/GetFriendsByName?name=" + $scope.friend.name, { method: "GET" }).done(function(response) {
-            validOnes = response.result.users;
+					  $scope.friends = [];
+						validOnes = response.result.users;
             for (var i = 0; i < validOnes.length; i++) {
                 console.log(validOnes[i].phoneNumber + " number was found! " + validOnes[i].name);
                 var friend = validOnes[i];
