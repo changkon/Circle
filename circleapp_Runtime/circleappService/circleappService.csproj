@@ -202,6 +202,7 @@
     <Compile Include="App_Start\Startup.MobileApp.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\EventController.cs" />
+    <Compile Include="Controllers\InvitationController.cs" />
     <Compile Include="Controllers\LogoutController.cs" />
     <Compile Include="Controllers\FriendController.cs" />
     <Compile Include="Controllers\ImportFriendsController.cs" />

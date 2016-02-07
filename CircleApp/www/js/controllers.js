@@ -437,15 +437,42 @@ angular.module('starter.controllers', ['ionic'])
 
 	$scope.query = function() {
 		var mobileService = $rootScope.client;
-		var eventsTable = mobileService.getTable('event');
-		eventsTable.read().done(function(results) {
-			$scope.$apply(function() {
-				$scope.events = results;
-			});
-			$scope.$broadcast('scroll.refreshComplete');
-		}, function(err) {
-			console.log("Error: " + err);
-		});
+		var invitationsTable = mobileService.getTable('invitation');
+        
+        // find all events participating from user id
+        invitationsTable.where({
+            UserId: $rootScope.userId
+        })
+        .select('EventId')
+        .read()
+        .done(function(results) {
+            
+            // find all events
+            var eventsTable = mobileService.getTable('event');
+            eventsTable.read().done(function (events) {
+                
+                // filter all events by events matching the participating
+                var matches = function(value) {
+                    for (var i = 0; i < results.length; i++) {
+                        if (results[i].eventId == value.id) {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+                
+                var userEvents = events.filter(matches);
+                
+                $scope.$apply(function() {
+                    $scope.events = userEvents;
+                });
+                $scope.$broadcast('scroll.refreshComplete');
+            }, function(err) {
+                console.log("Error: " + err); 
+            });
+        }, function(err) {
+           console.log("Error: " + err); 
+        });
 	};
 
 	$scope.$on('$ionicView.enter', function(e) {
