@@ -7,6 +7,7 @@ using Microsoft.Azure.Mobile.Server;
 using circleappService.DataObjects;
 using circleappService.Models;
 using System.Web.Http.Cors;
+using circleappService.Filter;
 
 namespace circleappService.Controllers
 {

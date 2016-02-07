@@ -21,7 +21,8 @@ namespace circleappService.Controllers
         public HttpResponseMessage Post(LoginChallenge challenge)
         {
             // return error if password is not correct
-            if (!this.IsPasswordValid(challenge.Username, challenge.Password))
+            string userId = this.IsPasswordValid(challenge.Username, challenge.Password); 
+            if (userId == null)
             {
                 return this.Request.CreateUnauthorizedResponse();
             }
@@ -31,11 +32,11 @@ namespace circleappService.Controllers
             return this.Request.CreateResponse(HttpStatusCode.OK, new
             {
                 Token = token.RawData,
-                Username = challenge.Username
+                Id = userId
             });
         }
 
-        private bool IsPasswordValid(string username, string password)
+        private string IsPasswordValid(string username, string password)
         {
             // this is where we would do checks agains a database
             circleappContext context = new circleappContext();
@@ -46,11 +47,11 @@ namespace circleappService.Controllers
             {
                 if (Hashing.ValidatePassword(password, userAccount.Password))
                 {
-                    return true;
+                    return userAccount.Id;
                 }
             }
 
-            return false;
+            return null;
         }
 
     }

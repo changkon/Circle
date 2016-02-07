@@ -6,10 +6,11 @@ describe('Controllers', function(){
 
     beforeEach(inject(function($rootScope, $controller, $httpBackend) {
         scope = $rootScope.$new();
+        rootScope = $rootScope;
         httpMock = $httpBackend
         $rootScope.client = jasmine.createSpyObj('$state spy', ['go']);
-        httpMock.expectPOST("https://circleapp.azurewebsites.net/api/auth").respond(201, {token: "111"});
-        $controller('DashCtrl', { $scope: scope }); 
+        httpMock.expectPOST("https://circleapp.azurewebsites.net/api/auth").respond(201, {token: "111", id:"1"});
+        $controller('DashCtrl', { $scope: scope, $rootScope: rootScope });
     }));
 
     it('should have login tab showing', function(){
@@ -26,6 +27,9 @@ describe('Controllers', function(){
         scope.login()
         httpMock.flush();
 
-        expect(scope.showRegister).toEqual(false);
+        expect(rootScope.client.applicationUrl).toEqual('https://circleapp.azurewebsites.net');
+        expect(rootScope.client.applicationUrl).toEqual('https://circleapp.azurewebsites.net');
+        expect(rootScope.userId).toEqual("1");
+
     });
 });

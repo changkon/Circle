@@ -11,6 +11,7 @@ using circleappService.Models;
 using Owin;
 using System.Data.Entity.Migrations;
 using circleappService.Migrations;
+using circleappService.Filter;
 
 namespace circleappService
 {
@@ -28,7 +29,7 @@ namespace circleappService
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
 

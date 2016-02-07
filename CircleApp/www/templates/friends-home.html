@@ -1,0 +1,19 @@
+<ion-view name="Friends">
+	<ion-content>
+		<ion-refresher pulling-text="Pull to refresh..." on-refresh="query()"></ion-refresher>
+		<div class="item item-divider">Friends</div>
+		<ion-list>
+			<ion-item class="event-item" ng-repeat="friend in friends">
+				<div class="row">
+					<div class="col col-75">
+						<h3>{{friend.name}}</h3>
+						<p>{{friend.gender}}</h3>
+						<p>{{friend.age}}</p>
+					</div>
+				</div>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>
+<!-- Circle button -->
+<div class="circle-plus-button"></div>

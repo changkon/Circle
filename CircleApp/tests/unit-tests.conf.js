@@ -21,7 +21,7 @@ module.exports = function(config) {
       '../www/lib/ionic/js/ionic.js',
       '../www/lib/ionic/js/ionic.bundle.js',
       'unit-tests/**/*.js',
-      'http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.2.7.min.js'
+      '../plugins/cordova-plugin-ms-azure-mobile-apps/www/MobileServices.Web.js'
     ],
 
 

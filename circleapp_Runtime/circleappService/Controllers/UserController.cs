@@ -15,10 +15,6 @@ namespace circleappService.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [MobileAppController]
-#if Test
-#else
-    [Authorize]
-#endif
     public class UserController : TableController<User>
     {
         protected override void Initialize(HttpControllerContext controllerContext)
@@ -41,6 +37,16 @@ namespace circleappService.Controllers
                 Token = token.RawData,
                 Username = current.Email
             });
+        }
+
+        // GET tables/User
+        #if Test
+        #else
+            [Authorize]
+        #endif
+        public IQueryable<User> GetAllUsers()
+        {
+            return Query();
         }
 
     }
