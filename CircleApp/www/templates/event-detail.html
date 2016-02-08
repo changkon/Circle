@@ -15,18 +15,13 @@
 
                 <!-- Additional information -->
             <div class="item item-divider">Additional Information</div>
-            
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Date</span>
-                <input type="datetime-local" name="event-time" ng-model="event.date">
-            </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Location</span>
                 <input type="text" placeholder="Auckland" ng-model="event.location">
             </label>
         </div>
         <div class="padding">
-            <button class="button button-royal button-block" ng-click="create()">Create</button>
+            <button class="button button-royal button-block" ui-sref="eventInvite">Invite Friends</button>
         </div>
 	</ion-content>
 </ion-view>

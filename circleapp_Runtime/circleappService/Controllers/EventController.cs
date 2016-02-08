@@ -22,8 +22,8 @@ namespace circleappService.Controllers
     {
         protected override void Initialize(HttpControllerContext controllerContext)
         {
-            base.Initialize(controllerContext);
             circleappContext context = new circleappContext();
+            base.Initialize(controllerContext);
             DomainManager = new EntityDomainManager<Event>(context, Request);
         }
 
