@@ -31,6 +31,42 @@
 .event-item {
   padding: 2%; }
 
+.start-screen {
+    background-color: #7c60d2;
+}
+
+.start-screen-icon {
+    width: 100%;
+    height: auto;
+}
+
+.start-screen-icon img {
+    height: 50%;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30%;
+    margin-bottom: 10%;
+    display: block;
+}
+
+.login-button {
+    background-color: #8c74d8;
+}
+
+.start-screen-text {
+    color: white;
+    text-align: center;
+}
+
+.item.item-input {
+    background-color: transparent;
+}
+
+.registration-text {
+  text-align: center;
+}
+
 #scroll {
   height: calc(100% - 120px);;
 }
