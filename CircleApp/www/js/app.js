@@ -98,6 +98,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       templateUrl: 'templates/event-invite.html',
       controller: 'EventInviteCtrl'
   })
+  .state('eventDate', {
+      url: '/event/date',
+      templateUrl: 'templates/event-date.html',
+      controller: 'EventDateCtrl'
+  })
   .state('tab.friends', {
     url: '/friends',
     views: {

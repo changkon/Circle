@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ionic'])
+angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
 .controller('NavCtrl', ['$scope', 'circle', function($scope, circle) {
 	$scope.circle = {
@@ -411,7 +411,7 @@ angular.module('starter.controllers', ['ionic'])
 	});
 })
 
-.controller('EventCtrl', function($scope, $rootScope, $ionicPopover, $state) {
+.controller('EventCtrl', function($scope, $rootScope, $ionicPopover) {
 	$scope.hosting = [];
     $scope.attending = [];
 
@@ -484,24 +484,109 @@ angular.module('starter.controllers', ['ionic'])
 		console.log("Location - " + $scope.event.location);
 
 		// retrieve the mobile service instance
-		var mobileService = $rootScope.client;
-		var eventsTable = mobileService.getTable('event');
+		// var mobileService = $rootScope.client;
+		// var eventsTable = mobileService.getTable('event');
 
-		eventsTable.insert({
-			title: $scope.event.title,
-			description: $scope.event.description,
-			date: $scope.event.date,
-			location: $scope.event.location
-		}).done(function(result) {
-			console.log("success");
-		}, function (err) {
-			console.log("error");
-			console.log(err);
-		});
-
+		// eventsTable.insert({
+		// 	title: $scope.event.title,
+		// 	description: $scope.event.description,
+		// 	date: $scope.event.date,
+		// 	location: $scope.event.location
+		// }).done(function(result) {
+		// 	console.log("success");
+		// }, function (err) {
+		// 	console.log("error");
+		// 	console.log(err);
+		// });
 	};
 }])
 
-.controller('EventInviteCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
-    console.log("C received");
+.controller('EventInviteCtrl', ['$scope', '$rootScope', '$cordovaContacts', function($scope, $rootScope, $cordovaContacts) {
+    $scope.unregistered = [];
+    $scope.registered = [];
+    var options = {
+        replaceLineBreaks: false,
+        android: {
+          intent: ''
+        }
+      };
+
+    $scope.$on('$ionicView.loaded', function(e) {
+        $cordovaContacts.find({filter: ''}).then(function(contacts) {
+            var phoneNumbers = [];
+            for (var i = 0; contacts != null && i < contacts.length; i++) {
+                var contactNumbers = contacts[i].phoneNumbers; //deal with people that have multiple phonenumbers
+                for (var j = 0; contactNumbers != undefined && j < contactNumbers.length; j++) {
+                    phoneNumbers.push(contactNumbers[j].value);
+                    console.log("Contact: " + contacts[i].displayName + " has number: " + contactNumbers[j].value);
+                }
+            }
+            uniqueNumbers = phoneNumbers.filter(function(item, pos) { return phoneNumbers.indexOf(item) == pos; })
+            for (var i = 0; i < uniqueNumbers.length; i+=100) {
+                var uniqueNumbersSection = uniqueNumbers.splice(i, i+100);
+                var phoneNumbersString = "";
+                for (var i = 0; i < uniqueNumbersSection.length; i++) {
+                    phoneNumbersString += uniqueNumbersSection[i].replace("+","") + ",";
+                }
+                
+                $rootScope.client.invokeApi("importfriends/GetNonUsersByPhoneNumber?phonenumbers="
+                     + phoneNumbersString, { method: "GET" }).done(function(response) {
+                    var missingNumbers = response.result.missingNumbers;
+                    var missingContacts = contacts.filter(function(contact) {
+                        if (contact.phoneNumbers == null) { return false; }
+                        var num = contact.phoneNumbers[0].value.replace("+","")
+                        return missingNumbers.indexOf(num) >= 0;
+                    });
+                    $scope.unregistered = missingContacts;
+                    console.log(missingContacts);
+                    $scope.$apply();
+                }, function (error) {
+                    console.log("fail querying user db: " + error);
+                });
+                
+                $rootScope.client.invokeApi("importfriends/GetValidUsersByPhoneNumber?phonenumbers="
+                     + phoneNumbersString, { method: "GET" }).done(function(response) {
+                         console.log(response);
+                    validOnes = response.result.friends;
+                    for (var i = 0; i < validOnes.length; i++) {
+                        console.log(validOnes[i].phoneNumber + " number was found! " + validOnes[i].name);
+                        var contact = validOnes[i];
+                        contact.checked = false;
+                        $scope.registered.push(contact);
+                    }
+                     $scope.$apply();
+                }, function (error) {
+                    console.log("fail querying user db: " + error);
+                });
+            }
+        }, function (error) {
+            console.log("Error importing contacts: " + error);
+        });
+    });
+
+    $scope.toggle = function(contact) {
+        contact.checked = !contact.checked;
+    }
+}])
+
+.controller('EventDateCtrl', ['$scope', '$cordovaCalendar', function($scope, $cordovaCalendar) {
+    var options = {
+        date: new Date(),
+        mode: 'date', // or 'time'
+        minDate: new Date() - 10000,
+        allowOldDates: true,
+        allowFutureDates: false,
+        doneButtonLabel: 'DONE',
+        doneButtonColor: '#F2F3F4',
+        cancelButtonLabel: 'CANCEL',
+        cancelButtonColor: '#000000'
+    };
+
+    document.addEventListener("deviceready", function () {
+
+        $cordovaDatePicker.show(options).then(function(date){
+            alert(date);
+        });
+
+    }, false);
 }]);
