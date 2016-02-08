@@ -1,5 +1,5 @@
-<ion-view view-title="Search" cache-view="false"  style="top:44px;">
-  <ion-content class="padding">
+<ion-view view-title="Search" cache-view="false" style="top:44px;">
+  <ion-content class="padding" id="scroll">
     <div class="bar bar-header item-input-inset">
       <label class="item-input-wrapper textbox-search">
           <i class="icon ion-ios7-search placeholder-icon"></i>
@@ -15,8 +15,8 @@
       </ion-checkbox >
     </ion-list>
   </ion-content>
-  <!-- align to the bottom of the page -->
-    <div class="padding" style="position: absolute; bottom: 20px; width: 100%">
-      <button class="button button-block button-calm" ng-click="addFriends()">Add Friends</button>
-    </div>
 </ion-view>
+<!-- align to the bottom of the page -->
+  <div class="padding" style="position: fixed; bottom: 0px; width: 100%; z-index: 100 !important;">
+    <button class="button button-block button-calm" ng-click="addFriends()">Add Friends</button>
+  </div>

@@ -6,6 +6,7 @@ using circleappService.Models;
 using System.Net;
 using System.Linq;
 using System;
+using System.IdentityModel.Tokens;
 
 namespace circleappService.Controllers
 {
@@ -73,6 +74,29 @@ namespace circleappService.Controllers
                  return this.Request.CreateResponse(HttpStatusCode.OK, new
                  {
                      Users = users
+                 });
+             }
+             else
+             {
+                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { });
+             }
+         }
+
+         // GET api/SearchFriends
+         public HttpResponseMessage GetAllFriends()
+         {
+             var parameters = this.Request.GetQueryNameValuePairs();
+             if (parameters.Count() > 0)
+             {
+                 circleappContext ctx = new circleappContext();
+                 var userId = parameters.ElementAt(0).Value;
+                 var friendIds1 = ctx.Friends.Where(x => x.UserId == userId).Select(u => u.FriendUserId); ;
+                 var friendIds2 = ctx.Friends.Where(x => x.FriendUserId == userId).Select(u => u.UserId);
+                 var friendUsers = ctx.Users.Where(x => friendIds1.Contains(x.Id) || friendIds2.Contains(x.Id));
+
+                 return this.Request.CreateResponse(HttpStatusCode.OK, new
+                 {
+                     Users = friendUsers
                  });
              }
              else

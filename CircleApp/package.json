@@ -24,6 +24,9 @@
     "cordova-plugin-contacts"
   ],
   "cordovaPlatforms": [
-    "android"
+    {
+      "platform": "android",
+      "locator": "browser"
+    }
   ]
 }

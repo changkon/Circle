@@ -66,4 +66,9 @@
 .registration-text {
   text-align: center;
 }
+
+#scroll {
+  height: calc(100% - 120px);;
+}
+
 /*# sourceMappingURL=style.css.map */
