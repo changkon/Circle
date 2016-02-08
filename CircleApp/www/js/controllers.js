@@ -415,9 +415,25 @@ angular.module('starter.controllers', ['ionic'])
 	$scope.hosting = [];
     $scope.attending = [];
 
-    $scope.plusActivate = function($event) {
-        $state.transitionTo('event');
+    $ionicPopover.fromTemplateUrl('templates/plus-button-event-popover.html', {
+		scope: $scope
+	}).then(function(popover) {
+		$scope.popover = popover;
+	});
+
+	// plus button click
+	$scope.plusActivate = function($event) {
+		$scope.popover.show($event);
+	};
+
+    $scope.closePopover = function() {
+        $scope.popover.hide();
     };
+
+	//Cleanup the popover when we're done with it!
+	$scope.$on('$destroy', function() {
+		$scope.popover.remove();
+	});
 
     var hostedEvents = function() {
         $rootScope.client.invokeApi("userevents/GetAllUserHostedEvents/" + $rootScope.userId, {
