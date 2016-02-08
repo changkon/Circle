@@ -82,7 +82,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 	  url: '/event',
 	  views: {
 		  'tab-event': {
-			  templateUrl: 'templates/event-home.html',
+			  templateUrl: 'templates/event/event-home.html',
 			  controller: 'EventCtrl'
 		  }
 	  }
@@ -90,44 +90,63 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   })
   .state('event', {
       url: '/event/detail',
-      templateUrl: 'templates/event-detail.html',
+      templateUrl: 'templates/event/event-detail.html',
       controller: 'EventDetailCtrl'
   })
   .state('eventInvite', {
       url: '/event/invite',
-      templateUrl: 'templates/event-invite.html',
+      templateUrl: 'templates/event/event-invite.html',
       controller: 'EventInviteCtrl'
   })
   .state('eventDate', {
       url: '/event/date',
-      templateUrl: 'templates/event-date.html',
+      templateUrl: 'templates/event/event-date.html',
       controller: 'EventDateCtrl'
   })
   .state('tab.friends', {
     url: '/friends',
     views: {
       'tab-friends': {
-        templateUrl: 'templates/friends-home.html',
+        templateUrl: 'templates/friends/friends-home.html',
         controller: 'FriendsCtrl'
       }
     }
   })
   .state('importfriends', {
       url: '/friends/importfriends',
-      templateUrl: 'templates/import.html',
+      templateUrl: 'templates/friends/import.html',
       controller: 'ImportCtrl'
   })
   .state('searchfriends', {
       url: '/friends/searchfriends',
-      templateUrl: 'templates/search.html',
+      templateUrl: 'templates/friends/search.html',
       controller: 'SearchCtrl'
   })
   .state('invitefriends', {
       url: '/friends/invitefriends',
-      templateUrl: 'templates/invite.html',
+      templateUrl: 'templates/friends/invite.html',
       controller: 'InviteCtrl'
   })
-
+  .state('startscreen', {
+      url : '/start',
+      templateUrl: 'templates/start-screen.html',
+      controller: 'StartScreenCtrl'
+  })
+  .state('registration-require', {
+      url: '/registration_require',
+      templateUrl: 'templates/registration/add-require.html',
+      controller: 'RequireCtrl'
+  })
+  .state('registration-password', {
+      url: '/registration_password',
+      templateUrl: 'templates/registration/add-password.html',
+      controller: 'PasswordCtrl'
+  })
+  .state('registration-optional', {
+      url: '/registration_optional',
+      templateUrl: 'templates/registration/add-optional.html',
+      controller: 'OptionalCtrl'
+  })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/dash');
 

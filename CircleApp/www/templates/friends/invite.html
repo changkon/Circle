@@ -1,0 +1,14 @@
+<ion-view view-title="Invite" cache-view="false" style="top:44px" >
+  <ion-content class="padding" id="scroll">
+     <ion-list>
+      <ion-checkbox ng-repeat="contact in contacts" ng-click="toggle(contact)" >
+        <p>{{contact.name.givenName}} {{contact.name.familyName}}</p>
+        <p>{{contact.phoneNumbers[0].value}}</p>
+      </ion-checkbox >
+    </ion-list>
+  </ion-content>
+</ion-view>
+<!-- align to the bottom of the page -->
+<div class="padding" style="position: fixed; bottom: 0px; width: 100%; z-index: 100 !important;">
+  <button class="button button-block button-calm" ng-click="inviteFriends()">Invite Friends</button>
+</div>
