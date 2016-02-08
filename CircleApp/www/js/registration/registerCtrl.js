@@ -58,8 +58,21 @@ myApp.controller('RequireCtrl', function($scope, $http, $rootScope, $location, r
 
 myApp.controller('PasswordCtrl', function($scope, $http, $rootScope, $location, registrationService){
     $scope.newUser = registrationService;
+    $scope.temp = {};
+
     $scope.goOptional= function() {
         $location.path('/registration_optional');
+    }
+
+    $scope.confirmPassword = function() {
+
+      if ($scope.temp.checkPassword == $scope.newUser.password) {
+           $scope.validClass = "ng-valid";
+           console.log('valid');
+      } else {
+           $scope.validClass = "ng-invalid";
+           console.log('invalid ' + $scope.temp.checkPassword + ' ' + $scope.newUser.password);
+      }
     }
 })
 
