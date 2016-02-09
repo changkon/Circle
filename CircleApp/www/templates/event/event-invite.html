@@ -1,0 +1,25 @@
+<ion-view view-title="EventCreate" style="top:44px;">
+	<ion-content>
+        <!-- Registered users here -->
+        <div class="item item-divider">Registered</div>
+        <ion-list>
+            <ion-checkbox ng-repeat="contact in registered" ng-click="toggle(contact)">
+                <h2>{{contact.name}}</h2>
+                <p>{{contact.phoneNumber}}</p>
+            </ion-checkbox>
+        </ion-list>
+        
+        <!-- Users without an account -->
+        <div class="item item-divider">Unregistered</div>
+        <ion-list>
+            <ion-checkbox ng-repeat="contact in unregistered" ng-click="toggle(contact)">
+                <h2>{{contact.name.givenName}} {{contact.name.familyName}}</h2>
+                <p>{{contact.phoneNumbers[0].value}}</p>
+            </ion-checkbox>
+        </ion-list>
+        
+        <div class="padding">
+            <button class="button button-royal button-block" ui-sref="eventDate">Choose Dates</button>
+        </div>
+	</ion-content>
+</ion-view>

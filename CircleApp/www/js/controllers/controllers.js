@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ionic'])
+angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
 .controller('NavCtrl', ['$scope', 'circle', function($scope, circle) {
 	$scope.circle = {
@@ -146,4 +146,4 @@ angular.module('starter.controllers', ['ionic'])
   $scope.settings = {
     enableFriends: true
   };
-})
+});

@@ -202,14 +202,17 @@
     <Compile Include="App_Start\Startup.MobileApp.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\EventController.cs" />
+    <Compile Include="Controllers\InvitationController.cs" />
     <Compile Include="Controllers\LogoutController.cs" />
     <Compile Include="Controllers\FriendController.cs" />
     <Compile Include="Controllers\ImportFriendsController.cs" />
     <Compile Include="Controllers\TodoItemController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserEventsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataObjects\BlacklistToken.cs" />
     <Compile Include="DataObjects\Event.cs" />
+    <Compile Include="DataObjects\Invitation.cs" />
     <Compile Include="DataObjects\LoginChallenge.cs" />
     <Compile Include="DataObjects\Friend.cs" />
     <Compile Include="DataObjects\TodoItem.cs" />
@@ -258,6 +261,10 @@
     <Compile Include="Migrations\201602060348195_ignoreChange.cs" />
     <Compile Include="Migrations\201602060348195_ignoreChange.Designer.cs">
       <DependentUpon>201602060348195_ignoreChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602061203540_InvitationTable.cs" />
+    <Compile Include="Migrations\201602061203540_InvitationTable.Designer.cs">
+      <DependentUpon>201602061203540_InvitationTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\circleappContext.cs" />
@@ -319,6 +326,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602060348195_ignoreChange.resx">
       <DependentUpon>201602060348195_ignoreChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602061203540_InvitationTable.resx">
+      <DependentUpon>201602061203540_InvitationTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
