@@ -63,6 +63,7 @@
                 selected: "="
             },
             link: function(scope) {
+                scope.selectMany = false;
                 scope.selected = removeTime(scope.selected || moment());
                 scope.month = scope.selected.clone();
                 
@@ -72,9 +73,16 @@
                 
                 buildMonth(scope, start, scope.month);
                 
-                scope.select = function(day) {
-                    scope.selected = day.date;
-                    console.log(scope.selected);
+                scope.select = function(day, $event) {
+                    if (scope.selectMany) {
+                        
+                    } else {
+                        // get 
+                        scope.selected = day.date;
+                    }
+                    
+                    console.log($event);
+                    console.log($event.currentTarget);
                 };
                 
                 scope.next = function() {

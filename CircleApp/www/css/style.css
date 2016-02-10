@@ -73,14 +73,16 @@ circle-calendar {
         border-left: 1px solid #886aea;
         font-size: 0.75em;
         text-align: center;
-        background: white;
+        background-color: white;
         cursor: white;
         color: black; }
-        circle-calendar div.calendar-view div.week span.day .today {
-          background-color: white; }
-        circle-calendar div.calendar-view div.week span.day .selected {
-          background-color: #f3f0fd;
-          color: white; }
+      circle-calendar div.calendar-view div.week .today {
+        background-color: #beadf3 !important; }
+      circle-calendar div.calendar-view div.week .selected {
+        background-color: #9a80ed !important;
+        color: white !important; }
+      circle-calendar div.calendar-view div.week .different-month {
+        color: #bfbfbf !important; }
     circle-calendar div.calendar-view div.week.names .day {
       color: #886aea; }
 

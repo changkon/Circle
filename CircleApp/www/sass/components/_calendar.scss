@@ -2,8 +2,8 @@ circle-calendar
 {
     // define local variable
     $height: 75%;
-    $today: lighten($primary-color, 65%);
-    $selected: lighten($primary-color, 30%);
+    $today: lighten($primary-color, 15%);
+    $selected: lighten($primary-color, 5%);
     
     display: flex;
     flex-direction: column;
@@ -70,20 +70,25 @@ circle-calendar
                 border-left: 1px solid $primary-color;
                 font-size: 0.75em;
                 text-align: center;
-                background: white;
+                background-color: white;
                 cursor: white;
                 color: black;
-                
-                .today
-                {
-                    background-color: $today;
-                }
-                
-                .selected
-                {
-                    background-color: $selected;
-                    color: white;
-                }
+            }
+            
+            .today
+            {
+                background-color: $today !important;
+            }
+            
+            .selected
+            {
+                background-color: $selected !important;
+                color: white !important;
+            }
+            
+            .different-month
+            {
+                color: lighten(black, 75%) !important;
             }
         }
         
