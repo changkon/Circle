@@ -20,4 +20,6 @@ myApp.controller('EventDateCtrl', ['$scope', function($scope) {
     //     });
 
     // }, false);
+    console.log("hello");
+    $scope.day = moment();
 }]);

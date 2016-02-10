@@ -1,0 +1,98 @@
+circle-calendar
+{
+    // define local variable
+    $height: 75%;
+    $today: lighten($primary-color, 65%);
+    $selected: lighten($primary-color, 30%);
+    
+    display: flex;
+    flex-direction: column;
+    background: white;
+    min-height: $height;
+    border-bottom: 1px solid $primary-color;
+    margin-bottom: 10px;
+    
+    div.header
+    {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
+        background-color: $primary-color;
+        color: white;
+        
+        i
+        {
+            float: left;
+            font-size: 1.125em;
+            font-weight: bold;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        i.ion-chevron-left
+        {
+            text-align: left;
+        }
+        
+        i.ion-chevron-right
+        {
+            text-align: right;
+        }
+        
+        span
+        {
+            text-transform: uppercase;
+            font-weight: bold;
+            text-align: center;
+            color: inherit;
+        }
+    }
+    
+    div.calendar-view
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-grow: 1;
+        
+        div.week
+        {
+            display: flex;
+            flex-grow: 1;
+            border-top: 1px solid $primary-color;
+            
+            span.day
+            {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: percentage(1/7);
+                border-left: 1px solid $primary-color;
+                font-size: 0.75em;
+                text-align: center;
+                background: white;
+                cursor: white;
+                color: black;
+                
+                .today
+                {
+                    background-color: $today;
+                }
+                
+                .selected
+                {
+                    background-color: $selected;
+                    color: white;
+                }
+            }
+        }
+        
+        div.week.names
+        {
+            .day
+            {
+                color: $primary-color;
+            }
+        }
+    }
+}
