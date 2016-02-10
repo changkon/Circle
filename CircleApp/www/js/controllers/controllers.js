@@ -30,6 +30,12 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
                next(request, callback);
             });
             findFriendRequests(response.id);
+						var push = new Ionic.Push({
+				      "debug": true
+				    });
+				    push.register(function(token) {
+				      console.log("Device token:",token.token);
+				    });
         })
         .error(function(data, status, headers, config) {
             // handle error things
