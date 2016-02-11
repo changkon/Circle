@@ -291,6 +291,8 @@
   <ItemGroup>
     <Content Include="Metadata\deploymentTemplates\apiappconfig.azureresource.json" />
     <Content Include="apiapp.json" />
+    <None Include="Properties\PublishProfiles\circleapp - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\circleapp - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\circleapp - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
