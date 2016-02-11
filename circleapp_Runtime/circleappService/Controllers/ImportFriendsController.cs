@@ -90,8 +90,8 @@ namespace circleappService.Controllers
              {
                  circleappContext ctx = new circleappContext();
                  var userId = parameters.ElementAt(0).Value;
-                 var friendIds1 = ctx.Friends.Where(x => x.UserId == userId).Select(u => u.FriendUserId); ;
-                 var friendIds2 = ctx.Friends.Where(x => x.FriendUserId == userId).Select(u => u.UserId);
+                 var friendIds1 = ctx.Friends.Where(x => x.UserId == userId && x.Status == 1).Select(u => u.FriendUserId); ;
+                 var friendIds2 = ctx.Friends.Where(x => x.FriendUserId == userId && x.Status == 1).Select(u => u.UserId);
                  var friendUsers = ctx.Users.Where(x => friendIds1.Contains(x.Id) || friendIds2.Contains(x.Id));
 
                  return this.Request.CreateResponse(HttpStatusCode.OK, new

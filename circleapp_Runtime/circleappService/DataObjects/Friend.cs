@@ -11,7 +11,7 @@ namespace circleappService.DataObjects
         [Index("IX_FriendIndex", 2, IsUnique = true)]
         public string FriendUserId { get; set; }
 
-        public int Status { get; set; }
+        public int Status { get; set; } //0 is pending, 1 is accepted
  
         public string ActionUserId { get; set; }
 
