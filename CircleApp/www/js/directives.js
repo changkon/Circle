@@ -60,29 +60,38 @@
             restrict: 'E', //restrict directive to only element tag
             templateUrl: '../templates/calendar.html',
             scope: {
-                selected: "="
+                many: '='
             },
-            link: function(scope) {
-                scope.selectMany = false;
-                scope.selected = removeTime(scope.selected || moment());
-                scope.month = scope.selected.clone();
+            link: function(scope, element, attrs) {
+                scope.initial = removeTime(scope.initial || moment());
+                scope.selected = [];
+                scope.selected.push(scope.initial);
+                scope.month = scope.initial.clone();
                 
-                var start = scope.selected.clone();
+                var start = scope.initial.clone();
                 start.date(1);
                 removeTime(start.day(0));
                 
                 buildMonth(scope, start, scope.month);
                 
-                scope.select = function(day, $event) {
-                    if (scope.selectMany) {
-                        
+                scope.select = function(day) {
+                    if (scope.many === true) {
+                        console.log(scope);
+                        var arr = scope.selected;
+                        var index = arr.findIndex(function(element, index, array) {
+                            return element.isSame(this);
+                        }, day.date);
+                        console.log(index);
+                        if (index == -1) {
+                            scope.selected.push(day.date);
+                        } else {
+                            // delete
+                            scope.selected.splice(index, 1);
+                        }
                     } else {
-                        // get 
-                        scope.selected = day.date;
+                        // override first element
+                        scope.selected[0] = day.date;
                     }
-                    
-                    console.log($event);
-                    console.log($event.currentTarget);
                 };
                 
                 scope.next = function() {
@@ -98,6 +107,16 @@
                     scope.month.month(scope.month.month()-1);
                     buildMonth(scope, previous, scope.month);
                 };
+                
+                // checks if date is the same as any of the currently selected ones
+                scope.matchAny = function(date) {
+                    for (var i = 0; i < scope.selected.length; i++) {
+                        if (date.isSame(scope.selected[i])) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
             }
         }
     });
