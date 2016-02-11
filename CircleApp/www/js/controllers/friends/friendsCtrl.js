@@ -32,8 +32,9 @@ myApp.controller('FriendsCtrl', function($scope, $rootScope, $ionicPopover) {
 							var friend = validOnes[i];
 							$scope.friends.push(friend);
 					}
-					 $scope.$apply();
-					 $scope.$broadcast('scroll.refreshComplete');
+					$rootScope.friends = $scope.friends;
+					$scope.$apply();
+					$scope.$broadcast('scroll.refreshComplete');
 			}, function (error) {
 					console.log("fail querying importfriends/getallfriends: " + error);
 			})
