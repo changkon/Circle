@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngMessages'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$state,$ionicPopup,$location,$ionicHistory) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,6 +21,56 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       StatusBar.styleDefault();
     }
   });
+
+  $ionicPlatform.registerBackButtonAction(function(event) {
+    //event.preventDefault();
+
+    function showConfirm() {
+      var confirmPopup = $ionicPopup.show({
+       title : 'Exit circle?',
+       template : 'Are you sure you want to exit Circle?',
+       buttons : [{
+        text : 'Cancel',
+        type : 'button-royal button-outline',
+       }, {
+        text : 'Ok',
+        type : 'button-royal',
+        onTap : function() {
+         ionic.Platform.exitApp();
+        }
+       }]
+      });
+     };
+
+    function cancelRegistration() {
+      var confirmPopup = $ionicPopup.show({
+       title : 'Exit Registration?',
+       template : 'Are you sure you want to quit registration?',
+       buttons : [{
+        text : 'Cancel',
+        type : 'button-royal button-outline',
+       }, {
+        text : 'Ok',
+        type : 'button-royal',
+        onTap : function() {
+         $state.go("startscreen");
+        }
+       }]
+      });
+    }
+
+     if ($state.is('registration-require') || $state.is('registration-password') || $state.is('registration-optional')) {
+       console.log('going b from registration');
+       //$location.path('/startscreen');
+       //$state.go("startscreen");
+       cancelRegistration()
+     } else if ($state.is('tab.dash') || $state.is('startscreen')) {
+       console.log('going b from home');
+       showConfirm();
+     } else {
+       $ionicHistory.backView().go();
+     }
+  }, 100);
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -148,6 +198,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       controller: 'OptionalCtrl'
   })
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/start');
 
 });

@@ -6,7 +6,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 	};
 }])
 
-.controller('DashCtrl', function($scope, $http, $rootScope) {
+.controller('DashCtrl', function($scope, $http, $rootScope, $ionicPlatform) {
    $scope.data = {};
    $scope.user = {};
    $scope.showRegister = false;
@@ -111,6 +111,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
             console.log("Error occurred - " + status);
         })
     }
+
 })
 
 .controller('ChatsCtrl', function($scope, Chats, $rootScope) {
