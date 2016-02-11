@@ -6,10 +6,6 @@ using circleappService.Models;
 using System.Net;
 using System.Linq;
 using System;
-using System.IdentityModel.Tokens;
-using System.Collections.Specialized;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Dynamic;
 
@@ -116,15 +112,11 @@ namespace circleappService.Controllers
             var parameters = this.Request.GetQueryNameValuePairs();
             if (parameters.Count() > 0)
             {
-                string id = parameters.ElementAt(0).Value;
+                string userId = parameters.ElementAt(0).Value;
                 string friendId = parameters.ElementAt(1).Value;
+                string friendTableId = parameters.ElementAt(2).Value;
+                string json = getJsonDataForPushNotification(userId, friendId, friendTableId);
 
-                dynamic data = new ExpandoObject();
-                data.tokens = new List<string>() { "fut4H0rRDjo:APA91bGxfCp-tuPVkb3EG2_IxkaQRXbIkbUOMXG4yGW4TgATpdb6_DfoOhx8XJmyTAQ4FYupNZVLpXeb7AOTingss8IkUpRG5a99waceXE-322RaoTZQWMutIymqllpbzoetxrMOcSSS" };
-                data.notification = new ExpandoObject() as dynamic;
-                data.notification.alert = "You have a friend request";
-
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(data);
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri("https://push.ionic.io/api/v1/push");
@@ -136,13 +128,32 @@ namespace circleappService.Controllers
                     request.Content = new StringContent(json, Encoding.UTF8, "application/json");
                     var response = client.SendAsync(request).Result;
                 }
-
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { });
             }
             else
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { });
             }
+        }
+
+        private string getJsonDataForPushNotification(string userId, string friendId, string friendTableId)
+        {
+            circleappContext context = new circleappContext();
+            var tokens = context.UserTokenPairs.Where(x => x.UserId == friendId).Select(x => x.DeviceToken).ToList();
+            var user = context.Users.First(x => x.Id == userId);
+
+            dynamic data = new ExpandoObject();
+            data.tokens = tokens;
+            data.notification = new ExpandoObject() as dynamic;
+            data.notification.alert = "You have a friend request from " + user.Email;
+            data.notification.android = new ExpandoObject() as dynamic;
+            data.notification.android.payload = new ExpandoObject() as dynamic;
+            data.notification.android.payload.userId = userId;
+            data.notification.android.payload.userAge = user.Age;
+            data.notification.android.payload.userGender = user.Gender;
+            data.notification.android.payload.friendTableId = friendTableId;
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(data);
         }
 
         public static string Base64Encode(string plainText)

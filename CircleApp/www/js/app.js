@@ -20,21 +20,6 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-    var push = new Ionic.Push({
-      "debug": false,
-      "onNotification": function(notification) {
-        var payload = notification.payload;
-        console.log(notification, payload);
-      }
-    });
-    if (window.localStorage['device_token'] == undefined) {
-      push.register(function(token) {
-        console.log("Device token:",token.token);
-        window.localStorage["device_token"] = token.token;
-      });
-    } else {
-      console.log("token already exists! " + window.localStorage['device_token'])
-    }
   });
 })
 

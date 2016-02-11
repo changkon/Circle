@@ -202,6 +202,7 @@
     <Compile Include="App_Start\Startup.MobileApp.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\EventController.cs" />
+    <Compile Include="Controllers\DeviceTokenController.cs" />
     <Compile Include="Controllers\InvitationController.cs" />
     <Compile Include="Controllers\LogoutController.cs" />
     <Compile Include="Controllers\FriendController.cs" />
@@ -212,6 +213,7 @@
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataObjects\BlacklistToken.cs" />
     <Compile Include="DataObjects\Event.cs" />
+    <Compile Include="DataObjects\UserTokenPair.cs" />
     <Compile Include="DataObjects\Invitation.cs" />
     <Compile Include="DataObjects\LoginChallenge.cs" />
     <Compile Include="DataObjects\Friend.cs" />
@@ -265,6 +267,10 @@
     <Compile Include="Migrations\201602061203540_InvitationTable.cs" />
     <Compile Include="Migrations\201602061203540_InvitationTable.Designer.cs">
       <DependentUpon>201602061203540_InvitationTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602110806054_[UserDevicePair].cs" />
+    <Compile Include="Migrations\201602110806054_[UserDevicePair].Designer.cs">
+      <DependentUpon>201602110806054_[UserDevicePair].cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\circleappContext.cs" />
@@ -331,6 +337,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602061203540_InvitationTable.resx">
       <DependentUpon>201602061203540_InvitationTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602110806054_[UserDevicePair].resx">
+      <DependentUpon>201602110806054_[UserDevicePair].cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
