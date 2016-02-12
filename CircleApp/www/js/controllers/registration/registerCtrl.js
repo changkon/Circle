@@ -13,8 +13,12 @@ myApp.service('registrationService', function() {
   return newUser;
 });
 
-myApp.controller('StartScreenCtrl', function($scope, $http, $rootScope, $location, $ionicLoading){
+myApp.controller('StartScreenCtrl', function($scope, $http, $rootScope, $location, $ionicLoading,$ionicNavBarDelegate){
     $scope.user = {};
+
+    $scope.$on('$ionicView.enter', function(e) {
+      $ionicNavBarDelegate.showBar(false);
+    });
 
     $scope.startRegistration = function() {
         $location.path('/registration_require');

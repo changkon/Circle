@@ -20,6 +20,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    $location.path("/start")
   });
 
   $ionicPlatform.registerBackButtonAction(function(event) {
@@ -67,6 +69,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
      } else if ($state.is('tab.dash') || $state.is('startscreen')) {
        console.log('going b from home');
        showConfirm();
+     } else if ($state.is('setting')) {
+       $state.go('tab.dash');
      } else {
        $ionicHistory.backView().go();
      }
@@ -192,11 +196,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       templateUrl: 'templates/registration/add-password.html',
       controller: 'PasswordCtrl'
   })
+  .state('setting', {
+      url: '/setting',
+      templateUrl: 'templates/setting.html',
+      controller: 'SettingCtrl'
+  })
   .state('registration-optional', {
       url: '/registration_optional',
       templateUrl: 'templates/registration/add-optional.html',
       controller: 'OptionalCtrl'
   })
+
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/start');
 
