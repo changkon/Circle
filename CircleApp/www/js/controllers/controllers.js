@@ -6,7 +6,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 	};
 }])
 
-.controller('DashCtrl', function($scope, $http, $rootScope) {
+.controller('DashCtrl', function($scope, $http, $rootScope, $ionicPopup) {
    $scope.data = {};
    $scope.user = {};
    $scope.showRegister = false;
@@ -16,8 +16,8 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 	 	"debug": false,
 	 	"onNotification": function(notification) {
 			console.log(JSON.stringify(notification));
-			var friendTableId = notification._raw.additionalData.payload.friendTableId;
-		  findFriendRequestsPushNotification(friendTableId);
+			//var friendTableId = notification._raw.additionalData.payload.friendTableId;
+		  findFriendRequestsPushNotification(notification._raw.additionalData.payload);
 	 	}
 	 });
 	 	push.register(function(token) {
@@ -91,12 +91,17 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
         });
     }
 
-		function findFriendRequestsPushNotification(friendTableId) {
-			friendsTable = $rootScope.client.getTable('friend');
-			friendsTable.update({ id: friendTableId, status: 1 }).done(function (updated) {
-				console.log("successfully updated friendship")
-			}, function (err) {
-				console.log("error in updating friendship: " + err);
+		function findFriendRequestsPushNotification(payload) {
+			$ionicPopup.alert({
+					title: 'Do you wish to add friend?',
+					content: "Name: " + payload.userName + ", Age: " + payload.userAge + ", Gender: " + payload.userGender
+			}).then(function(res) {
+				friendsTable = $rootScope.client.getTable('friend');
+				friendsTable.update({ id: payload.friendTableId, status: 1 }).done(function (updated) {
+					console.log("successfully updated friendship")
+				}, function (err) {
+					console.log("error in updating friendship: " + err);
+				});
 			});
 		}
 

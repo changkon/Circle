@@ -148,7 +148,7 @@ namespace circleappService.Controllers
             data.notification.alert = "You have a friend request from " + user.Email;
             data.notification.android = new ExpandoObject() as dynamic;
             data.notification.android.payload = new ExpandoObject() as dynamic;
-            data.notification.android.payload.userId = userId;
+            data.notification.android.payload.userName = user.Name;
             data.notification.android.payload.userAge = user.Age;
             data.notification.android.payload.userGender = user.Gender;
             data.notification.android.payload.friendTableId = friendTableId;
