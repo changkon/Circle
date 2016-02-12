@@ -51,4 +51,16 @@ angular.module('starter.services', [])
 .service('circle', function() {
 	// sharable settings object
 	this.title = "Circle";
+})
+.service('event', function() {
+    // private variables
+    this.title = "";
+    this.description = "";
+    this.dates = [];
+    this.location = "";
+    this.tags = [];
+    this.invitees = {
+        registered: [],
+        unregistered: []
+    };
 });

@@ -1,5 +1,9 @@
 <ion-view view-title="EventCreate" style="top:44px;">
 	<ion-content>
-        <circle-calendar many="selectMany"></circle-calendar>
+        <circle-calendar many="selectMany" selected="selected"></circle-calendar>
+        
+        <div class="padding">
+            <button class="button button-royal button-block" ui-sref="eventTime" ng-click="update()">Choose Times</button>
+        </div>
 	</ion-content>
 </ion-view>

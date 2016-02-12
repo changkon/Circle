@@ -60,11 +60,11 @@
             restrict: 'E', //restrict directive to only element tag
             templateUrl: '../templates/calendar.html',
             scope: {
-                many: '='
+                many: '=',
+                selected: '='
             },
             link: function(scope, element, attrs) {
                 scope.initial = removeTime(scope.initial || moment());
-                scope.selected = [];
                 scope.selected.push(scope.initial);
                 scope.month = scope.initial.clone();
                 
@@ -76,12 +76,11 @@
                 
                 scope.select = function(day) {
                     if (scope.many === true) {
-                        console.log(scope);
                         var arr = scope.selected;
                         var index = arr.findIndex(function(element, index, array) {
                             return element.isSame(this);
                         }, day.date);
-                        console.log(index);
+                        
                         if (index == -1) {
                             scope.selected.push(day.date);
                         } else {
