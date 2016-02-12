@@ -63,6 +63,7 @@ namespace circleappService.Models
 
             modelBuilder.Entity<UserTokenPair>().Property(e => e.UserId).HasColumnType("NVARCHAR").HasMaxLength(128).IsRequired();
             modelBuilder.Entity<UserTokenPair>().Property(e => e.DeviceToken).HasColumnType("NVARCHAR").HasMaxLength(512).IsRequired();
+            modelBuilder.Entity<Circle>().Property(e => e.Name).HasColumnType("NVARCHAR").HasMaxLength(128).IsRequired();
         }
 
         public DbSet<Event> Events { get; set; }
@@ -71,6 +72,7 @@ namespace circleappService.Models
         public DbSet<Friend> Friends { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<UserTokenPair> UserTokenPairs { get; set; }
+        public DbSet<Circle> Circles { get; set; }
     }
 
 }

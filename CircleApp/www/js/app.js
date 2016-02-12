@@ -86,7 +86,6 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
 			  controller: 'EventCtrl'
 		  }
 	  }
-
   })
   .state('event', {
       url: '/event/detail',
@@ -103,6 +102,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       templateUrl: 'templates/event/event-date.html',
       controller: 'EventDateCtrl'
   })
+
   .state('tab.friends', {
     url: '/friends',
     views: {
@@ -127,6 +127,22 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       templateUrl: 'templates/friends/invite.html',
       controller: 'InviteCtrl'
   })
+
+  .state('tab.circle', {
+    url: '/circle',
+    views: {
+      'tab-circle': {
+        templateUrl: 'templates/circle/circle-home.html',
+        controller: 'CircleCtrl'
+      }
+    }
+  })
+    .state('createCircle', {
+        url: '/circle/createcircle',
+        templateUrl: 'templates/circle/circle-create.html',
+        controller: 'CircleCreateCtrl'
+    })
+
   .state('startscreen', {
       url : '/start',
       templateUrl: 'templates/start-screen.html',
