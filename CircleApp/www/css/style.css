@@ -87,6 +87,24 @@ circle-calendar {
     circle-calendar div.calendar-view div.week.names .day {
       color: #886aea; }
 
+.time-view-container {
+  display: flex;
+  min-height: 100vh; }
+  .time-view-container .time-tab .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px; }
+  .time-view-container .time-tab .hour {
+    height: 50px;
+    text-align: right; }
+  .time-view-container .time-tab.time-info-tab {
+    flex: 1; }
+  .time-view-container .time-tab.time-date {
+    flex: 10; }
+    .time-view-container .time-tab.time-date .hour {
+      background-color: lightgrey; }
+
 .event-item {
   padding: 2%; }
 

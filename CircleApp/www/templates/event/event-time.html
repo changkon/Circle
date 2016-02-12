@@ -1,0 +1,14 @@
+<ion-view view-title="EventCreate" style="top:44px;">
+	<ion-content>
+        <!--<circle-time-view dates="dates"></circle-time-view>-->
+        <div class="list">
+            <label ng-repeat="date in dates" class="item item-input item-stacked-label">
+                <span class="input-label">{{date.format('dddd,  DD MMM')}}</span>
+                <input type="time" ng-model="time" ng-change="updateDate(date, time)">
+            </label>
+        </div>
+        <div class="padding">
+            <button class="button button-royal button-block"" ng-click="create()">Create</button>
+        </div>
+	</ion-content>
+</ion-view>

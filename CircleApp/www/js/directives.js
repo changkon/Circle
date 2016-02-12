@@ -119,4 +119,17 @@
             }
         }
     });
+    
+    app.directive('circleTimeView', function() {
+        return {
+            restrict: 'E',
+			templateUrl: '../templates/time.html',
+            scope: {
+                dates: '='
+            },
+            link: function(scope) {
+                
+            }
+        };
+    });
 })();

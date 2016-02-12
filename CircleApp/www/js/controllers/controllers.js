@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ionic', 'ngCordova'])
+angular.module('starter.controllers', ['ionic', 'ngCordova', 'ui.calendar'])
 
 .controller('NavCtrl', ['$scope', 'circle', function($scope, circle) {
 	$scope.circle = {
