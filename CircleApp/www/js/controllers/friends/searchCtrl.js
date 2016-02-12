@@ -54,7 +54,7 @@ myApp.controller('SearchCtrl', function($scope, $rootScope, $ionicPopup) {
             var friendsTable = $rootScope.client.getTable('friend');
             friendsTable.insert({ userId: userIdToAdd, friendUserid: friendUserIdToAdd, status: 0, actionUserId: $rootScope.userId }).done(function(result) {
                 console.log("success");
-                if (result.actionUserId == $rootScope.userId) {
+                if (result.actionUserId == result.userId) {
                   $scope.sendPushNotification(result.friendUserId, result.id);
                 } else {
                   $scope.sendPushNotification(result.userId, result.id);
