@@ -60,6 +60,9 @@ namespace circleappService.Models
             modelBuilder.Entity<Friend>().Property(e => e.FriendUserId).HasColumnType("NVARCHAR").HasMaxLength(128).IsRequired();
             modelBuilder.Entity<Friend>().Property(e => e.ActionUserId).HasColumnType("NVARCHAR").HasMaxLength(128).IsRequired();
             modelBuilder.Entity<Friend>().Property(e => e.Status).IsRequired();
+
+            modelBuilder.Entity<UserTokenPair>().Property(e => e.UserId).HasColumnType("NVARCHAR").HasMaxLength(128).IsRequired();
+            modelBuilder.Entity<UserTokenPair>().Property(e => e.DeviceToken).HasColumnType("NVARCHAR").HasMaxLength(512).IsRequired();
         }
 
         public DbSet<Event> Events { get; set; }
@@ -67,6 +70,7 @@ namespace circleappService.Models
         public DbSet<BlacklistToken> BlackLists { get; set; }
         public DbSet<Friend> Friends { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
+        public DbSet<UserTokenPair> UserTokenPairs { get; set; }
     }
 
 }
