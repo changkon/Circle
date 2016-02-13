@@ -4,7 +4,8 @@ myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $i
     $scope.contacts = [];
 
     //we want to load up all contacts when view is loaded
-    $scope.$on('$ionicView.loaded', function(e) {
+    $scope.$on('$ionicView.enter', function(e) {
+        $scope.contacts = [];
         $cordovaContacts.find({filter: ''}).then(function(contacts) {
             //console.log(contacts)
             var phoneNumbers = [];
@@ -12,7 +13,7 @@ myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $i
                 var contactNumbers = contacts[i].phoneNumbers; //deal with people that have multiple phonenumbers
                 for (var j = 0; contactNumbers != undefined && j < contactNumbers.length; j++) {
                     phoneNumbers.push(contactNumbers[j].value);
-                    console.log("Contact: " + contacts[i].displayName + " has number: " + contactNumbers[j].value);
+//                    console.log("Contact: " + contacts[i].displayName + " has number: " + contactNumbers[j].value);
                 }
             }
             uniqueNumbers = phoneNumbers.filter(function(item, pos) { return phoneNumbers.indexOf(item) == pos; })
@@ -20,15 +21,22 @@ myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $i
             for (var i = 0; i < uniqueNumbers.length; i+=100) {
                 var uniqueNumbersSection = uniqueNumbers.splice(i, i+100);
                 var phoneNumbersString = "";
-                for (var i = 0; i < uniqueNumbersSection.length; i++) {
-                    phoneNumbersString += uniqueNumbersSection[i].replace("+","") + ",";
+                for (var j = 0; j < uniqueNumbersSection.length; j++) {
+                    phoneNumbersString += uniqueNumbersSection[j].replace("+","") + ",";
                 }
                 $rootScope.client.invokeApi("importfriends/GetValidUsersByPhoneNumber?phonenumbers="
                      + phoneNumbersString, { method: "GET" }).done(function(response) {
-                    validOnes = response.result.friends;
-                    for (var i = 0; i < validOnes.length; i++) {
-                        console.log(validOnes[i].phoneNumber + " number was found! " + validOnes[i].name);
-                        var contact = validOnes[i];
+                    validOnes = response.result.friends.filter(function(f) {
+                      //only get the ones that aren't already friends
+                      for (var j = 0; j < $rootScope.friends.length; j++) {
+                        var friend = $rootScope.friends[j];
+                        if (friend.id == f.id) { return false }
+                      }
+                      return true;
+                    });
+                    for (var j = 0; j < validOnes.length; j++) {
+                        console.log(validOnes[j].phoneNumber + " number was found! " + validOnes[j].name);
+                        var contact = validOnes[j];
                         contact.checked = false;
                         $scope.contacts.push(contact);
                     }
@@ -67,6 +75,7 @@ myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $i
             var friendsTable = $rootScope.client.getTable('friend');
             friendsTable.insert({ userId: userIdToAdd, friendUserid: friendUserIdToAdd, status: 0, actionUserId: $rootScope.userId }).done(function(result) {
                 console.log("success");
+                $scope.sendPushNotification(result.friendUserId, result.id);
             }, function (err) {
                $ionicPopup.alert({
                     title: 'Error',
@@ -80,5 +89,13 @@ myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $i
                 content: "Added " + selected.length + " friends"
             })
         }
+    }
+
+    $scope.sendPushNotification = function(friendId, friendTableId) {
+      $rootScope.client.invokeApi("importfriends/GetSendPushNotification?id=" + $rootScope.userId + "&friendId=" + friendId + "&friendTableId=" + friendTableId, { method: "GET" }).done(function(response) {
+        console.log("sent push notification request");
+      }, function (error) {
+        console.log("failed sending push notification: " + error);
+      });
     }
 })

@@ -16,7 +16,7 @@ myApp.controller('InviteCtrl', function($scope, $rootScope, $cordovaContacts, $i
                 var contactNumbers = contacts[i].phoneNumbers; //deal with people that have multiple phonenumbers
                 for (var j = 0; contactNumbers != undefined && j < contactNumbers.length; j++) {
                     phoneNumbers.push(contactNumbers[j].value);
-                    console.log("Contact: " + contacts[i].displayName + " has number: " + contactNumbers[j].value);
+                  //  console.log("Contact: " + contacts[i].displayName + " has number: " + contactNumbers[j].value);
                 }
             }
             uniqueNumbers = phoneNumbers.filter(function(item, pos) { return phoneNumbers.indexOf(item) == pos; })

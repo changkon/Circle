@@ -3,10 +3,19 @@ var myApp = angular.module('starter.controllers')
 myApp.controller('SearchCtrl', function($scope, $rootScope, $ionicPopup) {
     $scope.friend = {};
     $scope.friends = [];
+
     $scope.search = function() {
         console.log("search");
+        $scope.friends = [];
         $rootScope.client.invokeApi("importfriends/GetFriendsByName?name=" + $scope.friend.name, { method: "GET" }).done(function(response) {
-            validOnes = response.result.users;
+          validOnes = response.result.users.filter(function(f) {
+            //only get the ones that aren't already friends
+            for (var i = 0; i < $rootScope.friends.length; i++) {
+              var friend = $rootScope.friends[i];
+              if (friend.id == f.id) { return false }
+            }
+            return true;
+          });
             for (var i = 0; i < validOnes.length; i++) {
                 console.log(validOnes[i].phoneNumber + " number was found! " + validOnes[i].name);
                 var friend = validOnes[i];
@@ -45,6 +54,11 @@ myApp.controller('SearchCtrl', function($scope, $rootScope, $ionicPopup) {
             var friendsTable = $rootScope.client.getTable('friend');
             friendsTable.insert({ userId: userIdToAdd, friendUserid: friendUserIdToAdd, status: 0, actionUserId: $rootScope.userId }).done(function(result) {
                 console.log("success");
+                if (result.actionUserId == result.userId) {
+                  $scope.sendPushNotification(result.friendUserId, result.id);
+                } else {
+                  $scope.sendPushNotification(result.userId, result.id);
+                }
             }, function (err) {
                $ionicPopup.alert({
                     title: 'Error',
@@ -58,5 +72,13 @@ myApp.controller('SearchCtrl', function($scope, $rootScope, $ionicPopup) {
                 content: "Added " + selected.length + " friends"
             })
         }
+    }
+
+    $scope.sendPushNotification = function(friendId, friendTableId) {
+      $rootScope.client.invokeApi("importfriends/GetSendPushNotification?id=" + $rootScope.userId + "&friendId=" + friendId + "&friendTableId=" + friendTableId, { method: "GET" }).done(function(response) {
+        console.log("sent push notification request");
+      }, function (error) {
+        console.log("failed sending push notification: " + error);
+      });
     }
 })
