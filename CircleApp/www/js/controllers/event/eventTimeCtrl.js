@@ -12,11 +12,7 @@ myApp.controller('EventTimeCtrl', ['$scope', 'event', 'uiCalendarConfig', functi
         var hour = time.getHours();
         var min = time.getMinutes();
         var sec = time.getSeconds();
-        console.log(hour);
-        console.log(min);
-        console.log(sec);
         date.hour(hour).minute(min).second(sec);
-        console.log("Updated scope: " + $scope.dates);
     };
     
     $scope.create = function() {

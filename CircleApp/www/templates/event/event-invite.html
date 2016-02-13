@@ -12,7 +12,7 @@
         <!-- Users without an account -->
         <div class="item item-divider">Unregistered</div>
         <ion-list>
-            <ion-checkbox ng-repeat="contact in unregistered" ng-click="toggle(contact)">
+            <ion-checkbox ng-repeat="contact in unregistered" ng-click="toggle(contact); toggleUnregistered(contact)">
                 <h2>{{contact.name.givenName}} {{contact.name.familyName}}</h2>
                 <p>{{contact.phoneNumbers[0].value}}</p>
             </ion-checkbox>

@@ -26,8 +26,9 @@ myApp.controller('FriendsCtrl', function($scope, $rootScope, $ionicPopover) {
 
 	$scope.query = function() {
 		var mobileService = $rootScope.client;
-		var eventsTable = mobileService.getTable('friends');
+		var eventsTable = mobileService.getTable('friend');
 		eventsTable.read().done(function(results) {
+            console.log(results);
 			$scope.$apply(function() {
 				$scope.friends = results;
 			});

@@ -71,4 +71,16 @@ myApp.controller('EventInviteCtrl', ['$scope', '$rootScope', '$cordovaContacts',
         // temporary
         console.log(event);
     };
+    
+    $scope.toggleUnregistered = function(contact) {
+        console.log(contact);
+        if (contact.checked === true) {
+            event.invitees.unregistered.push(contact);
+        } else {
+            // delete
+            var index = event.invitees.unregistered.indexOf(contact);
+            event.invitees.unregistered.splice(index, 1);
+        }
+        console.log(event);
+    };
 }])
