@@ -17,7 +17,8 @@ myApp.controller('EventTimeCtrl', ['$scope', 'event', 'uiCalendarConfig', functi
     
     $scope.create = function() {
         if (event.type === event.EventType.PLANNED) {
-            event.create(event);
+            // event.create(event);
+            console.log(event);
         } else {
             // suggest
             // todo

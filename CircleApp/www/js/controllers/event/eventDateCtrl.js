@@ -8,8 +8,8 @@ myApp.controller('EventDateCtrl', ['$scope', 'event', function($scope, event) {
         console.log($scope.selected);
         $scope.selected.forEach(function(currentValue, index, array) {
             event.dates.push({
-                startDate: currentValue,
-                endDate: currentValue
+                startDate: currentValue.clone(),
+                endDate: currentValue.clone()
             });
         });
         

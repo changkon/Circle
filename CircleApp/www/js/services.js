@@ -129,8 +129,27 @@ angular.module('starter.services', ['ngCordova'])
         // });
     };
     
-    var textUnregistered = function(unregisteredInvitees) {
-        console.log("Text unregistered numbers");
+    var textUnregistered = function(event, unregisteredInvitees) {
+        unregisteredInvitees.forEach(function(currentValue, index, array) {
+            var phoneNumber = currentValue.phoneNumbers[0].value;
+            var message = "Interested in " + event.title + ": " + event.description + "?";
+            var options = {
+                replaceLineBreaks: false, // true to replace \n by a new line, false by default
+                android: {
+                    intent: '' // send SMS with the native android SMS messaging
+                    //intent: '' // send SMS without open any other app
+                    //intent: 'INTENT' // send SMS inside a default SMS app
+                }
+            };
+            
+            $cordovaSms
+                .send(phoneNumber, message, options)
+                .then(function() {
+                    console.log("Successfully sent text to: " + phoneNumber);
+                }, function(err) {
+                    console.log("Failed sending invitation to: " + phoneNumber);
+                });
+        });
     };
     
     this.title;
@@ -149,13 +168,14 @@ angular.module('starter.services', ['ngCordova'])
     this.create = function(event) {
         createEvent(event);
         updateInvitations($rootScope.userId, event.invitees.registered);
-        textUnregistered(event.invitees.unregistered);
+        textUnregistered(event, event.invitees.unregistered);
+        console.log($cordovaSms);
     };
     
     this.suggest = function(event) {
         // do something
         suggestEvent(event);
         updateInvitations($rootScope.userId, event.invitees.registered);
-        textUnregistered(event.invitees.unregistered);
+        textUnregistered(event, event.invitees.unregistered);
     };
 }]);
