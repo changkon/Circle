@@ -34,7 +34,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
     }
     
     //checks if the user has setting in this device, if not create a new object to store it
-    var settingObject = $localstorage.get('userSetting');
+    var settingObject = $localstorage.getObject('userSetting');
     if (Object.keys(settingObject).length == 0) {
         //object is empty
         $localstorage.setObject('userSetting', {

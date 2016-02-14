@@ -8,7 +8,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 	$scope.goSetting = function () {
 		$location.path("/setting");
 	}
-
+})
 .controller('DashCtrl', function($scope, $http, $rootScope, $ionicPopup , $ionicPlatform) {
    $scope.data = {};
    $scope.user = {};
