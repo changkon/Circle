@@ -55,10 +55,15 @@ angular.module('starter.services', ['ngCordova'])
 .service('event', ['$rootScope', '$cordovaSms', function($rootScope, $cordovaSms) {
     // Create enum.
     var EventStatus = Object.freeze({
-        "HOST": 0,
-        "ATTENDING": 1,
-        "NOTGOING": 2,
-        "PENDING": 3
+        HOST: 0,
+        ATTENDING: 1,
+        NOTGOING: 2,
+        PENDING: 3
+    });
+    
+    this.EventType = Object.freeze({
+        PLANNED: "Planned",
+        SUGGESTION: "Suggestion"
     });
     
     // retrieve the mobile service instance
@@ -71,8 +76,8 @@ angular.module('starter.services', ['ngCordova'])
         eventsTable.insert({
 			title: event.title,
 			description: event.description,
-			startDate: event.startDate,
-            endDate: event.endDate,
+			startDate: event.dates[0].startDate,
+            endDate: event.dates[0].endDate,
 			location: event.location
 		}).done(function(result) {
 			console.log("Succesfully created event");
@@ -82,10 +87,46 @@ angular.module('starter.services', ['ngCordova'])
 		});
     };
     
+    var suggestEvent = function(event) {
+        eventsTable.insert({
+			title: event.title,
+			description: event.description,
+			startDate: (function() { return; })(), // undefined
+            endDate: (function() { return; })(), // undefined
+			location: event.location
+		}).done(function(result) {
+			console.log("Succesfully suggested event");
+		}, function (err) {
+			console.log("Error creating event");
+			console.log(err);
+		});
+    };
+    
     // updates invitations table
-    var updateInvitations = function(userId, registeredInvitees) {
+    var updateInvitations = function(userId, eventId, registeredInvitees) {
         // set userId to be HOST of event
+        // invitationsTable.insert({
+        //     userId: this.userId,
+        //     eventId: this.eventId,
+        //     status: EventStatus.HOST
+        // }).done(function(result) {
+        //     console.log("Successfully set user as host");
+        // }, function(err) {
+        //     console.log("Error setting user as host invitations");
+        // });
         
+        // // set registered users as pending
+        // registeredInvitees.forEach(function(currentValue, index, array) {
+        //     invitationsTable.insert({
+        //         userId: 1,//currentValue friend Id
+        //         eventId: this.eventId,
+        //         status: EventStatus.PENDING
+        //     }).done(function(result) {
+        //         console.log("Successfully set " + currentValue + " as pending");
+        //     }, function(err) {
+        //         console.log("Error setting " + currentValue + " registered user as pending");
+        //     });
+        // });
     };
     
     var textUnregistered = function(unregisteredInvitees) {
@@ -95,19 +136,25 @@ angular.module('starter.services', ['ngCordova'])
     this.title;
     this.description;
     // confirmed dates
-    this.startDate;
-    this.endDate;
     // suggested dates. not confirmed
-    this.proposedDates = [];
+    this.dates = [];
     this.location;
     this.tags = [];
     this.invitees = {
         registered: [],
         unregistered: []
     };
+    this.type;
     
     this.create = function(event) {
         createEvent(event);
+        updateInvitations($rootScope.userId, event.invitees.registered);
+        textUnregistered(event.invitees.unregistered);
+    };
+    
+    this.suggest = function(event) {
+        // do something
+        suggestEvent(event);
         updateInvitations($rootScope.userId, event.invitees.registered);
         textUnregistered(event.invitees.unregistered);
     };

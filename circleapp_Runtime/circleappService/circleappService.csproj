@@ -272,6 +272,10 @@
     <Compile Include="Migrations\201602110806054_[UserDevicePair].Designer.cs">
       <DependentUpon>201602110806054_[UserDevicePair].cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201602140100099_AddStartAndEndDateEvent.cs" />
+    <Compile Include="Migrations\201602140100099_AddStartAndEndDateEvent.Designer.cs">
+      <DependentUpon>201602140100099_AddStartAndEndDateEvent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\circleappContext.cs" />
     <Compile Include="Startup.cs" />
@@ -340,6 +344,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602110806054_[UserDevicePair].resx">
       <DependentUpon>201602110806054_[UserDevicePair].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602140100099_AddStartAndEndDateEvent.resx">
+      <DependentUpon>201602140100099_AddStartAndEndDateEvent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

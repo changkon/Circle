@@ -5,8 +5,16 @@ myApp.controller('EventDateCtrl', ['$scope', 'event', function($scope, event) {
     $scope.selected = [];
     
     $scope.update = function() {
-        event.startDate = $scope.selected.slice();
-        event.endDate = $scope.selected.slice();
+        console.log($scope.selected);
+        $scope.selected.forEach(function(currentValue, index, array) {
+            event.dates.push({
+                startDate: currentValue,
+                endDate: currentValue
+            });
+        });
+        
+        // set event type
+        event.type = event.EventType.PLANNED;
         console.log(event);
     };
 }]);

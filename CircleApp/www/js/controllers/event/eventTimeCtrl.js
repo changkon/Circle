@@ -16,7 +16,13 @@ myApp.controller('EventTimeCtrl', ['$scope', 'event', 'uiCalendarConfig', functi
     };
     
     $scope.create = function() {
-        console.log(event);
+        if (event.type === event.EventType.PLANNED) {
+            event.create(event);
+        } else {
+            // suggest
+            // todo
+            console.log("Suggestion not completed yet");
+        }
     };
     // $scope.events = [
     //     {title: 'All Day Event',start: new Date(y, m, 1)},

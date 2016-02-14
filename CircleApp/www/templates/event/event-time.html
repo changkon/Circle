@@ -2,13 +2,17 @@
 	<ion-content>
         <!--<circle-time-view dates="dates"></circle-time-view>-->
         <div class="list">
-            <label ng-repeat="date in dates" class="item item-input item-stacked-label">
-                {{date.format('dddd,  DD MMM')}}
-                <span class="input-label">Start Date</span>
-                <input type="time" ng-model="startTime" ng-change="updateDate(date.startDate, time)">
-                <span class="input-label">End Date</span>
-                <input type="time" ng-model="endTime" ng-change="updateDate(date.endDate, time)">
-            </label>
+            <div ng-repeat="date in dates" class="item">
+                <h2>{{date.startDate.format('MMMM DD YYYY')}}</h2>
+                <label>
+                    <h4>Start Time</h4>
+                    <input type="time" ng-model="startTime" ng-change="updateDate(date.startDate, startTime)">
+                </label>
+                <label>
+                    <h4>End Time</h4>
+                    <input type="time" ng-model="endTime" ng-change="updateDate(date.endDate, endTime)">
+                </label>
+            </div>
         </div>
         <div class="padding">
             <button class="button button-royal button-block"" ng-click="create()">Create</button>
