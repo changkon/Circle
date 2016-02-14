@@ -108,4 +108,9 @@ circle-calendar {
 .event-item {
   padding: 2%; }
 
+#event-time .title {
+  color: #886aea; }
+#event-time .item-input {
+  padding-left: 0; }
+
 /*# sourceMappingURL=style.css.map */

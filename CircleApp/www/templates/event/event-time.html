@@ -1,21 +1,21 @@
 <ion-view view-title="EventCreate" style="top:44px;">
 	<ion-content>
         <!--<circle-time-view dates="dates"></circle-time-view>-->
-        <div class="list">
+        <div id="event-time" class="list">
             <div ng-repeat="date in dates" class="item">
-                <h2>{{date.startDate.format('MMMM DD YYYY')}}</h2>
-                <label>
-                    <h4>Start Time</h4>
+                <h2 class="title">{{date.startDate.format('MMMM DD YYYY')}}</h2>
+                <label class="item-input item-stacked-label">
+                    <span class="input-label">Start Time</span>
                     <input type="time" ng-model="startTime" ng-change="updateDate(date.startDate, startTime)">
                 </label>
-                <label>
-                    <h4>End Time</h4>
+                <label class="item-input item-stacked-label">
+                    <span class="input-label">End Time</span>
                     <input type="time" ng-model="endTime" ng-change="updateDate(date.endDate, endTime)">
                 </label>
             </div>
         </div>
         <div class="padding">
-            <button class="button button-royal button-block"" ng-click="create()">Create</button>
+            <button class="button button-royal button-block"" ng-click="create()" ui-sref="tab.event">Create</button>
         </div>
 	</ion-content>
 </ion-view>

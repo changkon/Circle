@@ -52,7 +52,7 @@ angular.module('starter.services', ['ngCordova'])
 	// sharable settings object
 	this.title = "Circle";
 })
-.service('event', ['$rootScope', '$cordovaSms', function($rootScope, $cordovaSms) {
+.service('event', ['$rootScope', '$cordovaSms', '$ionicPopup', function($rootScope, $cordovaSms, $ionicPopup) {
     // Create enum.
     var EventStatus = Object.freeze({
         HOST: 0,
@@ -172,9 +172,12 @@ angular.module('starter.services', ['ngCordova'])
     
     this.create = function(event) {
         var result = eventPromise(event);
-        result.then(function(result) {
+        return result.then(function(result) {
             updateInvitations($rootScope.userId, result.id, event.invitees.registered);
             textUnregistered(event, event.invitees.unregistered);
+            return true;
+        }, function(err) {
+            return false;
         });
     };
     
@@ -183,5 +186,19 @@ angular.module('starter.services', ['ngCordova'])
         // suggestEventPromise(event);
         // updateInvitations($rootScope.userId, event.invitees.registered);
         // textUnregistered(event, event.invitees.unregistered);
+    };
+    
+    this.showSuccessPopup = function() {
+        $ionicPopup.alert({
+            title: 'Event',
+            template: 'Successfully created event'
+        });
+    };
+    
+    this.showFailPopup = function() {
+        $ionicPopup.alert({
+            title: 'Event',
+            template: 'Failed to create event'
+        });
     };
 }]);
