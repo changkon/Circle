@@ -201,4 +201,19 @@ angular.module('starter.services', ['ngCordova'])
             template: 'Failed to create event'
         });
     };
+    
+    this.reset = function() {
+        this.title = (function() { return; })();
+        this.description = (function() { return; })();
+        // confirmed dates
+        // suggested dates. not confirmed
+        this.dates = [];
+        this.location = (function() { return; })();
+        this.tags = [];
+        this.invitees = {
+            registered: [],
+            unregistered: []
+        };
+        this.type = (function() { return; })();
+    };
 }]);

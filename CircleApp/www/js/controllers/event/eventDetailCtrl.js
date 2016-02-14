@@ -1,6 +1,6 @@
 var myApp = angular.module('starter.controllers');
 
-myApp.controller('EventDetailCtrl', ['$scope', '$rootScope', 'event', function($scope, $rootScope, event) {
+myApp.controller('EventDetailCtrl', ['$scope', '$rootScope', 'event', '$stateParams', function($scope, $rootScope, event, $stateParams) {
     $scope.event = {};
 
     $scope.update = function() {
@@ -13,23 +13,13 @@ myApp.controller('EventDetailCtrl', ['$scope', '$rootScope', 'event', function($
         event.title = $scope.event.title;
         event.description = $scope.event.description;
         event.location = $scope.event.location;
-        
-        console.log(event);
-
-		// retrieve the mobile service instance
-		// var mobileService = $rootScope.client;
-		// var eventsTable = mobileService.getTable('event');
-
-		// eventsTable.insert({
-		// 	title: $scope.event.title,
-		// 	description: $scope.event.description,
-		// 	date: $scope.event.date,
-		// 	location: $scope.event.location
-		// }).done(function(result) {
-		// 	console.log("success");
-		// }, function (err) {
-		// 	console.log("error");
-		// 	console.log(err);
-		// });
 	};
+    
+    // http://stackoverflow.com/questions/16635381/angular-ui-router-get-previous-state
+    $rootScope.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
+        if (from.url == "/event") {
+            $scope.event = {};
+            event.reset();
+        }
+    });
 }]);
