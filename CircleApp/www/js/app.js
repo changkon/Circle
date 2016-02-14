@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ngMessages'])
 
-.run(function($ionicPlatform,$state,$ionicPopup,$location,$ionicHistory) {
+.run(function($ionicPlatform,$state,$ionicPopup,$location,$ionicHistory, $rootScope,$localstorage) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,7 +21,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       StatusBar.styleDefault();
     }
 
-    $location.path("/start")
+    //checking if the user store a token in the local storage before. 
+    var currentToken = $localstorage.get('currentToken','none');
+    if ( currentToken == 'none') {
+       $location.path("/start"); 
+    } else {
+        $location.path("/tab/dash");
+        $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+               request.headers['x-zumo-auth'] = currentToken
+               next(request, callback);
+         });
+    }
+    
+    //checks if the user has setting in this device, if not create a new object to store it
+    var settingObject = $localstorage.get('userSetting');
+    if (Object.keys(settingObject).length == 0) {
+        //object is empty
+        $localstorage.setObject('userSetting', {
+            notifyDefault: 'Text'
+        });
+    } 
+    
   });
 
   $ionicPlatform.registerBackButtonAction(function(event) {
@@ -209,6 +229,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/start');
+  $urlRouterProvider.otherwise('/tab/dash');
 
 });

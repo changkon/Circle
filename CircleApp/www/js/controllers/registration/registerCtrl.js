@@ -13,12 +13,8 @@ myApp.service('registrationService', function() {
   return newUser;
 });
 
-myApp.controller('StartScreenCtrl', function($scope, $http, $rootScope, $location, $ionicLoading,$ionicNavBarDelegate){
+myApp.controller('StartScreenCtrl', function($scope, $http, $rootScope, $location, $ionicLoading, $localstorage){
     $scope.user = {};
-
-    $scope.$on('$ionicView.enter', function(e) {
-      $ionicNavBarDelegate.showBar(false);
-    });
 
     $scope.startRegistration = function() {
         $location.path('/registration_require');
@@ -39,6 +35,7 @@ myApp.controller('StartScreenCtrl', function($scope, $http, $rootScope, $locatio
             // handle success things
             $ionicLoading.hide()
             console.log(response.token);
+            $localstorage.set('currentToken',response.token);
             $rootScope.userId = response.id;
             $rootScope.userName= $scope.user.email;
 						$rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
