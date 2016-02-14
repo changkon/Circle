@@ -28,6 +28,7 @@ myApp.controller('CircleCtrl', function($scope, $rootScope, $ionicPopover) {
 				var query = circleTable.where({ /*initially just get all */ });
 				query.read().then(function(circles) {
 					$scope.circles = circles;
+          $scope.$apply();
 				}, function (error) {
 						console.log("error retrieving circles");
 				});

@@ -2,9 +2,13 @@
   <ion-content class="padding" id="scroll">
      <ion-list>
       <ion-checkbox ng-repeat="contact in contacts" ng-click="toggle(contact)" >
-        <h2>{{contact.name}}</h2>
-        <p>{{contact.phoneNumber}}</p>
-      </ion-checkbox >
+        <div class="row">
+          <div class="col col-75">
+            <h2>{{contact.name}}</h2>
+            <p>{{contact.phoneNumber}}</p>
+          </div>
+        </div>
+      </ion-checkbox>
     </ion-list>
   </ion-content>
 </ion-view>
