@@ -8,13 +8,25 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
 	$scope.goSetting = function () {
 		$location.path("/setting");
 	}
-})
 
-.controller('DashCtrl', function($scope, $http, $rootScope, $ionicPlatform) {
+.controller('DashCtrl', function($scope, $http, $rootScope, $ionicPopup , $ionicPlatform) {
    $scope.data = {};
    $scope.user = {};
    $scope.showRegister = false;
    $scope.showLogin = true;
+
+	 var push = new Ionic.Push({
+	 	"debug": false,
+	 	"onNotification": function(notification) {
+			console.log(JSON.stringify(notification));
+			//var friendTableId = notification._raw.additionalData.payload.friendTableId;
+		  findFriendRequestsPushNotification(notification._raw.additionalData.payload);
+	 	}
+	 });
+	 	push.register(function(token) {
+	 		console.log("Device token:",token.token);
+	 		window.localStorage["device_token"] = token.token;
+	 	});
 
     $scope.login = function() {
         console.log("LOGIN user: " + $scope.data.username + " - PW: " + $scope.data.password);
@@ -33,6 +45,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
                request.headers['x-zumo-auth'] = response.token;
                next(request, callback);
             });
+						sendDeviceToken(response.id)
             findFriendRequests(response.id);
         })
         .error(function(data, status, headers, config) {
@@ -43,15 +56,30 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
         })
     }
 
+		/*
+			This methods registers a device token with a userId
+		*/
+		function sendDeviceToken(userId) {
+			if (window.localStorage["device_token"] == "" || window.localStorage["device_token"] == undefined) {
+				return;
+			}
+			var userDeviceTable = $rootScope.client.getTable('DeviceToken');
+			userDeviceTable.insert({ userId: userId, DeviceToken: window.localStorage["device_token"] }).done(function(result) {
+					console.log("successfully send device token");
+			}, function (err) {
+				console.log("error sending device token");
+			});
+		}
+
 /*
     This method is called whenever a user logs in. It checks friend db for any existing friends request for this user as the receiver
     Eventually it should be changed to use push notifications rather than client request
 */
-    function findFriendRequests(userId) {
+    function findFriendRequests(currentUserId) {
         friendsTable = $rootScope.client.getTable('friend');
         var query = friendsTable.where(function(userId) {
             return (this.userId == userId || this.friendUserId == userId) && this.status == 0 && this.actionUserId != userId;
-        }, userId);
+        }, currentUserId);
         query.read().then(function(friendRequests) {
             for (i = 0; i < friendRequests.length; i++) {
                 var friend = friendRequests[i];
@@ -65,6 +93,21 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
             console.log("failed to find friend requests" + error)
         });
     }
+
+		function findFriendRequestsPushNotification(payload) {
+			$ionicPopup.alert({
+					title: 'Do you wish to add friend?',
+					content: "Name: " + payload.userName + ", Age: " + payload.userAge + ", Gender: " + payload.userGender
+			}).then(function(res) {
+				friendsTable = $rootScope.client.getTable('friend');
+				friendsTable.update({ id: payload.friendTableId, status: 1 }).done(function (updated) {
+					console.log("successfully updated friendship")
+				}, function (err) {
+					console.log("error in updating friendship: " + err);
+				});
+			});
+		}
+
 
 /*
     This method will alert the user that they have a friend request from the person's name

@@ -21,12 +21,10 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
-    "cordova-plugin-contacts"
+    "cordova-plugin-contacts",
+    "phonegap-plugin-push"
   ],
   "cordovaPlatforms": [
-    {
-      "platform": "android",
-      "locator": "browser"
-    }
+    "android"
   ]
 }
