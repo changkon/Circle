@@ -22,8 +22,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
 
     //checking if the user store a token in the local storage before. 
-    var currentToken = $localstorage.get('currentToken','none');
-    if ( currentToken == 'none') {
+    var currentToken = $localstorage.get('currentToken',"none");
+    if ( currentToken == "none") {
        $location.path("/start"); 
     } else {
         $location.path("/tab/dash");
