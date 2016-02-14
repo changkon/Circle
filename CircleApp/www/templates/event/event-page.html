@@ -1,0 +1,29 @@
+<ion-view view-title="EventPage" style="top:44px;">
+	<ion-content>
+        <div class="list">
+
+            <div class="item item-avatar item-icon-left">
+                <i class="icon ion-ios-bolt"></i>
+                <div id="event-description">
+                    <div class="description">
+                        <h2>{{event.title}}</h2>
+                        <p>{{event.startDate | date: 'dd/MM/yyyy h:mm:ss a'}}</p>
+                        <p>{{event.endDate | date: 'dd/MM/yyyy h:mm:ss a'}}</p>
+                    </div>
+                    <div class="status">
+                        <!--<ion-list>
+                            <ion-radio ng-model="status" ng-value="going">Going</ion-radio>
+                            <ion-radio ng-model="status" ng-value="notgoing">Not Going</ion-radio>
+                            <ion-radio ng-model="status" ng-value="maybe">Maybe</ion-radio>
+                        </ion-list>-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-body">
+                <p>{{event.description}}</p>
+            </div>
+
+        </div>
+	</ion-content>
+</ion-view>

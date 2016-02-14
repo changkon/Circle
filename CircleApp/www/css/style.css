@@ -107,10 +107,19 @@ circle-calendar {
 
 .event-item {
   padding: 2%; }
+  .event-item a {
+    text-decoration: none !important; }
 
 #event-time .title {
   color: #886aea; }
 #event-time .item-input {
   padding-left: 0; }
+
+#event-description {
+  display: flex; }
+  #event-description .description {
+    flex: 2; }
+  #event-description .status {
+    flex: 1; }
 
 /*# sourceMappingURL=style.css.map */

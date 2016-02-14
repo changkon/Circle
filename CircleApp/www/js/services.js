@@ -216,4 +216,10 @@ angular.module('starter.services', ['ngCordova'])
         };
         this.type = (function() { return; })();
     };
+    
+    this.getByIdPromise = function(eventId) {
+        return eventsTable.where({
+            id: eventId
+        }).read();
+    };
 }]);

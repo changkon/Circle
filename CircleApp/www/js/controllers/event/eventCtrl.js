@@ -29,6 +29,7 @@ myApp.controller('EventCtrl', function($scope, $rootScope, $ionicPopover) {
             method: "GET"
         }).done(function(results) {
             $scope.$apply(function() {
+                console.log(results.result);
                 $scope.hosting = results.result;
             });
             $scope.$broadcast('scroll.refreshComplete');
