@@ -3,8 +3,11 @@
         <!--<circle-time-view dates="dates"></circle-time-view>-->
         <div class="list">
             <label ng-repeat="date in dates" class="item item-input item-stacked-label">
-                <span class="input-label">{{date.format('dddd,  DD MMM')}}</span>
-                <input type="time" ng-model="time" ng-change="updateDate(date, time)">
+                {{date.format('dddd,  DD MMM')}}
+                <span class="input-label">Start Date</span>
+                <input type="time" ng-model="startTime" ng-change="updateDate(date.startDate, time)">
+                <span class="input-label">End Date</span>
+                <input type="time" ng-model="endTime" ng-change="updateDate(date.endDate, time)">
             </label>
         </div>
         <div class="padding">

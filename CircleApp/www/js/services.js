@@ -1,4 +1,4 @@
-angular.module('starter.services', [])
+angular.module('starter.services', ['ngCordova'])
 
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
@@ -52,15 +52,63 @@ angular.module('starter.services', [])
 	// sharable settings object
 	this.title = "Circle";
 })
-.service('event', function() {
-    // private variables
-    this.title = "";
-    this.description = "";
-    this.dates = [];
-    this.location = "";
+.service('event', ['$rootScope', '$cordovaSms', function($rootScope, $cordovaSms) {
+    // Create enum.
+    var EventStatus = Object.freeze({
+        "HOST": 0,
+        "ATTENDING": 1,
+        "NOTGOING": 2,
+        "PENDING": 3
+    });
+    
+    // retrieve the mobile service instance
+    var mobileService = $rootScope.client;
+    var eventsTable = mobileService.getTable('event');
+    var invitationsTable = mobileService.getTable('invitation');
+    
+    // creates event and inserts into eventtable
+    var createEvent = function(event) {
+        eventsTable.insert({
+			title: event.title,
+			description: event.description,
+			startDate: event.startDate,
+            endDate: event.endDate,
+			location: event.location
+		}).done(function(result) {
+			console.log("Succesfully created event");
+		}, function (err) {
+			console.log("Error creating event");
+			console.log(err);
+		});
+    };
+    
+    // updates invitations table
+    var updateInvitations = function(userId, registeredInvitees) {
+        // set userId to be HOST of event
+        
+    };
+    
+    var textUnregistered = function(unregisteredInvitees) {
+        console.log("Text unregistered numbers");
+    };
+    
+    this.title;
+    this.description;
+    // confirmed dates
+    this.startDate;
+    this.endDate;
+    // suggested dates. not confirmed
+    this.proposedDates = [];
+    this.location;
     this.tags = [];
     this.invitees = {
         registered: [],
         unregistered: []
     };
-});
+    
+    this.create = function(event) {
+        createEvent(event);
+        updateInvitations($rootScope.userId, event.invitees.registered);
+        textUnregistered(event.invitees.unregistered);
+    };
+}]);

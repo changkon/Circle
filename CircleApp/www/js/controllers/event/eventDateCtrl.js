@@ -5,7 +5,8 @@ myApp.controller('EventDateCtrl', ['$scope', 'event', function($scope, event) {
     $scope.selected = [];
     
     $scope.update = function() {
-        event.dates = $scope.selected.slice();
+        event.startDate = $scope.selected.slice();
+        event.endDate = $scope.selected.slice();
         console.log(event);
     };
 }]);
