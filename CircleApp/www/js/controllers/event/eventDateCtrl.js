@@ -5,7 +5,6 @@ myApp.controller('EventDateCtrl', ['$scope', 'event', function($scope, event) {
     $scope.selected = [];
     
     $scope.update = function() {
-        console.log($scope.selected);
         $scope.selected.forEach(function(currentValue, index, array) {
             event.dates.push({
                 startDate: currentValue.clone(),

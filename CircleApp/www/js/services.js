@@ -169,7 +169,6 @@ angular.module('starter.services', ['ngCordova'])
         createEvent(event);
         updateInvitations($rootScope.userId, event.invitees.registered);
         textUnregistered(event, event.invitees.unregistered);
-        console.log($cordovaSms);
     };
     
     this.suggest = function(event) {
