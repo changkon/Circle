@@ -142,6 +142,11 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
         templateUrl: 'templates/circle/circle-create.html',
         controller: 'CircleCreateCtrl'
     })
+    .state('circleDetail', {
+        url: '/circle/circleDetail/:circleId',
+        templateUrl: 'templates/circle/circle-detail.html',
+        controller: 'CircleDetailCtrl'
+    })
 
   .state('startscreen', {
       url : '/start',

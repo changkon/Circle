@@ -1,0 +1,21 @@
+<!-- http://stackoverflow.com/questions/31476153/ionic-popover-popover-height-doesnt-fit-to-content -->
+<ion-popover-view class="popup">
+	<ion-header-bar><h1 class="title">Invite friends</h1></ion-header-bar>
+	<ion-content id="scroll">
+		<ion-list>
+			<ion-checkbox class="friendInvite-item" ng-repeat="friend in friends" ng-click="toggle(friend)">
+				<div class="row">
+					<div class="col col-75">
+						<h3>{{friend.name}}</h3>
+						<p>{{friend.gender}}</h3>
+						<p>{{friend.age}}</p>
+					</div>
+				</div>
+			</ion-checkbox>
+		</ion-list>
+	</ion-content>
+	<!-- align to the bottom of the page -->
+	  <div class="padding" style="position: fixed; bottom: 20px; width: 80%; z-index: 100 !important;">
+			<button class="button button-block button-calm" ng-click="inviteClose()">Invite</button>
+	  </div>
+</ion-popover-view>

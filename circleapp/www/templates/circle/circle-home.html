@@ -5,7 +5,7 @@
         <!-- Hosting -->
 		<div class="item item-divider">Circles</div>
 		<ion-list>
-			<ion-item class="event-item" ng-repeat="circle in circles">
+			<ion-item class="event-item" ng-repeat="circle in circles" href="#/circle/circleDetail/{{circle.id}}">
 				<div class="row">
 					<div class="col col-75">
 						<h3>{{circle.name}}</h3>
