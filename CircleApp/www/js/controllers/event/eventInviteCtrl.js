@@ -1,6 +1,6 @@
 var myApp = angular.module('starter.controllers');
 
-myApp.controller('EventInviteCtrl', ['$scope', '$rootScope', '$cordovaContacts', function($scope, $rootScope, $cordovaContacts) {
+myApp.controller('EventInviteCtrl', ['$scope', '$rootScope', '$cordovaContacts', 'event', function($scope, $rootScope, $cordovaContacts, event) {
     $scope.unregistered = [];
     $scope.registered = [];
     var options = {
@@ -66,4 +66,21 @@ myApp.controller('EventInviteCtrl', ['$scope', '$rootScope', '$cordovaContacts',
     $scope.toggle = function(contact) {
         contact.checked = !contact.checked;
     }
+    
+    $scope.update = function() {
+        // temporary
+        console.log(event);
+    };
+    
+    $scope.toggleUnregistered = function(contact) {
+        console.log(contact);
+        if (contact.checked === true) {
+            event.invitees.unregistered.push(contact);
+        } else {
+            // delete
+            var index = event.invitees.unregistered.indexOf(contact);
+            event.invitees.unregistered.splice(index, 1);
+        }
+        console.log(event);
+    };
 }])

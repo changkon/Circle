@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'starter.services', 'ngCordova'])
+angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'starter.services', 'ngCordova', 'ngMessages'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$state,$ionicPopup,$location,$ionicHistory, $rootScope,$localstorage) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,7 +20,81 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    //checking if the user store a token in the local storage before.
+    var currentToken = $localstorage.get('currentToken',"none");
+    if ( currentToken == "none") {
+       $location.path("/start");
+    } else {
+        $location.path("/tab/dash");
+        $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+               request.headers['x-zumo-auth'] = currentToken
+               next(request, callback);
+         });
+    }
+
+    //checks if the user has setting in this device, if not create a new object to store it
+    var settingObject = $localstorage.getObject('userSetting');
+    if (Object.keys(settingObject).length == 0) {
+        //object is empty
+        $localstorage.setObject('userSetting', {
+            notifyDefault: 'Text'
+        });
+    }
+
   });
+
+  $ionicPlatform.registerBackButtonAction(function(event) {
+    //event.preventDefault();
+
+    function showConfirm() {
+      var confirmPopup = $ionicPopup.show({
+       title : 'Exit circle?',
+       template : 'Are you sure you want to exit Circle?',
+       buttons : [{
+        text : 'Cancel',
+        type : 'button-royal button-outline',
+       }, {
+        text : 'Ok',
+        type : 'button-royal',
+        onTap : function() {
+         ionic.Platform.exitApp();
+        }
+       }]
+      });
+     };
+
+    function cancelRegistration() {
+      var confirmPopup = $ionicPopup.show({
+       title : 'Exit Registration?',
+       template : 'Are you sure you want to quit registration?',
+       buttons : [{
+        text : 'Cancel',
+        type : 'button-royal button-outline',
+       }, {
+        text : 'Ok',
+        type : 'button-royal',
+        onTap : function() {
+         $state.go("startscreen");
+        }
+       }]
+      });
+    }
+
+     if ($state.is('registration-require') || $state.is('registration-password') || $state.is('registration-optional')) {
+       console.log('going b from registration');
+       //$location.path('/startscreen');
+       //$state.go("startscreen");
+       cancelRegistration()
+     } else if ($state.is('tab.dash') || $state.is('startscreen')) {
+       console.log('going b from home');
+       showConfirm();
+     } else if ($state.is('setting')) {
+       $state.go('tab.dash');
+     } else {
+       $ionicHistory.backView().go();
+     }
+  }, 100);
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -102,7 +176,16 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       templateUrl: 'templates/event/event-date.html',
       controller: 'EventDateCtrl'
   })
-
+  .state('eventTime', {
+      url: '/event/time',
+      templateUrl: 'templates/event/event-time.html',
+      controller: 'EventTimeCtrl'
+  })
+  .state('eventPage', {
+      url: '/event/:id',
+      templateUrl: 'templates/event/event-page.html',
+      controller: 'EventPageCtrl'
+  })
   .state('tab.friends', {
     url: '/friends',
     views: {
@@ -163,11 +246,18 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       templateUrl: 'templates/registration/add-password.html',
       controller: 'PasswordCtrl'
   })
+  .state('setting', {
+      url: '/setting',
+      templateUrl: 'templates/setting.html',
+      controller: 'SettingCtrl'
+  })
   .state('registration-optional', {
       url: '/registration_optional',
       templateUrl: 'templates/registration/add-optional.html',
       controller: 'OptionalCtrl'
   })
+
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/dash');
 

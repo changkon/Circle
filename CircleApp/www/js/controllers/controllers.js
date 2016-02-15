@@ -1,12 +1,15 @@
 angular.module('starter.controllers', ['ionic', 'ngCordova'])
 
-.controller('NavCtrl', ['$scope', 'circle', function($scope, circle) {
+.controller('NavCtrl', function($scope, circle, $location) {
 	$scope.circle = {
 		title: circle.title
 	};
-}])
 
-.controller('DashCtrl', function($scope, $http, $rootScope, $ionicPopup) {
+	$scope.goSetting = function () {
+		$location.path("/setting");
+	}
+})
+.controller('DashCtrl', function($scope, $http, $rootScope, $ionicPopup , $ionicPlatform) {
    $scope.data = {};
    $scope.user = {};
    $scope.showRegister = false;
@@ -155,6 +158,7 @@ angular.module('starter.controllers', ['ionic', 'ngCordova'])
             console.log("Error occurred - " + status);
         })
     }
+
 })
 
 .controller('ChatsCtrl', function($scope, Chats, $rootScope) {

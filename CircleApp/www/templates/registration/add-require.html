@@ -1,14 +1,26 @@
 <ion-view view-title="Add Requried" style="top:44px;">
   <ion-content class="padding" >
-      <div class="require">
-          <h3 class="registration-text">Please Enter your Email and Phone number</h3>
-          <label class="item item-input">
-            <input type="email" placeholder="Email" ng-model="newUser.email">
-          </label>
-          <label class="item item-input">
-             <input type="tel" placeholder="Phone number" ng-model="newUser.phoneNumber">
-          </label>
-          <button class="button button-block button-royal" ng-click="goPassword()">NEXT</button>
+      <div class="require" ng-controller="RequireCtrl">
+          <div class="registration-text">
+            <p>Please enter your email and phone number</p>
+          </div>
+          <form name="userForm">
+            <div ng-messages="userForm.emailForm.$error" style="color:maroon" role="alert" ng-if="userForm.emailForm.$dirty">
+              <div ng-message="pattern">Invalid email</div>
+              <div ng-message="required">You did not enter a field</div>
+            </div>
+            <label class="item item-input input-bar">
+              <input type="email" placeholder="Email" ng-model="newUser.email" name='emailForm' required ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"/>
+            </label>
+            <div ng-messages="userForm.phone.$error" style="color:maroon" role="alert" ng-if="userForm.phone.$dirty">
+              <div ng-message="required">You did not enter a field</div>
+            </div>
+            <label class="item item-input input-bar">
+               <input type="tel" placeholder="Phone number" ng-model="newUser.phoneNumber" name='phone' required />
+            </label>
+
+            <button class="next-button button button-block button-royal " ng-click="goPassword()">NEXT</button>
+          </form>
       </div>
   </ion-content>
 </ion-view>

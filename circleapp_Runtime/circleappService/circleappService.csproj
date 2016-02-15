@@ -109,6 +109,7 @@
       <HintPath>..\packages\Swashbuckle.Core.5.0.0\lib\net40\Swashbuckle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Web.Cors">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
@@ -190,8 +191,18 @@
   <ItemGroup>
     <Compile Include="App_Start\Startup.MobileApp.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\CircleController.cs" />
+    <Compile Include="Controllers\CircleCustomController.cs" />
+    <Compile Include="Controllers\CircleInvitationController.cs" />
+    <Compile Include="Controllers\DeviceTokenController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
+    <Compile Include="Controllers\FriendController.cs" />
+    <Compile Include="Controllers\ImportFriendsController.cs" />
+    <Compile Include="Controllers\InvitationController.cs" />
+    <Compile Include="Controllers\LogoutController.cs" />
     <Compile Include="Controllers\TodoItemController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserEventsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataObjects\BlacklistToken.cs" />
     <Compile Include="DataObjects\Circle.cs" />
@@ -211,6 +222,14 @@
     <Compile Include="Migrations\201602150752462_[merge].cs" />
     <Compile Include="Migrations\201602150752462_[merge].Designer.cs">
       <DependentUpon>201602150752462_[merge].cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602140100099_AddStartAndEndDateEvent.cs" />
+    <Compile Include="Migrations\201602140100099_AddStartAndEndDateEvent.Designer.cs">
+      <DependentUpon>201602140100099_AddStartAndEndDateEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602150756059_[merge2].cs" />
+    <Compile Include="Migrations\201602150756059_[merge2].Designer.cs">
+      <DependentUpon>201602150756059_[merge2].cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\circleappContext.cs" />
@@ -245,6 +264,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602150752462_[merge].resx">
       <DependentUpon>201602150752462_[merge].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602140100099_AddStartAndEndDateEvent.resx">
+      <DependentUpon>201602140100099_AddStartAndEndDateEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602150756059_[merge2].resx">
+      <DependentUpon>201602150756059_[merge2].cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
