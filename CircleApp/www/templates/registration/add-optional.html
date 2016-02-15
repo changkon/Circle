@@ -1,14 +1,16 @@
 <ion-view view-title="Add Optional" style="top:44px;">
   <ion-content class="padding" >
       <div class="optional">
-          <h3 class="registration-text">Please Enter your detail (Optional)</h3>
-          <label class="item item-input">
+          <div class="registration-text">
+            <p>Please Enter your detail (Optional)</p>
+          </div>
+          <label class="item item-input input-bar">
             <input type="text" placeholder="Name" ng-model="newUser.name">
           </label>
-          <label class="item item-input">
+          <label class="item item-input input-bar">
             <input type="number" placeholder="Age" ng-model="newUser.age">
           </label>
-          <label class="item item-input item-select" ng-model="newUser.gender">
+          <label class="item item-input item-select input-bar" ng-model="newUser.gender">
             <div class="input-label">Gender</div>
             <select>
               <option>Male</option>
