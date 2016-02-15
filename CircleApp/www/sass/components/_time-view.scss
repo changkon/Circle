@@ -1,0 +1,37 @@
+.time-view-container
+{
+    display: flex;
+    min-height: 100vh;
+    
+    .time-tab
+    {
+        .title
+        {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+        }
+        
+        .hour
+        {
+            height: 50px;
+            text-align: right;
+        }
+    }
+    
+    .time-tab.time-info-tab
+    {
+        flex: 1;
+    }
+    
+    .time-tab.time-date
+    {
+        flex: 10;
+        
+        .hour
+        {
+            background-color: lightgrey;
+        }
+    }
+}

@@ -4,6 +4,10 @@
 // Load components
 @import 'components/nav';
 @import 'components/plus-button';
+@import 'components/calendar';
+@import 'components/time-view';
 
 // Load pages
 @import 'pages/event-home';
+@import 'pages/event-time';
+@import 'pages/event-page';

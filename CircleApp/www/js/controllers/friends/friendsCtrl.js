@@ -25,20 +25,20 @@ myApp.controller('FriendsCtrl', function($scope, $rootScope, $ionicPopover) {
 	});
 
 	$scope.query = function() {
-			$scope.friends = [];
-			$rootScope.client.invokeApi("importfriends/GetAllFriends?userId=" + $rootScope.userId, { method: "GET" }).done(function(response) {
-					validOnes = response.result.users;
-					for (var i = 0; i < validOnes.length; i++) {
-							var friend = validOnes[i];
-							$scope.friends.push(friend);
-					}
-					$rootScope.friends = $scope.friends;
-					$scope.$apply();
-					$scope.$broadcast('scroll.refreshComplete');
-			}, function (error) {
-					console.log("fail querying importfriends/getallfriends: " + error);
-			})
-		};
+        $scope.friends = [];
+        $rootScope.client.invokeApi("importfriends/GetAllFriends?userId=" + $rootScope.userId, { method: "GET" }).done(function(response) {
+                validOnes = response.result.users;
+                for (var i = 0; i < validOnes.length; i++) {
+                        var friend = validOnes[i];
+                        $scope.friends.push(friend);
+                }
+                $rootScope.friends = $scope.friends;
+                $scope.$apply();
+                $scope.$broadcast('scroll.refreshComplete');
+        }, function (error) {
+                console.log("fail querying importfriends/getallfriends: " + error);
+        })
+    };
 
 	$scope.$on('$ionicView.enter', function(e) {
 		$scope.query();

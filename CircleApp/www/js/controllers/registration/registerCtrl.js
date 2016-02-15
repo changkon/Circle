@@ -81,7 +81,7 @@ myApp.controller('PasswordCtrl', function($scope, $http, $rootScope, $location, 
 })
 
 
-myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,registrationService, $ionicLoading){
+myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,registrationService, $ionicLoading, $localstorage){
     $scope.newUser = registrationService;
     $scope.goImportFriend = function() {
       console.log("REGSITER user: " + $scope.newUser.email + " - PW: " + $scope.newUser.password +
@@ -98,11 +98,18 @@ myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,r
           headers: {'Content-Type': 'application/json'}
       })
       .success(function(response) {
-          // handle success things
-          $ionicLoading.hide();
-          console.log(response.token);
-          //change this to go to home page
-          $location.path('/tab/dash');
+        // handle success things
+        $ionicLoading.hide()
+        console.log(response.token);
+        $localstorage.set('currentToken',response.token);
+        $rootScope.userId = response.id;
+        $rootScope.userName= $scope.newUser.email;
+        $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+           request.headers['x-zumo-auth'] = response.token;
+           next(request, callback);
+        });
+        //change this to go to home page
+        $location.path('/tab/dash');
       })
       .error(function(data, status, headers, config) {
           // handle error things
