@@ -60,17 +60,17 @@ angular.module('starter.services', ['ngCordova'])
         NOTGOING: 2,
         PENDING: 3
     });
-    
+
     this.EventType = Object.freeze({
         PLANNED: "Planned",
         SUGGESTION: "Suggestion"
     });
-    
+
     // retrieve the mobile service instance
     var mobileService = $rootScope.client;
     var eventsTable = mobileService.getTable('event');
     var invitationsTable = mobileService.getTable('invitation');
-    
+
     // creates event and inserts into eventtable. returns a promise
     var eventPromise = function(event) {
         return eventsTable.insert({
@@ -80,7 +80,7 @@ angular.module('starter.services', ['ngCordova'])
             endDate: event.dates[0].endDate,
 			location: event.location
 		});
-        
+
         // .done(function(result) {
 		// 	console.log("Succesfully created event");
         //     return result;
@@ -89,7 +89,7 @@ angular.module('starter.services', ['ngCordova'])
 		// 	console.log(err);
 		// });
     };
-    
+
     var suggestEventPromise = function(event) {
         return eventsTable.insert({
 			title: event.title,
@@ -98,7 +98,7 @@ angular.module('starter.services', ['ngCordova'])
             endDate: (function() { return; })(), // undefined
 			location: event.location
 		});
-        
+
         // .done(function(result) {
 		// 	console.log("Succesfully suggested event");
 		// }, function (err) {
@@ -106,7 +106,7 @@ angular.module('starter.services', ['ngCordova'])
 		// 	console.log(err);
 		// });
     };
-    
+
     // updates invitations table
     var updateInvitations = function(user, event, registeredInvitees) {
         // set userId to be HOST of event
@@ -119,7 +119,7 @@ angular.module('starter.services', ['ngCordova'])
         }, function(err) {
             console.log("Error setting user as host invitations");
         });
-        
+
         // // set registered users as pending
         // registeredInvitees.forEach(function(currentValue, index, array) {
         //     invitationsTable.insert({
@@ -133,8 +133,9 @@ angular.module('starter.services', ['ngCordova'])
         //     });
         // });
     };
-    
+
     var textUnregistered = function(event, unregisteredInvitees) {
+      console.log("the number of unregistered is: " + unregisteredInvitees.length);
         unregisteredInvitees.forEach(function(currentValue, index, array) {
             var phoneNumber = currentValue.phoneNumbers[0].value;
             var message = "Interested in " + event.title + ": " + event.description + "?";
@@ -146,7 +147,7 @@ angular.module('starter.services', ['ngCordova'])
                     //intent: 'INTENT' // send SMS inside a default SMS app
                 }
             };
-            
+
             $cordovaSms
                 .send(phoneNumber, message, options)
                 .then(function() {
@@ -156,7 +157,7 @@ angular.module('starter.services', ['ngCordova'])
                 });
         });
     };
-    
+
     this.title;
     this.description;
     // confirmed dates
@@ -169,7 +170,7 @@ angular.module('starter.services', ['ngCordova'])
         unregistered: []
     };
     this.type;
-    
+
     this.create = function(event) {
         var result = eventPromise(event);
         return result.then(function(result) {
@@ -180,28 +181,28 @@ angular.module('starter.services', ['ngCordova'])
             return false;
         });
     };
-    
+
     this.suggest = function(event) {
         // do something
         // suggestEventPromise(event);
         // updateInvitations($rootScope.userId, event.invitees.registered);
         // textUnregistered(event, event.invitees.unregistered);
     };
-    
+
     this.showSuccessPopup = function() {
         $ionicPopup.alert({
             title: 'Event',
             template: 'Successfully created event'
         });
     };
-    
+
     this.showFailPopup = function() {
         $ionicPopup.alert({
             title: 'Event',
             template: 'Failed to create event'
         });
     };
-    
+
     this.reset = function() {
         this.title = (function() { return; })();
         this.description = (function() { return; })();
@@ -216,10 +217,27 @@ angular.module('starter.services', ['ngCordova'])
         };
         this.type = (function() { return; })();
     };
-    
+
     this.getByIdPromise = function(eventId) {
         return eventsTable.where({
             id: eventId
         }).read();
     };
-}]);
+  }])
+
+    .factory('$localstorage', ['$window', function($window) {
+      return {
+        set: function(key, value) {
+          $window.localStorage[key] = value;
+        },
+        get: function(key, defaultValue) {
+          return $window.localStorage[key] || defaultValue;
+        },
+        setObject: function(key, value) {
+          $window.localStorage[key] = JSON.stringify(value);
+        },
+        getObject: function(key) {
+          return JSON.parse($window.localStorage[key] || '{}');
+        }
+      }
+    }]);
