@@ -171,6 +171,19 @@ circle-calendar {
   height: calc(100% - 120px);;
 }
 
+.popup {
+    height: 100%;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    display: block;
+    z-index: 200;
+}
+
+.friendInvite-item.checkbox-icon, .friendInvite-item.checkbox input {
+  float: right;
+}
+
 .input-bar {
   margin-bottom: 10%;
 }
@@ -188,7 +201,5 @@ circle-calendar {
   stroke: #fff !important;
   fill: #fff !important;
 }
-
-
 
 /*# sourceMappingURL=style.css.map */

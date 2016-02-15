@@ -1,0 +1,27 @@
+<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+<ion-view view-title="{{circle.name}}" style="top:44px;">
+  <ion-content class="padding">
+    <p>
+      Description can go here!
+    </p>
+    <h2>Circle Members</h2>
+    <ion-list>
+      <ion-item class="event-item" ng-repeat="member in circleMembers">
+        <div class="row">
+          <div class="col col-75">
+            <h3>{{member.name}}</h3>
+						<p>{{member.gender}}</h3>
+						<p>{{member.age}}</p>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
+<!-- Circle button -->
+<div class="circle-plus-button"></div>

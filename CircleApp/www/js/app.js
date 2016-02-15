@@ -21,10 +21,10 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       StatusBar.styleDefault();
     }
 
-    //checking if the user store a token in the local storage before. 
+    //checking if the user store a token in the local storage before.
     var currentToken = $localstorage.get('currentToken',"none");
     if ( currentToken == "none") {
-       $location.path("/start"); 
+       $location.path("/start");
     } else {
         $location.path("/tab/dash");
         $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
@@ -32,7 +32,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
                next(request, callback);
          });
     }
-    
+
     //checks if the user has setting in this device, if not create a new object to store it
     var settingObject = $localstorage.getObject('userSetting');
     if (Object.keys(settingObject).length == 0) {
@@ -40,8 +40,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
         $localstorage.setObject('userSetting', {
             notifyDefault: 'Text'
         });
-    } 
-    
+    }
+
   });
 
   $ionicPlatform.registerBackButtonAction(function(event) {
@@ -160,7 +160,6 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
 			  controller: 'EventCtrl'
 		  }
 	  }
-
   })
   .state('event', {
       url: '/event/detail',
@@ -211,6 +210,27 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       templateUrl: 'templates/friends/invite.html',
       controller: 'InviteCtrl'
   })
+
+  .state('tab.circle', {
+    url: '/circle',
+    views: {
+      'tab-circle': {
+        templateUrl: 'templates/circle/circle-home.html',
+        controller: 'CircleCtrl'
+      }
+    }
+  })
+    .state('createCircle', {
+        url: '/circle/createcircle',
+        templateUrl: 'templates/circle/circle-create.html',
+        controller: 'CircleCreateCtrl'
+    })
+    .state('circleDetail', {
+        url: '/circle/circleDetail/:circleId',
+        templateUrl: 'templates/circle/circle-detail.html',
+        controller: 'CircleDetailCtrl'
+    })
+
   .state('startscreen', {
       url : '/start',
       templateUrl: 'templates/start-screen.html',

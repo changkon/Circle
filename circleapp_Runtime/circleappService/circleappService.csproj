@@ -15,9 +15,9 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
     <RestorePackages>true</RestorePackages>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -40,15 +40,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;Test</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
@@ -120,7 +111,6 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.IdentityModel" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Web.Cors">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
@@ -201,80 +191,45 @@
   <ItemGroup>
     <Compile Include="App_Start\Startup.MobileApp.cs" />
     <Compile Include="Controllers\AuthController.cs" />
-    <Compile Include="Controllers\EventController.cs" />
+    <Compile Include="Controllers\CircleController.cs" />
+    <Compile Include="Controllers\CircleCustomController.cs" />
+    <Compile Include="Controllers\CircleInvitationController.cs" />
     <Compile Include="Controllers\DeviceTokenController.cs" />
-    <Compile Include="Controllers\InvitationController.cs" />
-    <Compile Include="Controllers\LogoutController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\FriendController.cs" />
     <Compile Include="Controllers\ImportFriendsController.cs" />
+    <Compile Include="Controllers\InvitationController.cs" />
+    <Compile Include="Controllers\LogoutController.cs" />
     <Compile Include="Controllers\TodoItemController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserEventsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataObjects\BlacklistToken.cs" />
+    <Compile Include="DataObjects\Circle.cs" />
+    <Compile Include="DataObjects\CircleInvitation.cs" />
     <Compile Include="DataObjects\Event.cs" />
-    <Compile Include="DataObjects\UserTokenPair.cs" />
+    <Compile Include="DataObjects\Friend.cs" />
     <Compile Include="DataObjects\Invitation.cs" />
     <Compile Include="DataObjects\LoginChallenge.cs" />
-    <Compile Include="DataObjects\Friend.cs" />
     <Compile Include="DataObjects\TodoItem.cs" />
     <Compile Include="DataObjects\User.cs" />
+    <Compile Include="DataObjects\UserTokenPair.cs" />
     <Compile Include="Filter\CustomAuthorizeAttribute.cs" />
     <Compile Include="Migrations\201601300820037_AddUser.cs" />
     <Compile Include="Migrations\201601300820037_AddUser.Designer.cs">
       <DependentUpon>201601300820037_AddUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601311038500_EventTable.cs" />
-    <Compile Include="Migrations\201601311038500_EventTable.Designer.cs">
-      <DependentUpon>201601311038500_EventTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602010636382_DateAllowNullableEvent.cs" />
-    <Compile Include="Migrations\201602010636382_DateAllowNullableEvent.Designer.cs">
-      <DependentUpon>201602010636382_DateAllowNullableEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602010716525_RequiredValueEvent.cs" />
-    <Compile Include="Migrations\201602010716525_RequiredValueEvent.Designer.cs">
-      <DependentUpon>201602010716525_RequiredValueEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602020812191_AddBlackListToken.cs" />
-    <Compile Include="Migrations\201602020812191_AddBlackListToken.Designer.cs">
-      <DependentUpon>201602020812191_AddBlackListToken.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602020950155_changeBListToken.cs" />
-    <Compile Include="Migrations\201602020950155_changeBListToken.Designer.cs">
-      <DependentUpon>201602020950155_changeBListToken.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602010947061_Friend.cs" />
-    <Compile Include="Migrations\201602010947061_Friend.Designer.cs">
-      <DependentUpon>201602010947061_Friend.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602011011346_Friend1.cs" />
-    <Compile Include="Migrations\201602011011346_Friend1.Designer.cs">
-      <DependentUpon>201602011011346_Friend1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602011039163_Friend2.cs" />
-    <Compile Include="Migrations\201602011039163_Friend2.Designer.cs">
-      <DependentUpon>201602011039163_Friend2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602011043178_Friend3.cs" />
-    <Compile Include="Migrations\201602011043178_Friend3.Designer.cs">
-      <DependentUpon>201602011043178_Friend3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602060348195_ignoreChange.cs" />
-    <Compile Include="Migrations\201602060348195_ignoreChange.Designer.cs">
-      <DependentUpon>201602060348195_ignoreChange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602061203540_InvitationTable.cs" />
-    <Compile Include="Migrations\201602061203540_InvitationTable.Designer.cs">
-      <DependentUpon>201602061203540_InvitationTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201602110806054_[UserDevicePair].cs" />
-    <Compile Include="Migrations\201602110806054_[UserDevicePair].Designer.cs">
-      <DependentUpon>201602110806054_[UserDevicePair].cs</DependentUpon>
+    <Compile Include="Migrations\201602150752462_[merge].cs" />
+    <Compile Include="Migrations\201602150752462_[merge].Designer.cs">
+      <DependentUpon>201602150752462_[merge].cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201602140100099_AddStartAndEndDateEvent.cs" />
     <Compile Include="Migrations\201602140100099_AddStartAndEndDateEvent.Designer.cs">
       <DependentUpon>201602140100099_AddStartAndEndDateEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602150756059_[merge2].cs" />
+    <Compile Include="Migrations\201602150756059_[merge2].Designer.cs">
+      <DependentUpon>201602150756059_[merge2].cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\circleappContext.cs" />
@@ -301,52 +256,20 @@
   <ItemGroup>
     <Content Include="Metadata\deploymentTemplates\apiappconfig.azureresource.json" />
     <Content Include="apiapp.json" />
-    <None Include="Properties\PublishProfiles\circleapp - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\circleapp - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\circleapp - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201601300820037_AddUser.resx">
       <DependentUpon>201601300820037_AddUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201601311038500_EventTable.resx">
-      <DependentUpon>201601311038500_EventTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602010636382_DateAllowNullableEvent.resx">
-      <DependentUpon>201602010636382_DateAllowNullableEvent.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602010716525_RequiredValueEvent.resx">
-      <DependentUpon>201602010716525_RequiredValueEvent.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602020812191_AddBlackListToken.resx">
-      <DependentUpon>201602020812191_AddBlackListToken.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602020950155_changeBListToken.resx">
-      <DependentUpon>201602020950155_changeBListToken.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602010947061_Friend.resx">
-      <DependentUpon>201602010947061_Friend.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602011011346_Friend1.resx">
-      <DependentUpon>201602011011346_Friend1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602011039163_Friend2.resx">
-      <DependentUpon>201602011039163_Friend2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602011043178_Friend3.resx">
-      <DependentUpon>201602011043178_Friend3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602060348195_ignoreChange.resx">
-      <DependentUpon>201602060348195_ignoreChange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602061203540_InvitationTable.resx">
-      <DependentUpon>201602061203540_InvitationTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201602110806054_[UserDevicePair].resx">
-      <DependentUpon>201602110806054_[UserDevicePair].cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201602150752462_[merge].resx">
+      <DependentUpon>201602150752462_[merge].cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201602140100099_AddStartAndEndDateEvent.resx">
       <DependentUpon>201602140100099_AddStartAndEndDateEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602150756059_[merge2].resx">
+      <DependentUpon>201602150756059_[merge2].cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
