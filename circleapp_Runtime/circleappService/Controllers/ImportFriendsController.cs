@@ -84,22 +84,32 @@ namespace circleappService.Controllers
              }
          }
 
-        // GET api/ImportFriends/GetAllFriends
+        // GET api/ImportFriends/GetAllFriends?userId=xxx
         public HttpResponseMessage GetAllFriends()
          {
              var parameters = this.Request.GetQueryNameValuePairs();
              if (parameters.Count() > 0)
              {
-                 circleappContext ctx = new circleappContext();
-                 var userId = parameters.ElementAt(0).Value;
-                 var friendIds1 = ctx.Friends.Where(x => x.UserId == userId && x.Status == 1).Select(u => u.FriendUserId); ;
-                 var friendIds2 = ctx.Friends.Where(x => x.FriendUserId == userId && x.Status == 1).Select(u => u.UserId);
-                 var friendUsers = ctx.Users.Where(x => friendIds1.Contains(x.Id) || friendIds2.Contains(x.Id));
+                circleappContext ctx = new circleappContext();
+                var userId = parameters.ElementAt(0).Value;
+                var friendIds1 = ctx.Friends.Where(x => x.UserId == userId && x.Status == 1).Select(u => u.FriendUserId);
+                var friendIds2 = ctx.Friends.Where(x => x.FriendUserId == userId && x.Status == 1).Select(u => u.UserId);
+                var friendUsers = ctx.Users.Where(x => friendIds1.Contains(x.Id) || friendIds2.Contains(x.Id));
 
-                 return this.Request.CreateResponse(HttpStatusCode.OK, new
-                 {
-                     Users = friendUsers
-                 });
+                var friendIds3 = ctx.Friends.Where(x => x.UserId == userId && x.ActionUserId == userId && x.Status == 0).Select(u => u.FriendUserId);
+                var friendIds4 = ctx.Friends.Where(x => x.FriendUserId == userId && x.ActionUserId == userId && x.Status == 0).Select(u => u.UserId);
+                var pendingFriendUsers = ctx.Users.Where(x => friendIds3.Contains(x.Id) || friendIds4.Contains(x.Id));
+
+                var friendIds5 = ctx.Friends.Where(x => x.UserId == userId && x.ActionUserId != userId && x.Status == 0).Select(u => u.FriendUserId);
+                var friendIds6 = ctx.Friends.Where(x => x.FriendUserId == userId && x.ActionUserId != userId && x.Status == 0).Select(u => u.UserId);
+                var requestFriendUsers = ctx.Users.Where(x => friendIds5.Contains(x.Id) || friendIds6.Contains(x.Id));
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    AllFriends = friendUsers,
+                    PendingFriends = pendingFriendUsers,
+                    Requests = requestFriendUsers
+                });
              }
              else
              {

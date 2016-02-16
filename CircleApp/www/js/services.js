@@ -244,15 +244,22 @@ angular.module('starter.services', ['ngCordova'])
 
   .factory('$friend', ['$rootScope', function($rootScope) {
     var friends = [];
+    var pendingFriends = [];
+    var friendRequests = [];
 
     return {
-      getAllFriends: function() {
+      getAllFriends: function(scope) {
         friends = [];
+        pendingFriends = [];
+        friendRequests = [];
         $rootScope.client.invokeApi("importfriends/GetAllFriends?userId=" + $rootScope.userId, { method: "GET" }).done(function(response) {
-          validOnes = response.result.users;
-          for (var i = 0; i < validOnes.length; i++) {
-            var friend = validOnes[i];
-            friends.push(friend);
+          friends = response.result.allFriends;
+          pendingFriends = response.result.pendingFriends;
+          friendRequests = response.result.requests;
+          if (scope != undefined) {
+            scope.friends = friends;
+            scope.$apply();
+            scope.$broadcast('scroll.refreshComplete');
           }
         }, function (error) {
             console.log("fail querying importfriends/getallfriends: " + error);
@@ -264,6 +271,9 @@ angular.module('starter.services', ['ngCordova'])
       },
       currentFriends: function() {
         return friends;
+      },
+      allFriends: function() {
+        return friends.concat(pendingFriends).concat(friendRequests);
       }
     }
   }])

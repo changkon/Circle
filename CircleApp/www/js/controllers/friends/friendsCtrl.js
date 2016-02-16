@@ -25,9 +25,7 @@ myApp.controller('FriendsCtrl', function($scope, $rootScope, $ionicPopover, $fri
 	});
 
 	$scope.query = function() {
-    $scope.friends = $friend.getAllFriends();
-    $scope.$apply();
-    $scope.$broadcast('scroll.refreshComplete');
+    $friend.getAllFriends($scope);
   };
 
 	$scope.$on('$ionicView.enter', function(e) {

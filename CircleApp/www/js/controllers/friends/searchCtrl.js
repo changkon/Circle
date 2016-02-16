@@ -10,7 +10,7 @@ myApp.controller('SearchCtrl', function($scope, $rootScope, $ionicPopup, $friend
         $rootScope.client.invokeApi("importfriends/GetFriendsByName?name=" + $scope.friend.name, { method: "GET" }).done(function(response) {
           validOnes = response.result.users.filter(function(f) {
             //only get the ones that aren't already friends
-            var friends = $friend.currentFriends();
+            var friends = $friend.allFriends();
             for (var i = 0; i < friends.length; i++) {
               var friend = friends[i];
               if (friend.id == f.id) { return false }
