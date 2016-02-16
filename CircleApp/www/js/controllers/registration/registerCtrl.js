@@ -36,6 +36,8 @@ myApp.controller('StartScreenCtrl', function($scope, $http, $rootScope, $locatio
             $ionicLoading.hide()
             console.log(response.token);
             $localstorage.set('currentToken',response.token);
+            $localstorage.set('currentId',response.id);
+            $localstorage.set('currentEmail', $scope.user.email);
             $rootScope.userId = response.id;
             $rootScope.userName= $scope.user.email;
 						$rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
@@ -103,6 +105,8 @@ myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,r
         $ionicLoading.hide()
         console.log(response.token);
         $localstorage.set('currentToken',response.token);
+        $localstorage.set('currentId',response.id);
+        $localstorage.set('currentEmail', $scope.user.email);
         $rootScope.userId = response.id;
         $rootScope.userName= $scope.newUser.email;
         $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {

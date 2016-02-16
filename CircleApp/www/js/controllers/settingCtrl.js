@@ -31,6 +31,8 @@ myApp.controller('SettingCtrl', function($scope, $rootScope, $localstorage, $sta
         console.log(error.message);
     });
      $localstorage.set("currentToken","none");
+     $localstorage.set("currentId","none");
+     $localstorage.set("currentEmail", "none");
   }
   
   $scope.changeDefault = function(mySelect) {

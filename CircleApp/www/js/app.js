@@ -41,6 +41,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
        $location.path("/start");
     } else {
         $location.path("/tab/dash");
+        $rootScope.userId = $localstorage.get('currentId', "none");
+        $rootScope.userName= $localstorage.get('currentEmail', "none");
         $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
                request.headers['x-zumo-auth'] = currentToken
                next(request, callback);
