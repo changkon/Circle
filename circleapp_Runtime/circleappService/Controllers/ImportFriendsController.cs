@@ -8,6 +8,7 @@ using System.Linq;
 using System;
 using System.Text;
 using System.Dynamic;
+using circleappService.Utility;
 
 namespace circleappService.Controllers
 {
@@ -115,19 +116,8 @@ namespace circleappService.Controllers
                 string userId = parameters.ElementAt(0).Value;
                 string friendId = parameters.ElementAt(1).Value;
                 string friendTableId = parameters.ElementAt(2).Value;
-                string json = getJsonDataForPushNotification(userId, friendId, friendTableId);
-
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("https://push.ionic.io/api/v1/push");
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Add("X-Ionic-Application-Id", "0366b4a3");
-                    var keyBase64 = "Basic " + Base64Encode("50747f5c2a0ba72af8fa7dd15705710dad02d8611e288dc5");
-                    client.DefaultRequestHeaders.Add("Authorization", keyBase64);
-                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "push");
-                    request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = client.SendAsync(request).Result;
-                }
+                dynamic data = getJsonDataForPushNotification(userId, friendId, friendTableId);
+                PushNotification.Send(data);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { });
             }
             else
@@ -136,7 +126,7 @@ namespace circleappService.Controllers
             }
         }
 
-        private string getJsonDataForPushNotification(string userId, string friendId, string friendTableId)
+        private dynamic getJsonDataForPushNotification(string userId, string friendId, string friendTableId)
         {
             circleappContext context = new circleappContext();
             var tokens = context.UserTokenPairs.Where(x => x.UserId == friendId).Select(x => x.DeviceToken).ToList();
@@ -153,13 +143,7 @@ namespace circleappService.Controllers
             data.notification.android.payload.userGender = user.Gender;
             data.notification.android.payload.friendTableId = friendTableId;
 
-            return Newtonsoft.Json.JsonConvert.SerializeObject(data);
-        }
-
-        public static string Base64Encode(string plainText)
-        {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
+            return data;
         }
 
     }

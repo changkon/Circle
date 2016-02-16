@@ -42,6 +42,33 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
         });
     }
 
+    var push = new Ionic.Push({
+     "debug": false,
+     "onNotification": function(notification) {
+       console.log(JSON.stringify(notification));
+       //var friendTableId = notification._raw.additionalData.payload.friendTableId;
+       findFriendRequestsPushNotification(notification._raw.additionalData.payload);
+     }
+    });
+     push.register(function(token) {
+       console.log("Device token:",token.token);
+       window.localStorage["device_token"] = token.token;
+     });
+
+     function findFriendRequestsPushNotification(payload) {
+       $ionicPopup.alert({
+           title: 'Do you wish to add friend?',
+           content: "Name: " + payload.userName + ", Age: " + payload.userAge + ", Gender: " + payload.userGender
+       }).then(function(res) {
+         friendsTable = $rootScope.client.getTable('friend');
+         friendsTable.update({ id: payload.friendTableId, status: 1 }).done(function (updated) {
+           console.log("successfully updated friendship")
+         }, function (err) {
+           console.log("error in updating friendship: " + err);
+         });
+       });
+     }
+
   });
 
   $ionicPlatform.registerBackButtonAction(function(event) {

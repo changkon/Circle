@@ -225,19 +225,47 @@ angular.module('starter.services', ['ngCordova'])
     };
   }])
 
-    .factory('$localstorage', ['$window', function($window) {
-      return {
-        set: function(key, value) {
-          $window.localStorage[key] = value;
-        },
-        get: function(key, defaultValue) {
-          return $window.localStorage[key] || defaultValue;
-        },
-        setObject: function(key, value) {
-          $window.localStorage[key] = JSON.stringify(value);
-        },
-        getObject: function(key) {
-          return JSON.parse($window.localStorage[key] || '{}');
-        }
+  .factory('$localstorage', ['$window', function($window) {
+    return {
+      set: function(key, value) {
+        $window.localStorage[key] = value;
+      },
+      get: function(key, defaultValue) {
+        return $window.localStorage[key] || defaultValue;
+      },
+      setObject: function(key, value) {
+        $window.localStorage[key] = JSON.stringify(value);
+      },
+      getObject: function(key) {
+        return JSON.parse($window.localStorage[key] || '{}');
       }
-    }]);
+    }
+  }])
+
+  .factory('$friend', ['$rootScope', function($rootScope) {
+    var friends = [];
+    var mobileService = $rootScope.client;
+
+    return {
+      getAllFriends: function() {
+        friends = [];
+        mobileService.invokeApi("importfriends/GetAllFriends?userId=" + $rootScope.userId, { method: "GET" }).done(function(response) {
+          validOnes = response.result.users;
+          for (var i = 0; i < validOnes.length; i++) {
+            var friend = validOnes[i];
+            friends.push(friend);
+          }
+        }, function (error) {
+            console.log("fail querying importfriends/getallfriends: " + error);
+        })
+        return friends;
+      },
+      empty: function() {
+        return friends.length == 0;
+      },
+      currentFriends: function() {
+        return friends;
+      }
+    }
+
+  }])
