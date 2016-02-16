@@ -1,6 +1,6 @@
 var myApp = angular.module('starter.controllers')
 
-myApp.controller('SearchCtrl', function($scope, $rootScope, $ionicPopup) {
+myApp.controller('SearchCtrl', function($scope, $rootScope, $ionicPopup, $friend) {
     $scope.friend = {};
     $scope.friends = [];
 
@@ -10,8 +10,9 @@ myApp.controller('SearchCtrl', function($scope, $rootScope, $ionicPopup) {
         $rootScope.client.invokeApi("importfriends/GetFriendsByName?name=" + $scope.friend.name, { method: "GET" }).done(function(response) {
           validOnes = response.result.users.filter(function(f) {
             //only get the ones that aren't already friends
-            for (var i = 0; i < $rootScope.friends.length; i++) {
-              var friend = $rootScope.friends[i];
+            var friends = $friend.currentFriends();
+            for (var i = 0; i < friends.length; i++) {
+              var friend = friends[i];
               if (friend.id == f.id) { return false }
             }
             return true;

@@ -1,6 +1,6 @@
 var myApp = angular.module('starter.controllers')
 
-myApp.controller('FriendsCtrl', function($scope, $rootScope, $ionicPopover) {
+myApp.controller('FriendsCtrl', function($scope, $rootScope, $ionicPopover, $friend) {
 	$scope.friends = [];
 
 	$ionicPopover.fromTemplateUrl('templates/plus-button-friends-popover.html', {
@@ -16,7 +16,7 @@ myApp.controller('FriendsCtrl', function($scope, $rootScope, $ionicPopover) {
 	};
 
     $scope.closePopover = function() {
-        $scope.popover.hide();
+      $scope.popover.hide();
     };
 
 	//Cleanup the popover when we're done with it!
@@ -25,22 +25,16 @@ myApp.controller('FriendsCtrl', function($scope, $rootScope, $ionicPopover) {
 	});
 
 	$scope.query = function() {
-        $scope.friends = [];
-        $rootScope.client.invokeApi("importfriends/GetAllFriends?userId=" + $rootScope.userId, { method: "GET" }).done(function(response) {
-                validOnes = response.result.users;
-                for (var i = 0; i < validOnes.length; i++) {
-                        var friend = validOnes[i];
-                        $scope.friends.push(friend);
-                }
-                $rootScope.friends = $scope.friends;
-                $scope.$apply();
-                $scope.$broadcast('scroll.refreshComplete');
-        }, function (error) {
-                console.log("fail querying importfriends/getallfriends: " + error);
-        })
-    };
+    $scope.friends = $friend.getAllFriends();
+    $scope.$apply();
+    $scope.$broadcast('scroll.refreshComplete');
+  };
 
 	$scope.$on('$ionicView.enter', function(e) {
-		$scope.query();
+		if ($friend.empty()) {
+			$scope.query();
+		} else {
+			$scope.friends = $friend.currentFriends();
+		}
 	});
 })

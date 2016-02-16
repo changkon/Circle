@@ -1,10 +1,10 @@
 var myApp = angular.module('starter.controllers');
 
-myApp.controller('CircleDetailCtrl', function($scope, $rootScope, $stateParams, $ionicPopover) {
+myApp.controller('CircleDetailCtrl', function($scope, $rootScope, $stateParams, $ionicPopover, $friend) {
     var circleId = $stateParams.circleId;
     console.log("circle id is " + circleId);
     $scope.circle = {Name: "testcircle"};
-    $scope.friends = $rootScope.friends;
+    $scope.friends = $friend.currentFriends();
     for (var i = 0; i < $scope.friends; i++) {
       $scope.friends[i].checked = false;
     }
