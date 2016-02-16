@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'starter.services', 'ngCordova', 'ngMessages'])
 
-.run(function($ionicPlatform,$state,$ionicPopup,$location,$ionicHistory, $rootScope,$localstorage) {
+.run(function($ionicPlatform,$state,$ionicPopup,$location,$ionicHistory, $rootScope,$localstorage,$loginTasks) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,27 +21,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       StatusBar.styleDefault();
     }
 
-    //checking if the user store a token in the local storage before.
-    var currentToken = $localstorage.get('currentToken',"none");
-    if ( currentToken == "none") {
-       $location.path("/start");
-    } else {
-        $location.path("/tab/dash");
-        $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
-               request.headers['x-zumo-auth'] = currentToken
-               next(request, callback);
-         });
-    }
-
-    //checks if the user has setting in this device, if not create a new object to store it
-    var settingObject = $localstorage.getObject('userSetting');
-    if (Object.keys(settingObject).length == 0) {
-        //object is empty
-        $localstorage.setObject('userSetting', {
-            notifyDefault: 'Text'
-        });
-    }
-
+    //get a device token
     var push = new Ionic.Push({
      "debug": false,
      "onNotification": function(notification) {
@@ -54,6 +34,31 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
        console.log("Device token:",token.token);
        window.localStorage["device_token"] = token.token;
      });
+
+    //checking if the user store a token in the local storage before.
+    var currentToken = $localstorage.get('currentToken',"none");
+    if ( currentToken == "none") {
+       $location.path("/start");
+    } else {
+        $location.path("/tab/dash");
+        $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+               request.headers['x-zumo-auth'] = currentToken
+               next(request, callback);
+         });
+         //register device
+        // $loginTasks.sendDeviceToken(response.id)
+        // $loginTasks.findFriendRequests(response.id);
+         $loginTasks.getCurrentFriends();
+    }
+
+    //checks if the user has setting in this device, if not create a new object to store it
+    var settingObject = $localstorage.getObject('userSetting');
+    if (Object.keys(settingObject).length == 0) {
+        //object is empty
+        $localstorage.setObject('userSetting', {
+            notifyDefault: 'Text'
+        });
+    }
 
      function findFriendRequestsPushNotification(payload) {
        $ionicPopup.alert({

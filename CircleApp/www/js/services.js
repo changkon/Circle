@@ -244,12 +244,11 @@ angular.module('starter.services', ['ngCordova'])
 
   .factory('$friend', ['$rootScope', function($rootScope) {
     var friends = [];
-    var mobileService = $rootScope.client;
 
     return {
       getAllFriends: function() {
         friends = [];
-        mobileService.invokeApi("importfriends/GetAllFriends?userId=" + $rootScope.userId, { method: "GET" }).done(function(response) {
+        $rootScope.client.invokeApi("importfriends/GetAllFriends?userId=" + $rootScope.userId, { method: "GET" }).done(function(response) {
           validOnes = response.result.users;
           for (var i = 0; i < validOnes.length; i++) {
             var friend = validOnes[i];
@@ -267,5 +266,73 @@ angular.module('starter.services', ['ngCordova'])
         return friends;
       }
     }
+  }])
 
+  .factory('$loginTasks', ['$rootScope', '$friend', function($rootScope, $friend) {
+
+    return {
+      /*
+        This methods registers a device token with a userId
+      */
+      sendDeviceToken: function(userId) {
+        if (window.localStorage["device_token"] == "" || window.localStorage["device_token"] == undefined) {
+          return;
+        }
+        var userDeviceTable = $rootScope.client.getTable('DeviceToken');
+        userDeviceTable.insert({ userId: userId, DeviceToken: window.localStorage["device_token"] }).done(function(result) {
+            console.log("successfully send device token");
+        }, function (err) {
+          console.log("error sending device token");
+        });
+      },
+      /*
+          This method is called whenever a user logs in. It checks friend db for any existing friends request for this user as the receiver
+          Eventually it should be changed to use push notifications rather than client request
+      */
+      findFriendRequests: function(currentUserId) {
+          friendsTable = $rootScope.client.getTable('friend');
+          var query = friendsTable.where(function(userId) {
+              return (this.userId == userId || this.friendUserId == userId) && this.status == 0 && this.actionUserId != userId;
+          }, currentUserId);
+          query.read().then(function(friendRequests) {
+              for (i = 0; i < friendRequests.length; i++) {
+                  var friend = friendRequests[i];
+                  if (friend.userId == userId) {
+                      alertFriendRequestById(friend.friendUserId, friendsTable, friend);
+                  } else {
+                      alertFriendRequestById(friend.userId, friendsTable, friend);
+                  }
+              }
+          }, function (error) {
+              console.log("failed to find friend requests" + error)
+          });
+      },
+      /*
+          This method will alert the user that they have a friend request from the person's name
+          It converts the id returned by the find friend request into the friends name by calling the user table
+          After confirming the friendship, this method updates the status of the friend relationship to 1 (accepted)
+      */
+      alertFriendRequestById: function(id, friendsTable, friendRequest) {
+          userTable = $rootScope.client.getTable('user');
+          var query = userTable.where(function(id) { return this.id == id}, id);
+          query.read().then(function(users) {
+              console.log("alerting: " + id + " - " + users[0].name)
+              $ionicPopup.alert({
+                  title: 'Do you wish to add friend?',
+                  content: users[0].name
+              }).then(function(res) {
+                  friendRequest.status = 1;
+                  friendsTable.update(friendRequest).then(function (res) {
+                      console.log('Succesfully confirmed friendship: ' + res)
+                  })
+              });
+          }, function (error) {
+              console.log("couldn't find friends name for that id: " + error)
+          });
+      },
+
+      getCurrentFriends: function() {
+        $friend.getAllFriends();
+      }
+    }
   }])
