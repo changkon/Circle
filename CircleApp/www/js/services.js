@@ -258,6 +258,8 @@ angular.module('starter.services', ['ngCordova'])
           friendRequests = response.result.requests;
           if (scope != undefined) {
             scope.friends = friends;
+            scope.requests = friendRequests;
+            scope.pendingFriends = pendingFriends;
             scope.$apply();
             scope.$broadcast('scroll.refreshComplete');
           }
@@ -274,11 +276,17 @@ angular.module('starter.services', ['ngCordova'])
       },
       allFriends: function() {
         return friends.concat(pendingFriends).concat(friendRequests);
+      },
+      getPendingFriends: function() {
+        return pendingFriends;
+      },
+      getFriendRequests: function() {
+        return friendRequests;
       }
     }
   }])
 
-  .factory('$loginTasks', ['$rootScope', '$friend', function($rootScope, $friend) {
+  .factory('$loginTasks', ['$rootScope', '$friend', function($rootScope, $friend, $ionicPopup) {
 
     return {
       /*
@@ -300,17 +308,20 @@ angular.module('starter.services', ['ngCordova'])
           Eventually it should be changed to use push notifications rather than client request
       */
       findFriendRequests: function(currentUserId) {
-          friendsTable = $rootScope.client.getTable('friend');
+          var friendsTable = $rootScope.client.getTable('friend');
           var query = friendsTable.where(function(userId) {
-              return (this.userId == userId || this.friendUserId == userId) && this.status == 0 && this.actionUserId != userId;
+              return this.deleted == false && (this.userId == userId || this.friendUserId == userId) && this.status == 0 && this.actionUserId != userId;
           }, currentUserId);
           query.read().then(function(friendRequests) {
-              for (i = 0; i < friendRequests.length; i++) {
+              for (var i = 0; i < friendRequests.length; i++) {
                   var friend = friendRequests[i];
-                  if (friend.userId == userId) {
-                      alertFriendRequestById(friend.friendUserId, friendsTable, friend);
+                  if (friend.userId == currentUserId) {
+                //      console.log("hi")
+                      this.alertFriendRequestById(friend.friendUserId, friend);
                   } else {
-                      alertFriendRequestById(friend.userId, friendsTable, friend);
+                  //  console.log(friend.userId)
+                  //    console.log("bye")
+                      this.alertFriendRequestById(friend.userId, friend);
                   }
               }
           }, function (error) {
@@ -322,7 +333,8 @@ angular.module('starter.services', ['ngCordova'])
           It converts the id returned by the find friend request into the friends name by calling the user table
           After confirming the friendship, this method updates the status of the friend relationship to 1 (accepted)
       */
-      alertFriendRequestById: function(id, friendsTable, friendRequest) {
+      alertFriendRequestById: function(id, friendRequest) {
+        console.log("alerting")
           userTable = $rootScope.client.getTable('user');
           var query = userTable.where(function(id) { return this.id == id}, id);
           query.read().then(function(users) {
@@ -332,6 +344,7 @@ angular.module('starter.services', ['ngCordova'])
                   content: users[0].name
               }).then(function(res) {
                   friendRequest.status = 1;
+                  var friendsTable = $rootScope.client.getTable('friend');
                   friendsTable.update(friendRequest).then(function (res) {
                       console.log('Succesfully confirmed friendship: ' + res)
                   })
