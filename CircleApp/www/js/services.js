@@ -229,6 +229,10 @@ angular.module('starter.services', ['ngCordova'])
             id: eventId
         }).read();
     };
+    
+    this.deletePromise = function(id) {
+        return eventDeletePromise(id);
+    };
   }])
 
   .factory('$localstorage', ['$window', function($window) {

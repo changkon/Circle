@@ -21,7 +21,8 @@ myApp.controller('EventPageCtrl', ['$scope', '$rootScope', '$stateParams', 'even
     });
     
     $scope.delete = function() {
-        event.eventDeletePromise($scope.event.id).then(function() {
+        console.log($scope.event.id);
+        event.deletePromise($scope.event.id).then(function() {
             console.log("deleted");
         });
     };

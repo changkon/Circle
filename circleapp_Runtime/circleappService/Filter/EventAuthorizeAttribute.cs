@@ -11,13 +11,15 @@ namespace circleappService.Filter
     {
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            if (IsAuthorizedUser(actionContext, this.Roles))
-            {
-                base.OnAuthorization(actionContext);
-            }
-            else
+            if (!actionContext.RequestContext.Principal.Identity.IsAuthenticated)
             {
                 HandleUnauthorizedRequest(actionContext);
+            }
+
+            if (!IsAuthorizedUser(actionContext, this.Roles))
+            {
+                // unauthorized user
+                actionContext.Response = new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.Forbidden);
             }
             
         }
@@ -29,12 +31,12 @@ namespace circleappService.Filter
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             JwtSecurityToken token = new JwtSecurityToken(tokenHeader);
             // get email value from token payload. NOTE: email is unique and can be used to identify user from UserId
-            var email = token.Claims.Where(c => c.Type == "sub").FirstOrDefault();
+            var email = token.Claims.Where(c => c.Type == "sub").FirstOrDefault().Value;
             // Search for user id using email
             circleappContext context = new circleappContext();
             string userId = context.Users.Where(u => u.Email.Equals(email)).Select(u => u.Id).FirstOrDefault();
 
-            string eventId = (string)actionContext.RequestContext.RouteData.Values["id"];
+            string eventId = (string)actionContext.RequestContext.RouteData.Values["id"].ToString();
 
             // Check if userId is authorized to edit event details
             InvitationStatus userStatus = (InvitationStatus)context.Invitations.Where(i => i.EventId.Equals(eventId) && i.UserId.Equals(userId)).Select(i => i.Status).FirstOrDefault();
