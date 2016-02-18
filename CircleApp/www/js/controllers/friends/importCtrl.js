@@ -1,6 +1,6 @@
 var myApp = angular.module('starter.controllers')
 
-myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $ionicPopup) {
+myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $ionicPopup, $friend) {
     $scope.contacts = [];
 
     //we want to load up all contacts when view is loaded
@@ -28,8 +28,10 @@ myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $i
                      + phoneNumbersString, { method: "GET" }).done(function(response) {
                     validOnes = response.result.friends.filter(function(f) {
                       //only get the ones that aren't already friends
-                      for (var j = 0; j < $rootScope.friends.length; j++) {
-                        var friend = $rootScope.friends[j];
+                      var friends = $friend.allFriends();
+                      for (var j = 0; j < friends.length; j++) {
+                        var friend = friends[j];
+                      //  console.log("friiend id is " + friend.id + " and f id is " + f.id + " - " + f.name);
                         if (friend.id == f.id) { return false }
                       }
                       return true;
