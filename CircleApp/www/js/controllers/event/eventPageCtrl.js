@@ -19,4 +19,10 @@ myApp.controller('EventPageCtrl', ['$scope', '$rootScope', '$stateParams', 'even
     $scope.$on('$ionicView.enter', function(e) {
         $scope.query();
     });
+    
+    $scope.delete = function() {
+        event.eventDeletePromise($scope.event.id).then(function() {
+            console.log("deleted");
+        });
+    };
 }]);

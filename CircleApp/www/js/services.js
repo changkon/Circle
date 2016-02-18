@@ -90,6 +90,12 @@ angular.module('starter.services', ['ngCordova'])
 		// });
     };
     
+    var eventDeletePromise = function(idToDelete) {
+        return eventsTable.del({
+            id: idToDelete
+        });
+    };
+    
     var suggestEventPromise = function(event) {
         return eventsTable.insert({
 			title: event.title,
