@@ -5,8 +5,6 @@ using System.Net.Http;
 using circleappService.Models;
 using System.Net;
 using System.Linq;
-using System;
-using System.Text;
 using System.Dynamic;
 using circleappService.Utility;
 
@@ -14,10 +12,7 @@ namespace circleappService.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [MobileAppController]
-    #if Test
-    #else
-        [Authorize]
-    #endif
+
     public class ImportFriendsController : ApiController
     {
         // GET api/ImportFriends/GetValidUsersByPhoneNumber
@@ -116,6 +111,33 @@ namespace circleappService.Controllers
                  return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { });
              }
          }
+
+        //POST api/ImportFriends/PostFriendByFriendIdAndUserId
+        public HttpResponseMessage PostFriendByFriendIdAndUserId(HttpRequestMessage request) //request has form {"UserId":"xxxxx", "FriendUserId":"xxxxxxx"}
+        {
+            var ctx = new circleappContext();
+
+            var content = request.Content;
+            string jsonContent = content.ReadAsStringAsync().Result;
+            dynamic obj = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonContent);
+            string friendId = obj.FriendUserId;
+            string userId = obj.UserId;
+
+            var friend = ctx.Friends.Where(f => f.UserId == userId && f.FriendUserId == friendId).FirstOrDefault();
+            friend.Status = 1;
+
+            ctx.SaveChanges();
+
+            return Request.CreateResponse(HttpStatusCode.OK, friend);
+        }
+
+
+        // GET api/ImportFriends/GetAllFriends?userId=xxx
+        public HttpResponseMessage GetAllFriends2()
+        {
+            var ctx = new circleappContext();
+            return Request.CreateResponse(HttpStatusCode.OK, new { });
+        }
 
         // GET api/ImportFriends/SendPushNotification
         public HttpResponseMessage GetSendPushNotification()

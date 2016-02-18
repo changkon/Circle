@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'starter.services', 'ngCordova', 'ngMessages'])
 
-.run(function($ionicPlatform,$state,$ionicPopup,$location,$ionicHistory, $rootScope,$localstorage,$loginTasks) {
+.run(function($ionicPlatform,$state,$ionicPopup,$location,$ionicHistory, $rootScope,$localstorage,$loginTasks,$friend) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -48,8 +48,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
                next(request, callback);
          });
          //register device
-        // $loginTasks.sendDeviceToken(response.id)
-        // $loginTasks.findFriendRequests(response.id);
+         $loginTasks.sendDeviceToken($rootScope.userId)
+         $loginTasks.findFriendRequests($rootScope.userId);
          $loginTasks.getCurrentFriends();
     }
 
