@@ -77,7 +77,11 @@ myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $i
             var friendsTable = $rootScope.client.getTable('friend');
             friendsTable.insert({ userId: userIdToAdd, friendUserid: friendUserIdToAdd, status: 0, actionUserId: $rootScope.userId }).done(function(result) {
                 console.log("success");
-                $scope.sendPushNotification(result.friendUserId, result.id);
+                if ($rootScope.userId != result.friendUserId) {
+                  $scope.sendPushNotification(result.friendUserId, result.id);
+                } else {
+                  $scope.sendPushNotification(result.userId, result.id);
+                }
             }, function (err) {
                $ionicPopup.alert({
                     title: 'Error',
