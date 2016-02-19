@@ -1,7 +1,8 @@
 var myApp = angular.module('starter.controllers')
 
-myApp.controller('CircleCtrl', function($scope, $rootScope, $ionicPopover) {
+myApp.controller('CircleCtrl', function($scope, $rootScope, $ionicPopover, $ionicPopup) {
     $scope.circles = [];
+    $scope.pendingCircles = [];
 
     $ionicPopover.fromTemplateUrl('templates/plus-button-circles-popover.html', {
 			scope: $scope
@@ -23,18 +24,36 @@ myApp.controller('CircleCtrl', function($scope, $rootScope, $ionicPopover) {
 			$scope.popover.remove();
 		});
 
-    var getCircles = function() {
-        var circleTable = $rootScope.client.getTable("circle");
-				var query = circleTable.where({ /*initially just get all */ });
-				query.read().then(function(circles) {
-					$scope.circles = circles;
+    $scope.getCircles = function() {
+      var mobileService = $rootScope.client;
+      mobileService.invokeApi('CircleCustom/GetAllUserCircles', { method: 'GET' }).done(function (response) {
+          $scope.circles = response.result.circles;
+          $scope.pendingCircles = response.result.pendingCircles;
           $scope.$apply();
-				}, function (error) {
-						console.log("error retrieving circles");
-				});
+          console.log("successfully queried circles");
+      }, function (error) {
+          console.log(JSON.stringify(error));
+      });
     };
 
+  $scope.acceptCircleInvitation = function(circleId, circleName) {
+    console.log(circleId);
+		$ionicPopup.alert({
+				title: 'Do you wish to be a part of this circle?',
+				content: circleName
+		}).then(function(res) {
+				$rootScope.client.invokeApi("ImportFriends/PostAcceptCircleInvitation", {
+		        method: 'POST',
+		        body: { CircleId: circleId }
+		    }).done(function (response) {
+		        console.log("successfully updated circle")
+		    }, function (error) {
+					  console.log(JSON.stringify(error));
+		    });
+		});
+  }
+
 	$scope.$on('$ionicView.enter', function(e) {
-		getCircles();
+		$scope.getCircles();
 	});
 })

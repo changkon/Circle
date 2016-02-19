@@ -1,6 +1,6 @@
 <ion-view name="Circles">
 	<ion-content>
-		<ion-refresher pulling-text="Pull to refresh..." on-refresh="query()"></ion-refresher>
+		<ion-refresher pulling-text="Pull to refresh..." on-refresh="getCircles()"></ion-refresher>
 
         <!-- Hosting -->
 		<div class="item item-divider">Circles</div>
@@ -13,6 +13,18 @@
 				</div>
 			</ion-item>
 		</ion-list>
+
+		<div class="item item-divider">Circle Invitations</div>
+		<ion-list>
+			<ion-item class="event-item" ng-repeat="circle in pendingCircles" ng-click="acceptCircleInvitation('{{circle.id}}', '{{circle.name}}')">
+				<div class="row">
+					<div class="col col-75">
+						<h3>{{circle.name}}</h3>
+					</div>
+				</div>
+			</ion-item>
+		</ion-list>
+
 	</ion-content>
 </ion-view>
 <!-- Circle button -->

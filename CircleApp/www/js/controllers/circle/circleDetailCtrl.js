@@ -9,15 +9,21 @@ myApp.controller('CircleDetailCtrl', function($scope, $rootScope, $stateParams, 
       $scope.friends[i].checked = false;
     }
 
-    var mobileService = $rootScope.client;
-    mobileService.invokeApi('CircleCustom/GetAllUsersInACircles?circleId=' + circleId, { method: 'GET' }).done(function (response) {
-        $scope.circleMembers = response.result
-        $scope.$apply();
-        console.log("successfully queried circle: " + $scope.circleMembers);
-    }, function (error) {
-        console.log("error");
-        console.log(error);
-    });
+    $scope.$on('$ionicView.enter', function(e) {
+  		$scope.query();
+  	});
+
+    $scope.query = function() {
+      var mobileService = $rootScope.client;
+      mobileService.invokeApi('CircleCustom/GetAllUsersInACircles?circleId=' + circleId, { method: 'GET' }).done(function (response) {
+          $scope.circleMembers = response.result
+          $scope.$apply();
+          console.log("successfully queried circle: " + $scope.circleMembers);
+      }, function (error) {
+          console.log("error");
+          console.log(error);
+      });
+    }
 
     $ionicPopover.fromTemplateUrl('templates/plus-button-circleDetails-popover.html', {
   		scope: $scope
@@ -54,7 +60,17 @@ myApp.controller('CircleDetailCtrl', function($scope, $rootScope, $stateParams, 
         })
         for (var i = 0; i < selected.length; i++) {
           console.log("friend: " + selected[i].name + " will be invited");
+          var mobileService = $rootScope.client;
+          mobileService.invokeApi('CircleCustom/PostInviteToCircle', {
+  		        method: 'POST',
+  		        body: { FriendId: selected[i].id, CircleId: $stateParams.circleId }
+  		    }).done(function (response) {
+  		        console.log("successfully invited to circle!")
+  		    }, function (error) {
+              console.log(JSON.stringify(error));
+          });
         }
+        $scope.query();
         $scope.popoverInvite.hide();
     };
 
@@ -67,19 +83,4 @@ myApp.controller('CircleDetailCtrl', function($scope, $rootScope, $stateParams, 
   		$scope.popover.remove();
   	});
 
-		// retrieve the mobile service instance
-		// var mobileService = $rootScope.client;
-		// var eventsTable = mobileService.getTable('event');
-
-		// eventsTable.insert({
-		// 	title: $scope.event.title,
-		// 	description: $scope.event.description,
-		// 	date: $scope.event.date,
-		// 	location: $scope.event.location
-		// }).done(function(result) {
-		// 	console.log("success");
-		// }, function (err) {
-		// 	console.log("error");
-		// 	console.log(err);
-		// });
 	});
