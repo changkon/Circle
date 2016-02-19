@@ -40,7 +40,10 @@ namespace circleappService.Controllers
             return Lookup(id);
         }
 
+#if Test
+#else
         [EventAuthorize(Roles="Host")]
+#endif
         // PATCH tables/Event/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public Task<Event> PatchEvent(string id, Delta<Event> patch)
         {
@@ -54,7 +57,10 @@ namespace circleappService.Controllers
             return CreatedAtRoute("Tables", new { id = current.Id }, current);
         }
 
+#if Test
+#else
         [EventAuthorize(Roles="Host")]
+#endif
         // DELETE tables/Event/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public Task DeleteEvent(string id)
         {

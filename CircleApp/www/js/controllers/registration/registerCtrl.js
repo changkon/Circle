@@ -27,7 +27,7 @@ myApp.controller('StartScreenCtrl', function($scope, $http, $rootScope, $locatio
         })
         $http({
             method: 'POST',
-            url: "https://circleapp.azurewebsites.net/api/auth",
+            url: "http://192.168.1.69:50770/api/auth",
             data: {username: $scope.user.email, password: $scope.user.password},
             headers: {'Content-Type': 'application/json'}
         })
@@ -40,7 +40,7 @@ myApp.controller('StartScreenCtrl', function($scope, $http, $rootScope, $locatio
             $localstorage.set('currentEmail', $scope.user.email);
             $rootScope.userId = response.id;
             $rootScope.userName= $scope.user.email;
-						$rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+						$rootScope.client = new WindowsAzure.MobileServiceClient('http://192.168.1.69:50770').withFilter(function (request, next, callback) {
                request.headers['x-zumo-auth'] = response.token;
                next(request, callback);
             });
@@ -84,7 +84,7 @@ myApp.controller('PasswordCtrl', function($scope, $http, $rootScope, $location, 
 })
 
 
-myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,registrationService, $ionicLoading, $localstorage){
+myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,registrationService, $ionicLoading, $localstorage, $loginTasks) {
     $scope.newUser = registrationService;
     $scope.goImportFriend = function() {
       console.log("REGSITER user: " + $scope.newUser.email + " - PW: " + $scope.newUser.password +
@@ -94,7 +94,7 @@ myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,r
       })
       $http({
           method: 'POST',
-          url: "https://circleapp.azurewebsites.net/tables/User",
+          url: "http://192.168.1.69:50770/tables/User",
           data: {email: $scope.newUser.email, phoneNumber: $scope.newUser.phoneNumber.replace("+",""),
           password: $scope.newUser.password, gender: $scope.newUser.gender,
           name: $scope.newUser.name, age: $scope.newUser.age},
@@ -109,7 +109,7 @@ myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,r
         $localstorage.set('currentEmail', $scope.user.email);
         $rootScope.userId = response.id;
         $rootScope.userName= $scope.newUser.email;
-        $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
+        $rootScope.client = new WindowsAzure.MobileServiceClient('http://192.168.1.69:50770').withFilter(function (request, next, callback) {
            request.headers['x-zumo-auth'] = response.token;
            next(request, callback);
         });

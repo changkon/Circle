@@ -151,4 +151,52 @@
 			}
 		};
 	});
+    
+    app.directive('access', ['authorization', function(authorization) {
+        return {
+            restrict: 'A', // attribute name
+            scope: {
+                status: '='
+            },
+            link: function(scope, element, attrs) {
+                
+                var makeVisible = function() {
+                    element.removeClass('hidden');
+                    console.log("visible");
+                };
+                
+                var makeHidden = function() {
+                    element.addClass('hidden');
+                    console.log("hidden");
+                };
+                
+                // get roles required from access attribute name
+                var roles = attrs.access.split(',');
+                
+                var determineVisibility = function(resetFirst) {
+                    var result;
+                    if (resetFirst) {
+                        makeVisible();
+                    }
+                    
+                    result = authorization.authorized(true, roles, attrs.accessPermissionType, scope.status);
+                    
+                    if (result === true) {
+                        makeVisible();
+                    } else {
+                        makeHidden();
+                    }
+                };
+
+                if (roles.length > 0) {
+                    determineVisibility(false);
+                }
+                
+                scope.$watch("status", function() {
+                    determineVisibility(false);
+                });
+
+            }
+        };
+    }]);
 })();
