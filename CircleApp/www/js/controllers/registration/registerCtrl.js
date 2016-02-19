@@ -84,7 +84,7 @@ myApp.controller('PasswordCtrl', function($scope, $http, $rootScope, $location, 
 })
 
 
-myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,registrationService, $ionicLoading, $localstorage){
+myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,registrationService, $ionicLoading, $localstorage, $loginTasks){
     $scope.newUser = registrationService;
     $scope.goImportFriend = function() {
       console.log("REGSITER user: " + $scope.newUser.email + " - PW: " + $scope.newUser.password +
@@ -106,7 +106,7 @@ myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,r
         console.log(response.token);
         $localstorage.set('currentToken',response.token);
         $localstorage.set('currentId',response.id);
-        $localstorage.set('currentEmail', $scope.user.email);
+        $localstorage.set('currentEmail', $scope.newUser.email);
         $rootScope.userId = response.id;
         $rootScope.userName= $scope.newUser.email;
         $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {

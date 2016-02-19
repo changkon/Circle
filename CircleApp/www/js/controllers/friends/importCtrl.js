@@ -22,7 +22,7 @@ myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $i
                 var uniqueNumbersSection = uniqueNumbers.splice(i, i+100);
                 var phoneNumbersString = "";
                 for (var j = 0; j < uniqueNumbersSection.length; j++) {
-                    phoneNumbersString += uniqueNumbersSection[j].replace("+","") + ",";
+                    phoneNumbersString += uniqueNumbersSection[j].replace("+","").split(" ").join("") + ",";
                 }
                 $rootScope.client.invokeApi("importfriends/GetValidUsersByPhoneNumber?phonenumbers="
                      + phoneNumbersString, { method: "GET" }).done(function(response) {

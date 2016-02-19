@@ -33,7 +33,7 @@ namespace circleappService.Controllers
             // Find all circle id from invitation table
             var userCircles = context.CircleInvitations.Where(i => i.UserId == userId);
             IQueryable<Circle> circles = context.Circles.Where(c => userCircles.Any(uc => uc.CircleId == c.Id && uc.Status == 1));
-            IQueryable<Circle> pendingCircles = context.Circles.Where(c => userCircles.Any(uc => uc.CircleId == c.Id && uc.Status == 0);
+            IQueryable<Circle> pendingCircles = context.Circles.Where(c => userCircles.Any(uc => uc.CircleId == c.Id && uc.Status == 0));
             return Request.CreateResponse(HttpStatusCode.OK, new
             {
                 Circles = circles,
