@@ -45,7 +45,7 @@ myApp.controller('StartScreenCtrl', function($scope, $http, $rootScope, $locatio
                next(request, callback);
             });
             //change this to go to home page
-            $location.path('/tab/dash');
+            $location.path('/tab/event');
             //register device
             $loginTasks.sendDeviceToken(response.id)
             $loginTasks.findFriendRequests(response.id);
@@ -114,7 +114,7 @@ myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,r
            next(request, callback);
         });
         //change this to go to home page
-        $location.path('/tab/dash');
+        $location.path('/tab/event');
         //register device
         $loginTasks.sendDeviceToken(response.id)
         $loginTasks.findFriendRequests(response.id);

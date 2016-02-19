@@ -40,7 +40,7 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
     if ( currentToken == "none") {
        $location.path("/start");
     } else {
-        $location.path("/tab/dash");
+        $location.path("/tab/event");
         $rootScope.userId = $localstorage.get('currentId', "none");
         $rootScope.userName= $localstorage.get('currentEmail', "none");
         $rootScope.client = new WindowsAzure.MobileServiceClient('https://circleapp.azurewebsites.net').withFilter(function (request, next, callback) {
@@ -120,11 +120,11 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
        //$location.path('/startscreen');
        //$state.go("startscreen");
        cancelRegistration()
-     } else if ($state.is('tab.dash') || $state.is('startscreen')) {
+     } else if ($state.is('tab.event') || $state.is('startscreen')) {
        console.log('going b from home');
        showConfirm();
      } else if ($state.is('setting')) {
-       $state.go('tab.dash');
+       $state.go('tab.event');
      } else {
        $ionicHistory.backView().go();
      }
@@ -147,45 +147,6 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
   })
 
   // Each tab has its own nav history stack:
-
-  .state('tab.dash', {
-    url: '/dash',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
-      }
-    }
-  })
-
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
-
-  .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
-  })
   .state('tab.event', {
 	  url: '/event',
 	  views: {
@@ -293,6 +254,6 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/tab/event');
 
 });
