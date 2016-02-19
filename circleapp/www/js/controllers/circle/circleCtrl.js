@@ -42,11 +42,12 @@ myApp.controller('CircleCtrl', function($scope, $rootScope, $ionicPopover, $ioni
 				title: 'Do you wish to be a part of this circle?',
 				content: circleName
 		}).then(function(res) {
-				$rootScope.client.invokeApi("ImportFriends/PostAcceptCircleInvitation", {
+				$rootScope.client.invokeApi("CircleCustom/PostAcceptCircleInvitation", {
 		        method: 'POST',
 		        body: { CircleId: circleId }
 		    }).done(function (response) {
 		        console.log("successfully updated circle")
+            $scope.getCircles();
 		    }, function (error) {
 					  console.log(JSON.stringify(error));
 		    });

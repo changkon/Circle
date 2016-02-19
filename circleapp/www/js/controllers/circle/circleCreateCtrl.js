@@ -21,7 +21,7 @@ myApp.controller('CircleCreateCtrl', ['$scope', '$rootScope', function($scope, $
     });
 
 		// var circlesTable = mobileService.getTable('circle');
-    // 
+    //
 		// circlesTable.insert({
 		// 	Name: $scope.circle.name,
 		// }).done(function(result) {

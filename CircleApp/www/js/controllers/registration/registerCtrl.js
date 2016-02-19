@@ -95,7 +95,7 @@ myApp.controller('OptionalCtrl', function($scope, $http, $rootScope, $location,r
       $http({
           method: 'POST',
           url: "https://circleapp.azurewebsites.net/tables/User",
-          data: {email: $scope.newUser.email, phoneNumber: $scope.newUser.phoneNumber.replace("+",""),
+          data: {email: $scope.newUser.email, phoneNumber: $scope.newUser.phoneNumber.replace("+","").replace(/ /g, '+'),
           password: $scope.newUser.password, gender: $scope.newUser.gender,
           name: $scope.newUser.name, age: $scope.newUser.age},
           headers: {'Content-Type': 'application/json'}

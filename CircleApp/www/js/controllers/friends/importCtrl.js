@@ -13,7 +13,7 @@ myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $i
                 var contactNumbers = contacts[i].phoneNumbers; //deal with people that have multiple phonenumbers
                 for (var j = 0; contactNumbers != undefined && j < contactNumbers.length; j++) {
                     phoneNumbers.push(contactNumbers[j].value);
-//                    console.log("Contact: " + contacts[i].displayName + " has number: " + contactNumbers[j].value);
+          //          console.log("Contact: " + contacts[i].displayName + " has number: " + contactNumbers[j].value);
                 }
             }
             uniqueNumbers = phoneNumbers.filter(function(item, pos) { return phoneNumbers.indexOf(item) == pos; })
@@ -22,7 +22,7 @@ myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $i
                 var uniqueNumbersSection = uniqueNumbers.splice(i, i+100);
                 var phoneNumbersString = "";
                 for (var j = 0; j < uniqueNumbersSection.length; j++) {
-                    phoneNumbersString += uniqueNumbersSection[j].replace("+","").split(" ").join("") + ",";
+                    phoneNumbersString += uniqueNumbersSection[j].replace("+","").replace(/ /g, '+') + ",";
                 }
                 $rootScope.client.invokeApi("importfriends/GetValidUsersByPhoneNumber?phonenumbers="
                      + phoneNumbersString, { method: "GET" }).done(function(response) {
@@ -95,7 +95,7 @@ myApp.controller('ImportCtrl', function($scope, $rootScope, $cordovaContacts, $i
 
     $scope.sendPushNotification = function(friendId, friendTableId) {
       $rootScope.client.invokeApi("importfriends/GetSendPushNotification?id=" + $rootScope.userId + "&friendId=" + friendId + "&friendTableId=" + friendTableId, { method: "GET" }).done(function(response) {
-        console.log("sent push notification request");
+        console.log("successfully sent push notification request");
       }, function (error) {
         console.log("failed sending push notification: " + error);
       });
